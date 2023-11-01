@@ -14,6 +14,7 @@ class UserStore {
         await this.client.connect();
         this.db = this.client.db(this.dbName);
         this.usersCollection = this.db.collection('users');
+        console.log("Connected to userStore db");
         // Create unique index for userId
         //await this.usersCollection.createIndex({ "userId": 1 }, { unique: true });
     

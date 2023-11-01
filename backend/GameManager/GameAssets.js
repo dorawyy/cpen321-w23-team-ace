@@ -2,6 +2,7 @@ class gameAssets {
     /* return a 0-36 roulette table's location maped to colour
     @return {array} rouletteTable: a 0-36 table with colour
     */
+   // ChatGPT usage: No
     static getRoulette() {
         return [
             'green',
@@ -47,6 +48,7 @@ class gameAssets {
     @param {boolean} addJockers: if true, add jockers to the set
     @return {array} pokar: a set of pokar cards
     */
+   // ChatGPT usage: No
     static getPokar(addJockers = false) {
         let pokarSet = []
         if (addJockers) {
@@ -92,6 +94,7 @@ class gameAssets {
     @param {str} card: the card to be calculated, one defined in getPokar()
     @return {int} value: the value of the card
     */
+   // ChatGPT usage: No
     static getPokarFaceValue(card) {
         let value = 0;
         if (card.includes('Joker')) {

@@ -14,6 +14,8 @@ class GameLobbyStore {
         
         this.database = this.client.db(this.database);
         this.collection = this.database.collection('lobbies');
+        console.log("Connected to gameLobbyStore db");
+
     }
 
     // ChatGPT usage: Partial

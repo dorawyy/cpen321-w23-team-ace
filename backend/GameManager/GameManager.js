@@ -23,15 +23,26 @@ playerAction structure:
 }
 */
 
-/* betsPlaced, duplicate bet is allowed, ie betting two roulette numbers
+/* betsPlaced, duplicate bet is allowed, ie betting two roulette numbers, changes depending on game type.
+Roulette
 {
-    playerId: [{betOnWhat: val (str), amount: amount (float)}]
+    playerId: {"red": val, "black": val, "odd": val, "even": val, "green", val}
+}
+
+Baccarat
+{
+    playerId: {"win": "PlayersWin" or "DealerWins or "tie", "amount": val}]"} 
+}
+
+BlackJack
+{
+    playerId: val
 }
 */
 
 /* gameResult
 {
-    playerId: [{winOnWhat (str), amount (float)}]
+    playerId: amount (float)
 }
 */
 
@@ -80,6 +91,8 @@ class GameManager extends EventEmitter {
     gameData is the main data structure (fixed format dictionary) that will be used as
         main communication variable between functions
     */
+    
+    // ChatGPT usage: Partial - passing in the io object
     constructor(io) {
         super();
         this.io = io;
@@ -87,10 +100,11 @@ class GameManager extends EventEmitter {
         this.timers = {};
     }
 
-    /* create/reset the timer for one single game
+    /* create/reset the turn timer for one single game
     *   @param {dictionary} gameData
     *   @return (int) 1 for success, -1 for fail
     */
+   // ChatGPT usage: No
     _resetTimer(gameData) {
         // reset the timer, if one exists
         if (this.timers[gameData.lobbyName]) {
@@ -109,6 +123,7 @@ class GameManager extends EventEmitter {
     *   @param {dictionary} playerAction
     *  @return {dictionary} gameData
     */
+   // ChatGPT usage: No
     _getActionResult(gameData, username, action) {
         let gameType = gameData.gameType;
         if (gameType == 'BlackJack') {
@@ -130,6 +145,7 @@ class GameManager extends EventEmitter {
     * @return {dictionary} gameResult
     *   return 0 on error, like if game not over
     */
+   // ChatGPT usage: No
     _calculateWinning(gameData) {
         if (gameData.currentPlayerIndex !== -1) {
             return 0;
@@ -155,6 +171,7 @@ class GameManager extends EventEmitter {
     *   @param {dictionary} gameData
     *   @return {dictionary} defaultAction
     */
+   // ChatGPT usage: No
     _getDefaultAction(gameData) {
         let defaultAction = {};
         for (let i = 0; i < gameData.playerList.length; i++) {
@@ -173,6 +190,8 @@ class GameManager extends EventEmitter {
     *  @param {dictionary} playerList
     *  @emit {dictionary} gameData back to caller
     */
+
+    // ChatGPT usage: No
     async startGame(lobbyId, gameType, playerList, betsPlaced) {
         // prepare default user items structure
         // defaultItems = {eachUser: {}}
@@ -216,6 +235,7 @@ class GameManager extends EventEmitter {
     *  @emit {dictionary} gameData back to caller
     * @emit {dictionary} action back to caller
     */
+   // ChatGPT usage: No
     async playTurn(lobbyId, username="none", action="none") {
         let gameData = await this.gameStore.getGame(lobbyId);
         let gameResult = null;
@@ -260,16 +280,19 @@ class GameManager extends EventEmitter {
     *   @param {dictionary} gameData
     *   @return {boolean} true if game is over, false if not
     */
+   // ChatGPT usage: No
     _checkGameOver(gameData) {
         // if there is no more player index, game is over
         return gameData.currentPlayerIndex == -1;
     }
     
+    // ChatGPT usage: No
     _delay(duration) {
         return new Promise(resolve => setTimeout(resolve, duration));
     }
 
 
+    // ChatGPT usage: No
     async connect() {
         await this.gameStore.connect();
     }
@@ -277,14 +300,17 @@ class GameManager extends EventEmitter {
 
 // Basic outline for GameStore:
 class GameStore {
+    // ChatGPT usage: No
     constructor() {
         this.client = new MongoClient('mongodb://localhost:27017');
     }
 
+    // ChatGPT usage: No
     async connect() {
         this.client.connect().then(() => {
             this.db = this.client.db('casinoApp');
             this.games = this.db.collection('games');
+            console.log("Connected to gameStore database");
         });
     }
 
@@ -292,6 +318,7 @@ class GameStore {
     *  @param {dictionary} gameData
     *  @return {dictionary} gameData
     */
+   // ChatGPT usage: No
     async newGame(gameData) {
         return await this.games.insertOne(gameData);
     }
@@ -300,6 +327,7 @@ class GameStore {
     *   @param (string) lobbyName
     *   @return {dictionary} gameData
     */
+   // ChatGPT usage: No
     async getGame(lobbyName) {
         return await this.games.findOne({ lobbyName: lobbyName });
     }
@@ -307,6 +335,7 @@ class GameStore {
     *   @param {dictionary} gameData
     *   @return {dictionary} gameData
     */
+   // ChatGPT usage: No
     async updateGame(gameData) {
         return await this.games.updateOne(
             { lobbyName: gameData.lobbyId }, 
@@ -314,6 +343,7 @@ class GameStore {
         );
     }
 
+    // ChatGPT usage: No
     async deleteGame(lobbyName) {
         return await this.games.deleteOne({ lobbyName: lobbyName });
     }
