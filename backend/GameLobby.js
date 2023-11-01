@@ -100,7 +100,7 @@ class GameLobby {
             for (let userName of readyPlayers) {
                 bets[userName] = this.players[userName].bet;
             }
-            await this.gameManager.startGame(this.roomName, readyPlayers, bets, this.gameType);
+            await this.gameManager.startGame(this.roomName, this.gameType, readyPlayers, bets);
 
             for (let userName of readyPlayers) {
                 this.players[userName].ready = false;
