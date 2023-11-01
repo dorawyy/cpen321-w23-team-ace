@@ -302,16 +302,21 @@ class GameManager extends EventEmitter {
 class GameStore {
     // ChatGPT usage: No
     constructor() {
-        this.client = new MongoClient('mongodb://localhost:27017');
+        this.client = new MongoClient("mongodb://localhost:27017");
     }
 
     // ChatGPT usage: No
     async connect() {
-        this.client.connect().then(() => {
+        try {
+            await this.client.connect()
             this.db = this.client.db('casinoApp');
             this.games = this.db.collection('games');
             console.log("Connected to gameStore database");
-        });
+        } catch(err) {
+            console.log(err);
+            await this.client.close();
+        }
+        
     }
 
     /* create a new game by creating a new gameData object

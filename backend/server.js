@@ -116,7 +116,7 @@ io.on('connection', (socket) => {
         console.log("Lobby created");
         if(!gameLobbies[roomName]) {
             // Set GameManager = null for now
-            const lobby = new GameLobby(roomName, gameType, maxPlayers, null, gameLobbyStore, io);
+            const lobby = new GameLobby(roomName, gameType, maxPlayers, gameManager, gameLobbyStore, io);
             await lobby.init(roomName, gameType, maxPlayers);
             gameLobbies[roomName] = lobby;
             socket.emit('lobbyCreated', "Lobby Successfully Created");
