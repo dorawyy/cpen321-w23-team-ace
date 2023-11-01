@@ -95,7 +95,11 @@ class GameLobby {
             this.io.to(this.roomName).emit('gameStarted');
 
             const readyPlayers = Object.keys(this.players).filter(userName => this.players[userName].ready);
-            const bets = readyPlayers.map(userName => this.players[userName].bet);
+
+            const bets = {};
+            for (let userName of readyPlayers) {
+                bets[userName] = this.players[userName].bet;
+            }
             await this.gameManager.startGame(this.roomName, readyPlayers, bets, this.gameType);
 
             for (let userName of readyPlayers) {
