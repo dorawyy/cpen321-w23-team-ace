@@ -214,7 +214,13 @@ public class LobbyActivityRoulette extends AppCompatActivity {
                     GmailUtility.setupContext(LobbyActivityRoulette.this);
 
                     GmailUtility.sendEmail(recipientEmail, "Android Casino Invitation", "You are Invited to Play a Game of " + gameType +" in Room: " + roomName +"\nLog in on Android Casino to Play with your Friends!");
-
+                    Toast.makeText(getApplicationContext(), "Successfully sent the Email", Toast.LENGTH_SHORT).show();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            etEmailInput.setText("");
+                        }
+                    });
                 } else {
                     Toast.makeText(getApplicationContext(), "Please enter a valid email", Toast.LENGTH_SHORT).show();
                 }
