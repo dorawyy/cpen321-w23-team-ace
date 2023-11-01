@@ -34,6 +34,7 @@ public class LobbyActivityBaccarat extends AppCompatActivity {
     private String TAG = "LEvent";
 
     private int counter = 0;
+    private String roomName = "";
 
     private EditText etEmailInput;
     private Button btnInvite;
@@ -50,7 +51,7 @@ public class LobbyActivityBaccarat extends AppCompatActivity {
         mSocket = SocketHandler.getSocket();
 
         Intent intent = getIntent();
-        String roomName = intent.getStringExtra("roomName");
+        roomName = intent.getStringExtra("roomName");
         String gameType = intent.getStringExtra("gameType");
         Boolean gameStarted = intent.getBooleanExtra("gameStarted", false); // default value is false
         String maxPlayer = intent.getStringExtra("maxPlayer");
@@ -192,6 +193,29 @@ public class LobbyActivityBaccarat extends AppCompatActivity {
             }
         });
 
+        mSocket.on("gameStarted", new Emitter.Listener() {
+            @Override
+            //ChatGPT usage: No
+            public void call(Object... args) {
+                Log.d(TAG, "New Game Signal: " + gameType);
+
+                Intent gameIntent = null;
+                if (gameType == "roulette") {
+                    gameIntent = new Intent(LobbyActivityBaccarat.this, RouletteActivity.class);
+                } else if (gameType == "baccarat") {
+                    gameIntent = new Intent(LobbyActivityBaccarat.this, BaccaratActivity.class);
+                } else if (gameType == "blackjack") {
+                    gameIntent = new Intent(LobbyActivityBaccarat.this, BlackJackActivity.class);
+                } else {
+                    Log.e(TAG, "No matching game type to: " + gameType);
+                    return;
+                }
+                gameIntent.putExtra("userName", currentPlayer.getUsername());
+                gameIntent.putExtra("roomName", roomName);
+                startActivity(gameIntent);
+            }
+        });
+
         // ChatGPT usage: No
         // Button: Send for Chat
         Button btnSend = findViewById(R.id.btnSend);
@@ -225,6 +249,13 @@ public class LobbyActivityBaccarat extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    //ChatGPT usage: No
+    protected void onResume() {
+        super.onResume();
+        mSocket.emit("getPlayerCount", roomName);
     }
 
     // ChatGPT usage: No
