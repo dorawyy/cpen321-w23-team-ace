@@ -128,7 +128,7 @@ public class RouletteActivity extends AppCompatActivity {
                             double earnings = 0;
                             try {
                                 JSONObject gameResult = gameResults.getJSONObject("gameResult");
-                                earnings = gameResult.getInt(userName);
+                                earnings = gameResult.getDouble(userName);
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }

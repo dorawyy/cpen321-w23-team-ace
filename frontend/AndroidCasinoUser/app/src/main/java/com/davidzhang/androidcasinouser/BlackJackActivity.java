@@ -375,7 +375,7 @@ public class BlackJackActivity extends AppCompatActivity {
                             double earnings = 0;
                             try {
                                 JSONObject gameResult = gameState.getJSONObject("gameResult");
-                                earnings = gameResult.getInt(userName);
+                                earnings = gameResult.getDouble(userName);
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
