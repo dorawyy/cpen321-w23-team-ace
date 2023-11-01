@@ -33,6 +33,7 @@ public class CreateLobby extends AppCompatActivity {
     private User user;
     private String TAG = "CreateLobby";
 
+    // ChatGPT usage: No
     InputFilter filter = new InputFilter() {
         @Override
         public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
@@ -56,8 +57,6 @@ public class CreateLobby extends AppCompatActivity {
         mSocket = SocketHandler.getSocket();
         setupSocketListeners();
 
-
-        // Initialize UI components
         roomNameEditText = findViewById(R.id.roomNameEditText);
         maxPlayersEditText = findViewById(R.id.maxPlayersEditText);
         maxPlayersEditText.setFilters(new InputFilter[]{filter});
@@ -69,6 +68,7 @@ public class CreateLobby extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         gameTypeSpinner.setAdapter(adapter);
 
+        // ChatGPT usage: No
         createLobbyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,13 +76,10 @@ public class CreateLobby extends AppCompatActivity {
                 String gameType = gameTypeSpinner.getSelectedItem().toString();
                 String maxPlayers = maxPlayersEditText.getText().toString().trim();
 
-                // Now you can use these details to create a lobby (e.g., send to a server)
                 if (!roomName.isEmpty() && !gameType .isEmpty() && Integer.parseInt(maxPlayers) > 0) {
-                    //create Lobby
                     mSocket.emit("createLobby", roomName, gameType, maxPlayers, user.getUsername());
 
                 } else {
-                    // Notify the user to enter a valid name
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -94,8 +91,8 @@ public class CreateLobby extends AppCompatActivity {
         });
     }
 
+    // ChatGPT usage: No
     private void setupSocketListeners() {
-        // Example: Listen for a chat message from the server
         mSocket.on("roomAlreadyExist", new Emitter.Listener() {
             @Override
             public void call(Object... args) {
@@ -112,8 +109,6 @@ public class CreateLobby extends AppCompatActivity {
                         }
                     });
                 } else {
-                    // User Create Failed
-                    // prompt the user to enter the name again that does not already exist
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -122,6 +117,7 @@ public class CreateLobby extends AppCompatActivity {
                     });
                 }
             }
+            // ChatGPT usage: No
         }).on("lobbyCreated", new Emitter.Listener() {
             @Override
             public void call(Object... args) {
@@ -134,7 +130,6 @@ public class CreateLobby extends AppCompatActivity {
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                // Your code to be executed after the Toast disappears
                                 Intent intent = new Intent(CreateLobby.this, Lounge.class);
                                 intent.putExtra("user", user);
                                 startActivity(intent);
@@ -146,18 +141,21 @@ public class CreateLobby extends AppCompatActivity {
                 });
             }
         });
+        // ChatGPT usage: No
         mSocket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
             @Override
             public void call(Object... args) {
                 Log.d(TAG, "Socket connected");
             }
         });
+        // ChatGPT usage: No
         mSocket.on(Socket.EVENT_DISCONNECT, new Emitter.Listener() {
             @Override
             public void call(Object... args) {
                 Log.d(TAG, "Socket disconnected");
             }
         });
+        // ChatGPT usage: No
         mSocket.on(Socket.EVENT_CONNECT_ERROR, new Emitter.Listener() {
             @Override
             public void call(Object... args) {
@@ -171,7 +169,6 @@ public class CreateLobby extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        // Your code here
         mSocket = SocketHandler.getSocket();
         setupSocketListeners();
     }

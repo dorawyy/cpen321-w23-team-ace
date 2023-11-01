@@ -20,11 +20,13 @@ public class LobbyAdapter extends RecyclerView.Adapter<LobbyAdapter.LobbyViewHol
     private Context context;
     private Socket mSocket;
 
+    // ChatGPT usage: Partial
     public LobbyAdapter(Context context, List<Lobby> lobbyList) {
         this.context = context;
         this.lobbyList = lobbyList;
     }
 
+    // ChatGPT usage: Partial
     @NonNull
     @Override
     public LobbyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -32,6 +34,7 @@ public class LobbyAdapter extends RecyclerView.Adapter<LobbyAdapter.LobbyViewHol
         return new LobbyViewHolder(itemView);
     }
 
+    // ChatGPT usage: Partial
     @Override
     public void onBindViewHolder(@NonNull LobbyViewHolder holder, int position) {
         Lobby lobby = lobbyList.get(position);
@@ -39,6 +42,7 @@ public class LobbyAdapter extends RecyclerView.Adapter<LobbyAdapter.LobbyViewHol
         holder.textViewGameType.setText("Game Type: " + lobby.getGameType());
     }
 
+    // ChatGPT usage: No
     @Override
     public int getItemCount() {
         return lobbyList.size();
@@ -50,6 +54,7 @@ public class LobbyAdapter extends RecyclerView.Adapter<LobbyAdapter.LobbyViewHol
         // reference to the whole CardView
         View rootView;
 
+        // ChatGPT usage: Partial
         public LobbyViewHolder(@NonNull View itemView) {
             super(itemView);
             textViewLobbyName = itemView.findViewById(R.id.textViewLobbyName);

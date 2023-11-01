@@ -11,8 +11,9 @@ public class SocketHandler {
     private static final String TAG = "SocketHandler";
     private static Socket mSocket;
 
-    private SocketHandler() { }  // Private constructor to prevent instantiation
+    private SocketHandler() { }
 
+    // ChatGPT usage: Partial
     public synchronized static void setSocket() {
         //if (mSocket == null) {
             try {
@@ -23,24 +24,28 @@ public class SocketHandler {
         //}
     }
 
+    // ChatGPT usage: Partial
     public synchronized static Socket getSocket() {
         turnoffAllListeners();
         establishConnection();
         return mSocket;
     }
 
+    // ChatGPT usage: Partial
     public synchronized static void establishConnection() {
         //if (mSocket != null) {
             mSocket.connect();
         //}
     }
 
+    // ChatGPT usage: Partial
     public synchronized static void closeConnection() {
         //if (mSocket != null) {
             mSocket.disconnect();
         //}
     }
 
+    // ChatGPT usage: Partial
     public synchronized static void turnoffAllListeners() {
         //if (mSocket != null) {
         mSocket.off();

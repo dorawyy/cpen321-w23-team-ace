@@ -21,6 +21,7 @@ const LOBBYDB_NAME = 'gameLobbyDB'
 
 const userStore = new UserStore(MONGO_CONNECTION_STRING, USERDB_NAME);
 
+// ChatGPT usage: No
 (async () => {
     await userStore.connect();
 })();
@@ -30,49 +31,61 @@ const userAccount = new UserAccount(io, userStore);
 const gameLobbyStore = new GameLobbyStore(MONGO_CONNECTION_STRING, LOBBYDB_NAME);
 const gameLobbies = {};
 
+// ChatGPT usage: No
 (async () => {
     await gameLobbyStore.init();
 })();
 
+// ChatGPT usage: Partial
 io.on('connection', (socket) => {
     console.log('A user connected:', socket.id);
 
+    // ChatGPT usage: Yes
     socket.on('retrieveAccount', (userId) => {
         userAccount.retrieveAccount(socket, userId);
     });
 
+    // ChatGPT usage: No
     socket.on('updateAccount', (userInfo) => {
         userAccount.updateAccount(socket, userInfo);
     });
     
+    // ChatGPT usage: Yes
     socket.on('createAccount', (userInfo) => {
         userAccount.createAccount(socket, userInfo);
     });
 
+    // ChatGPT usage: No
     socket.on('updateName', (userId, newname) => {
         userAccount.updateName(socket, userId, newname);
     });
 
+    // ChatGPT usage: No
     socket.on('updateAdminStatus', (username, AdminStatus) => {
         userAccount.updateAdminStatus(socket, username, AdminStatus);
     });
 
+    // ChatGPT usage: No
     socket.on('updateChatBanned', (username, ChatBannedStatus) => {
         userAccount.updateChatBanned(socket, username, ChatBannedStatus);
     });
 
+    // ChatGPT usage: No
     socket.on('updateLastRedemptionDate', (userID, rDate) => {
         userAccount.updateLastRedemptionDate(socket, userID, rDate);
     });
 
+    // ChatGPT usage: No
     socket.on('deposit', (userId, amount) => {
         userAccount.deposit(socket, userId, amount);
     });
 
+    // ChatGPT usage: No
     socket.on('depositbyname', (username, amount) =>{
         userAccount.depositbyname(socket, username, amount);
     })
 
+    // ChatGPT usage: No
     socket.on('withdraw', (userId, amount) => {
         userAccount.withdraw(socket, userId, amount);
     });
@@ -81,14 +94,17 @@ io.on('connection', (socket) => {
     //     console.log('User disconnected:', socket.id);
     // });
 
+    // ChatGPT usage: Yes
     socket.on('deleteUser', async (userId) => {
        userAccount.deleteUser(socket, userId);
     });
     
+    // ChatGPT usage: No
     socket.on('deleteAllUsers', async () => {
        userAccount.deleteAllUsers(socket);
     });
 
+    // ChatGPT usage: Partial
     socket.on('createLobby', async (roomName, gameType, maxPlayers, userName) => {
         console.log("Lobby created");
         if(!gameLobbies[roomName]) {
@@ -104,6 +120,7 @@ io.on('connection', (socket) => {
 
     });
 
+    // ChatGPT usage: Partial
     socket.on('joinLobby', async (roomName, userName) => {
         console.log("User joined");
         if(gameLobbies[roomName]) {
@@ -116,15 +133,18 @@ io.on('connection', (socket) => {
         }
     });
 
+    // ChatGPT usage: No
     socket.on('getAllLobby', async () => {
         var myLobbies = await gameLobbyStore.getAllLobby();
         socket.emit('AllLobby', myLobbies);
     });
 
+    // ChatGPT usage: No
     socket.on('setBet', async(roomName, userName, bet) => {
         await gameLobbies[roomName].setPlayerBet(roomName, userName, bet);
     })
 
+    // ChatGPT usage: No
     socket.on('getPlayerCount', async(roomName) => {
         var playerCount = await gameLobbies[roomName].getPlayerCount(roomName);
         io.to(roomName).emit('playerCount', playerCount);
@@ -135,6 +155,7 @@ io.on('connection', (socket) => {
     //     io.to(roomName).emit('playerCount', playerCount);
     // })
 
+    // ChatGPT usage: Partial
     socket.on('leaveLobby', () => {
         console.log("User left lobby");
         for(let roomName in gameLobbies) {
@@ -147,6 +168,7 @@ io.on('connection', (socket) => {
         }
     });
 
+    // ChatGPT usage: Partial
     socket.on('disconnect', () => {
         console.log("User disconnected");
         for(let roomName in gameLobbies) {
@@ -161,6 +183,7 @@ io.on('connection', (socket) => {
 
 });
 
+// ChatGPT usage: No
 server.listen(3000, () => {
     console.log('listen to port 3000');
 })

@@ -1,15 +1,18 @@
 
 class UserAccount {
+    // ChatGPT usage: Yes
     constructor(io, userStore) {
         this.io = io;
         this.userStore = userStore;
     }
 
+    // ChatGPT usage: Yes
     async retrieveAccount(socket, userId) {
         const user = await this.userStore.getUser(userId);
         socket.emit('userAccountDetails', user);
     }
 
+    // ChatGPT usage: No
     async updateAccount(socket, userInfo) {
 
         const updatedUser = await this.userStore.updateUser(userInfo.userId, userInfo);
@@ -20,12 +23,13 @@ class UserAccount {
         socket.emit('accountUpdated', updatedUser);
     }
 
-
+    // ChatGPT usage: Yes
     async createAccount(socket, userInfo) {
         const newUser = await this.userStore.addUser(userInfo);
         socket.emit('accountCreated', newUser);
     }
 
+    // ChatGPT usage: No
     async updateName(socket, userId, name) {
         const user = await this.userStore.getUser(userId);
         if (!user) {
@@ -45,8 +49,7 @@ class UserAccount {
         socket.emit('accountUpdated', updatedUser);
     }
 
-
-    
+    // ChatGPT usage: No
     async updateAdminStatus(socket, username, isAdmin) {
         const user = await this.userStore.getUserbyname(username);
         if (!user) {
@@ -65,7 +68,7 @@ class UserAccount {
         socket.emit('accountUpdated', updatedUser);
     }
 
-        
+    // ChatGPT usage: No
     async updateChatBanned(socket, username, isChatBanned) {
         const user = await this.userStore.getUserbyname(username);
         if (!user) {
@@ -84,6 +87,7 @@ class UserAccount {
         socket.emit('accountUpdated', updatedUser);
     }
 
+    // ChatGPT usage: No
     async updateLastRedemptionDate(socket, userId, date){
         const user = await this.userStore.getUser(userId);
         if (!user) {
@@ -102,6 +106,7 @@ class UserAccount {
         socket.emit('accountUpdated', updatedUser);
     }
 
+    // ChatGPT usage: No
     async deposit(socket, userId, amount) {
         const user = await this.userStore.getUser(userId);
         if (!user) {
@@ -120,6 +125,7 @@ class UserAccount {
         socket.emit('balanceUpdate', updatedUser.balance);
     }
 
+    // ChatGPT usage: No
     async depositbyname(socket, username, amount){
         const user = await this.userStore.getUserbyname(username);
         if (!user) {
@@ -138,6 +144,7 @@ class UserAccount {
         socket.emit('balanceUpdate', updatedUser.balance);
     }
 
+    // ChatGPT usage: No
     async withdraw(socket, userId, amount) {
         const user = await this.userStore.getUser(userId);
         if (!user) {
@@ -156,6 +163,7 @@ class UserAccount {
         socket.emit('balanceUpdate', updatedUser.balance);
     }
 
+    // ChatGPT usage: Yes
     async deleteUser(socket, userId) {
         const deletedCount = await this.userStore.deleteUser(userId);
         if (deletedCount) {
@@ -165,6 +173,7 @@ class UserAccount {
         }
     }
 
+    // ChatGPT usage: No
     async deleteAllUsers(socket){
         const result = await this.userStore.deleteAllUsers();
         if (result) {
@@ -174,6 +183,7 @@ class UserAccount {
         }
     }
 
+    // ChatGPT usage: No
     async checkUserisInDB(socket, userId){
         const user = await this.userStore.getUser(userId);
         if (!user) {

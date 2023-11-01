@@ -38,13 +38,12 @@ public class CreateAccount extends AppCompatActivity {
         // Initialize UI components
         accountNameEditText = findViewById(R.id.accountNameEditText);
 
+        // ChatGPT usage: No
         findViewById(R.id.createAccountButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Handle the button click
                 String accountName = accountNameEditText.getText().toString().trim();
                 if (!accountName.isEmpty()) {
-                    // TODO: Save the account name and proceed
                     JSONObject accountData = new JSONObject();
                     try {
                         accountData.put("userId", userId);
@@ -54,15 +53,12 @@ public class CreateAccount extends AppCompatActivity {
                         accountData.put("isChatBanned", false);
                         accountData.put("lastRedemptionDate",  DateHandler.dateToString(new Date()));
 
-                        // Emit the event to the server
                         mSocket.emit("createAccount", accountData);
 
                     } catch (JSONException e) {
                         e.printStackTrace();
-                        // Handle the error
                     }
                 } else {
-                    // Notify the user to enter a valid name
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -74,18 +70,15 @@ public class CreateAccount extends AppCompatActivity {
         });
     }
 
+    // ChatGPT usage: No
     private void setupSocketListeners() {
-        // Example: Listen for a chat message from the server
         mSocket.on("accountCreated", new Emitter.Listener() {
             @Override
             public void call(Object... args) {
-                // Handle the chat message here
                 Log.d(TAG, "received new created user details");
                 if (args[0] != null) {
-                    // User found in the database
                     JSONObject user = (JSONObject) args[0];
                     Log.d(TAG, "New user: " + user.toString());
-                    // You can now do further operations, for example, navigate to another activity
                     try {
                         User currentUser = new User();
                         currentUser.setId(user.getString("_id"));
@@ -115,18 +108,21 @@ public class CreateAccount extends AppCompatActivity {
                 }
             }
         });
+        // ChatGPT usage: No
         mSocket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
             @Override
             public void call(Object... args) {
                 Log.d(TAG, "Socket connected");
             }
         });
+        // ChatGPT usage: No
         mSocket.on(Socket.EVENT_DISCONNECT, new Emitter.Listener() {
             @Override
             public void call(Object... args) {
                 Log.d(TAG, "Socket disconnected");
             }
         });
+        // ChatGPT usage: No
         mSocket.on(Socket.EVENT_CONNECT_ERROR, new Emitter.Listener() {
             @Override
             public void call(Object... args) {

@@ -44,6 +44,7 @@ public class LobbyListActivity extends AppCompatActivity {
         lobbiesRecyclerView = findViewById(R.id.lobbiesRecyclerView);
         lobbiesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mSocket.emit("getAllLobby");
+        // ChatGPT usage: No
         mSocket.on("AllLobby", new Emitter.Listener() {
             @Override
             public void call(Object... args) {

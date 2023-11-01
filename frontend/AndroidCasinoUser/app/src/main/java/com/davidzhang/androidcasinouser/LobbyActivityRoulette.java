@@ -57,6 +57,7 @@ public class LobbyActivityRoulette extends AppCompatActivity {
 
         // Button: Leave Lobby
         Button btnLeaveLobby = findViewById(R.id.btnLeaveLobby);
+        // ChatGPT usage: No
         btnLeaveLobby.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -67,6 +68,7 @@ public class LobbyActivityRoulette extends AppCompatActivity {
 
         // Button: Place Bets and Ready Up
         Button btnPlaceBetsReadyUp = findViewById(R.id.btnPlaceBetsReadyUp);
+        // ChatGPT usage: No
         btnPlaceBetsReadyUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -103,8 +105,10 @@ public class LobbyActivityRoulette extends AppCompatActivity {
             }
         });
 
+        // ChatGPT usage: No
         mSocket.emit("getPlayerCount", roomName);
 
+        // ChatGPT usage: No
         mSocket.on("playerCount", new Emitter.Listener() {
             @Override
             public void call(Object... args) {
@@ -119,6 +123,7 @@ public class LobbyActivityRoulette extends AppCompatActivity {
             }
         });
 
+        // ChatGPT usage: No
         // Update the player ready UI
         mSocket.on("playerReady", new Emitter.Listener() {
             @Override
@@ -133,6 +138,7 @@ public class LobbyActivityRoulette extends AppCompatActivity {
             }
         });
 
+        // ChatGPT usage: No
         mSocket.on("receiveChatMessage", new Emitter.Listener() {
             @Override
             public void call(Object... args) {
@@ -162,6 +168,7 @@ public class LobbyActivityRoulette extends AppCompatActivity {
         // Button: Send for Chat
         Button btnSend = findViewById(R.id.btnSend);
         final EditText etEnterMessage = findViewById(R.id.etEnterMessage);
+        // ChatGPT usage: No
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -191,6 +198,7 @@ public class LobbyActivityRoulette extends AppCompatActivity {
         });
     }
 
+    // ChatGPT usage: No
     // Add a chat message to the chat UI
     private void addChatMessage(String message) {
         LinearLayout llChatContainer = findViewById(R.id.llChatContainer);

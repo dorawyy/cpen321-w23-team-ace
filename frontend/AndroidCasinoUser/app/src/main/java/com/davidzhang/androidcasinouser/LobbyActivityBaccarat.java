@@ -68,6 +68,7 @@ public class LobbyActivityBaccarat extends AppCompatActivity {
 
         // Button: Leave Lobby
         Button btnLeaveLobby = findViewById(R.id.btnLeaveLobby);
+        // ChatGPT usage: No
         btnLeaveLobby.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -80,6 +81,7 @@ public class LobbyActivityBaccarat extends AppCompatActivity {
         btnPlayersWin = findViewById(R.id.btnPlayersWin);
         btnDealerWins = findViewById(R.id.btnDealerWins);
 
+        // ChatGPT usage: No
         btnPlayersWin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -88,6 +90,7 @@ public class LobbyActivityBaccarat extends AppCompatActivity {
             }
         });
 
+        // ChatGPT usage: No
         btnDealerWins.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -99,6 +102,7 @@ public class LobbyActivityBaccarat extends AppCompatActivity {
         // Button: Place Bets and Ready Up
         Button btnPlaceBetsReadyUp = findViewById(R.id.btnPlaceBetsReadyUp);
         final EditText etBet = findViewById(R.id.etPlaceBet);
+        // ChatGPT usage: No
         btnPlaceBetsReadyUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -128,8 +132,10 @@ public class LobbyActivityBaccarat extends AppCompatActivity {
             }
         });
 
+        // ChatGPT usage: No
         mSocket.emit("getPlayerCount", roomName);
 
+        // ChatGPT usage: No
         mSocket.on("playerCount", new Emitter.Listener() {
             @Override
             public void call(Object... args) {
@@ -144,6 +150,7 @@ public class LobbyActivityBaccarat extends AppCompatActivity {
             }
         });
 
+        // ChatGPT usage: No
         // Update the player ready UI
         mSocket.on("playerReady", new Emitter.Listener() {
             @Override
@@ -158,6 +165,7 @@ public class LobbyActivityBaccarat extends AppCompatActivity {
             }
         });
 
+        // ChatGPT usage: No
         mSocket.on("receiveChatMessage", new Emitter.Listener() {
             @Override
             public void call(Object... args) {
@@ -184,6 +192,7 @@ public class LobbyActivityBaccarat extends AppCompatActivity {
             }
         });
 
+        // ChatGPT usage: No
         // Button: Send for Chat
         Button btnSend = findViewById(R.id.btnSend);
         final EditText etEnterMessage = findViewById(R.id.etEnterMessage);
@@ -200,6 +209,7 @@ public class LobbyActivityBaccarat extends AppCompatActivity {
 
         etEmailInput = findViewById(R.id.etEmailInput);
         btnInvite = findViewById(R.id.btnInvite);
+        // ChatGPT usage: No
         btnInvite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -217,6 +227,7 @@ public class LobbyActivityBaccarat extends AppCompatActivity {
         });
     }
 
+    // ChatGPT usage: No
     // Add a chat message to the chat UI
     private void addChatMessage(String message) {
         LinearLayout llChatContainer = findViewById(R.id.llChatContainer);

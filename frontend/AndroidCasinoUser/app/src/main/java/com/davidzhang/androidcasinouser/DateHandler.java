@@ -7,17 +7,19 @@ import java.util.Date;
 import java.text.ParseException;
 public class DateHandler {
 
+    // ChatGPT usage: No
     public static Date stringToDate(String dateString) throws ParseException {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             return sdf.parse(dateString);
     }
 
-
+    // ChatGPT usage: No
     public static String dateToString(Date date) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         return sdf.format(date);
     }
 
+    // ChatGPT usage: No
     public static boolean isSameDay(Date date1, Date date2) {
         Calendar cal1 = Calendar.getInstance();
         Calendar cal2 = Calendar.getInstance();

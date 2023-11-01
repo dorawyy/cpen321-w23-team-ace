@@ -29,6 +29,7 @@ public class AdminPanel extends AppCompatActivity {
     private String TAG = "AdminPanel";
     private Socket mSocket;
 
+    // ChatGPT usage: No
     InputFilter filter = new InputFilter() {
         @Override
         public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
@@ -53,26 +54,26 @@ public class AdminPanel extends AppCompatActivity {
         setAsAdminButton = findViewById(R.id.setAsAdminButton);
         addPointsButton = findViewById(R.id.addPointsButton);
 
+        // ChatGPT usage: No
         banFromChatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Handle ban from chat logic
                 mSocket.emit("updateChatBanned", editUserNameEditText.getText().toString(), true);
             }
         });
 
+        // ChatGPT usage: No
         setAsAdminButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Handle set as admin logic
                 mSocket.emit("updateAdminStatus", editUserNameEditText.getText().toString(), true);
             }
         });
 
+        // ChatGPT usage: No
         addPointsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Handle adding points logic
                 String value = pointValueEditText.getText().toString();
                 int intValue;
                 try {
@@ -80,22 +81,19 @@ public class AdminPanel extends AppCompatActivity {
                     Log.d(TAG, "Entered user Name: " + editUserNameEditText.getText().toString());
                     mSocket.emit("depositbyname", editUserNameEditText.getText().toString(), intValue);
                 } catch (NumberFormatException e) {
-                    // Handle error, such as showing a message to the user
                 }
 
             }
         });
     }
 
-
+    // ChatGPT usage: No
     private void setupSocketListeners() {
-        // Example: Listen for a chat message from the server
         mSocket.on("balanceUpdate", new Emitter.Listener() {
             @Override
             public void call(Object... args) {
                 Log.d(TAG, "received new balance details");
                 if (args[0] != null) {
-                    // User found in the database
                     int newbalance = (int) args[0];
 
                     runOnUiThread(new Runnable() {
@@ -105,7 +103,6 @@ public class AdminPanel extends AppCompatActivity {
                             Toast.makeText(AdminPanel.this, "Updated Balance for " + editUserNameEditText.getText().toString() + " is "+ newbalance, Toast.LENGTH_LONG).show();
                         }
                     });
-                    // You can now do further operations, for example, navigate to another activity
                 } else {
                     runOnUiThread(new Runnable() {
                         @Override
@@ -118,13 +115,12 @@ public class AdminPanel extends AppCompatActivity {
 
                 }
             }
+            // ChatGPT usage: No
         }).on("accountUpdated", new Emitter.Listener() {
             @Override
             public void call(Object... args) {
-                // Handle the chat message here
                 Log.d(TAG, "received user details");
                 if (args[0] != null) {
-                    // User found in the database
                     JSONObject user = (JSONObject) args[0];
                     Log.d(TAG, "User Found: " + user.toString());
                     runOnUiThread(new Runnable() {
@@ -134,27 +130,27 @@ public class AdminPanel extends AppCompatActivity {
 
                         }
                     });
-
-                    // You can now do further operations, for example, navigate to another activity
                 } else {
-                    // User not found in the database
                     Log.d(TAG, "Edited User Failed! Please Try Again");
 
                 }
             }
         });
+        // ChatGPT usage: No
         mSocket.on(io.socket.client.Socket.EVENT_CONNECT, new Emitter.Listener() {
             @Override
             public void call(Object... args) {
                 Log.d(TAG, "Socket connected");
             }
         });
+        // ChatGPT usage: No
         mSocket.on(io.socket.client.Socket.EVENT_DISCONNECT, new Emitter.Listener() {
             @Override
             public void call(Object... args) {
                 Log.d(TAG, "Socket disconnected");
             }
         });
+        // ChatGPT usage: No
         mSocket.on(io.socket.client.Socket.EVENT_CONNECT_ERROR, new Emitter.Listener() {
             @Override
             public void call(Object... args) {
@@ -167,7 +163,6 @@ public class AdminPanel extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        // Your code here
         mSocket = SocketHandler.getSocket();
         setupSocketListeners();
     }
@@ -175,7 +170,6 @@ public class AdminPanel extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        // Your code here
         SocketHandler.turnoffAllListeners();
     }
 

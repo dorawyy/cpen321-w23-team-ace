@@ -11,69 +11,81 @@ public class User implements Parcelable {
     private boolean isChatBanned;
     private String lastRedemptionDate;
 
-    // Constructor
+    // ChatGPT usage: No
     public User() {
     }
 
-    // Getters
+    // ChatGPT usage: No
     public String getId() {
         return id;
     }
 
+    // ChatGPT usage: No
     public String getUserId() {
         return userId;
     }
 
+    // ChatGPT usage: No
     public String getUsername() {
         return username;
     }
 
+    // ChatGPT usage: No
     public int getBalance() {
         return balance;
     }
 
+    // ChatGPT usage: No
     public boolean isAdmin() {
         return isAdmin;
     }
 
+    // ChatGPT usage: No
     public boolean isChatBanned() {
         return isChatBanned;
     }
 
+    // ChatGPT usage: No
     public String getLastRedemptionDate() {
         return lastRedemptionDate;
     }
 
-    // Setters
+    // ChatGPT usage: No
     public void setId(String id) {
         this.id = id;
     }
 
+    // ChatGPT usage: No
     public void setUserId(String userId) {
         this.userId = userId;
     }
 
+    // ChatGPT usage: No
     public void setUsername(String username) {
         this.username = username;
     }
 
+    // ChatGPT usage: No
     public void setBalance(int balance) {
         this.balance = balance;
     }
 
+    // ChatGPT usage: No
     public void setAdmin(boolean admin) {
         isAdmin = admin;
     }
 
+    // ChatGPT usage: No
     public void setChatBanned(boolean chatBanned) {
         isChatBanned = chatBanned;
     }
 
+    // ChatGPT usage: No
     public void setLastRedemptionDate(String lastRedemptionDate) {
         this.lastRedemptionDate = lastRedemptionDate;
     }
 
-    // Parcelable implementation
+    // ChatGPT usage: No
     protected User(Parcel in) {
         id = in.readString();
         userId = in.readString();
@@ -84,6 +96,7 @@ public class User implements Parcelable {
         lastRedemptionDate = in.readString();
     }
 
+    // ChatGPT usage: No
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(id);
@@ -95,11 +108,13 @@ public class User implements Parcelable {
         dest.writeString(lastRedemptionDate);
     }
 
+    // ChatGPT usage: No
     @Override
     public int describeContents() {
         return 0;
     }
 
+    // ChatGPT usage: No
     public static final Creator<User> CREATOR = new Creator<User>() {
         @Override
         public User createFromParcel(Parcel in) {

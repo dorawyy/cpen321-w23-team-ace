@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
         mSocket = SocketHandler.getSocket();
         setupSocketListeners();
 
+        // ChatGPT usage: Partial
         //set up sign button
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
@@ -67,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
 
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
+        // ChatGPT usage: Partial
         findViewById(R.id.sign_in_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -75,12 +77,14 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    // ChatGPT usage: Partial
     // Start sign-in intent
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
+    // ChatGPT usage: Partial
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -90,16 +94,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // ChatGPT usage: Partial
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
              GmailUtility.setupUser(account);
-
-            // Signed in successfully, show authenticated UI.
             checkUserinDB(account);
         } catch (ApiException e) {
-            // The ApiException status code indicates the detailed failure reason.
-            // Please refer to the GoogleSignInStatusCodes class reference for more information.
             Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
             checkUserinDB(null);
         }
@@ -113,6 +114,7 @@ public class MainActivity extends AppCompatActivity {
     }
     */
 
+    // ChatGPT usage: No
     private void checkUserinDB(GoogleSignInAccount account) {
         if (account == null){
             Log.d(TAG, "There is no user signed in!");
@@ -139,15 +141,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // ChatGPT usage: Partial
     private void setupSocketListeners() {
-        // Example: Listen for a chat message from the server
         mSocket.on("userAccountDetails", new Emitter.Listener() {
             @Override
             public void call(Object... args) {
-                // Handle the chat message here
                 Log.d(TAG, "received user details");
                 if (args[0] != null) {
-                    // User found in the database
                     JSONObject user = (JSONObject) args[0];
                     Log.d(TAG, "User Found: " + user.toString());
                     try {
@@ -168,29 +168,29 @@ public class MainActivity extends AppCompatActivity {
                         throw new RuntimeException(e);
                     }
 
-                    // You can now do further operations, for example, navigate to another activity
                 } else {
-                    // User not found in the database
                     Log.d(TAG, "User not Found, we need to create an account");
                     Intent intent = new Intent(MainActivity.this, CreateAccount.class);
-                    intent.putExtra("USER_ID_KEY", loginuserid);  // 'userId' is the variable that contains the user-id you want to pass
+                    intent.putExtra("USER_ID_KEY", loginuserid);
                     startActivity(intent);
-                    // Handle the case where the user isn't found, for example, prompt the user to sign up
                 }
             }
         });
+        // ChatGPT usage: No
         mSocket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
             @Override
             public void call(Object... args) {
                 Log.d(TAG, "Socket connected");
             }
         });
+        // ChatGPT usage: No
         mSocket.on(Socket.EVENT_DISCONNECT, new Emitter.Listener() {
             @Override
             public void call(Object... args) {
                 Log.d(TAG, "Socket disconnected");
             }
         });
+        // ChatGPT usage: No
         mSocket.on(Socket.EVENT_CONNECT_ERROR, new Emitter.Listener() {
             @Override
             public void call(Object... args) {

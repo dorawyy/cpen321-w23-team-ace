@@ -38,7 +38,7 @@ public class Lounge extends AppCompatActivity {
 
     private GoogleSignInClient mGoogleSignInClient;
 
-    private String[] lobbies = {"Lobby 1", "Lobby 2", "Lobby 3"}; // Example lobby names
+    private String[] lobbies = {"Lobby 1", "Lobby 2", "Lobby 3"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,11 +59,11 @@ public class Lounge extends AppCompatActivity {
         navigateToListButton = findViewById(R.id.navigateToLobbiesButton);
         createLobbyButton = findViewById(R.id.createLobby);
         // Set the user name to the button
-        userProfileButton.setText("Username: " + username); // Replace 'YourUserName' with the actual user name
+        userProfileButton.setText("Username: " + username);
+        // ChatGPT usage: No
         userProfileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Navigate to UserProfileActivity
                 Intent intent = new Intent(Lounge.this, UserProfile.class);
                 intent.putExtra("user", user);
                 startActivity(intent);
@@ -71,6 +71,7 @@ public class Lounge extends AppCompatActivity {
         });
 
         signOutButton = findViewById(R.id.logoutButton);
+        // ChatGPT usage: No
         signOutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -78,8 +79,7 @@ public class Lounge extends AppCompatActivity {
             }
         });
 
-
-
+        // ChatGPT usage: No
         navigateToListButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -89,6 +89,7 @@ public class Lounge extends AppCompatActivity {
             }
         });
 
+        // ChatGPT usage: No
         createLobbyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -99,6 +100,7 @@ public class Lounge extends AppCompatActivity {
         });
     }
 
+    // ChatGPT usage: No
     private void signOut() {
         mGoogleSignInClient.signOut()
                 .addOnCompleteListener(this, new OnCompleteListener<Void>() {
@@ -113,15 +115,13 @@ public class Lounge extends AppCompatActivity {
 
     }
 
+    // ChatGPT usage: No
     private void setupSocketListeners() {
-        // Example: Listen for a chat message from the server
         mSocket.on("userAccountDetails", new Emitter.Listener() {
             @Override
             public void call(Object... args) {
-                // Handle the chat message here
                 Log.d(TAG, "received user details");
                 if (args[0] != null) {
-                    // User found in the database
                     JSONObject result = (JSONObject) args[0];
                     Log.d(TAG, "User Found: " + user.toString());
                     try {
@@ -139,25 +139,26 @@ public class Lounge extends AppCompatActivity {
                         throw new RuntimeException(e);
                     }
 
-                    // You can now do further operations, for example, navigate to another activity
                 } else {
-                    // User not found in the database
                     Log.d(TAG, "User not Found");
                 }
             }
         });
+        // ChatGPT usage: No
         mSocket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
             @Override
             public void call(Object... args) {
                 Log.d(TAG, "Socket connected");
             }
         });
+        // ChatGPT usage: No
         mSocket.on(Socket.EVENT_DISCONNECT, new Emitter.Listener() {
             @Override
             public void call(Object... args) {
                 Log.d(TAG, "Socket disconnected");
             }
         });
+        // ChatGPT usage: No
         mSocket.on(Socket.EVENT_CONNECT_ERROR, new Emitter.Listener() {
             @Override
             public void call(Object... args) {

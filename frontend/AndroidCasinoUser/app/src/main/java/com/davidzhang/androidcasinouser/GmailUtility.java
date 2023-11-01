@@ -31,14 +31,17 @@ public class GmailUtility {
 
     public GmailUtility() {}
 
+    // ChatGPT usage: Partial
     public synchronized static void setupContext(Context ctx) {
         context = ctx;
     }
 
+    // ChatGPT usage: Partial
     public synchronized static void setupUser(GoogleSignInAccount acc) {
         account = acc;
     }
 
+    // ChatGPT usage: Partial
     public synchronized static void sendEmail(String recipientEmail, String subject, String body) {
         if (context == null) {
             System.err.println("Context is not set up. Please set the context before calling sendEmail.");
@@ -59,12 +62,14 @@ public class GmailUtility {
         private String subject;
         private String body;
 
+        // ChatGPT usage: Partial
         SendEmailTask(String recipientEmail, String subject, String body) {
             this.recipientEmail = recipientEmail;
             this.subject = subject;
             this.body = body;
         }
 
+        // ChatGPT usage: Partial
         @Override
         protected Void doInBackground(Void... voids) {
             try {
@@ -104,6 +109,7 @@ public class GmailUtility {
         }
     }
 
+    // ChatGPT usage: Partial
     private synchronized static MimeMessage createEmail(String to, String from, String subject, String bodyText) {
         Properties props = new Properties();
         Session session = Session.getDefaultInstance(props, null);
@@ -120,6 +126,7 @@ public class GmailUtility {
         }
     }
 
+    // ChatGPT usage: Partial
     private synchronized static Message createMessageWithEmail(MimeMessage emailContent) {
         ByteArrayOutputStream buffer = new ByteArrayOutputStream();
         try {

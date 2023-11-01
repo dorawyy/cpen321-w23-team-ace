@@ -2,6 +2,7 @@ const GameLobbyStore = require('./GameLobbyStore');
 const LiveChat = require('./LiveChat');
 
 class GameLobby {
+    // ChatGPT usage: Partial
     constructor(roomName, gameType, maxPlayers, gameManager, gameLobbyStore, io) {
         this.roomName = roomName;
         this.gameType = gameType;
@@ -15,10 +16,12 @@ class GameLobby {
         this.liveChat = new LiveChat(io);      
     }
 
+    // ChatGPT usage: No
     async init(roomName, gameType, maxPlayers) {
         await this.gameLobbyStore.insertLobby(roomName, gameType, maxPlayers);
     }
 
+    // ChatGPT usage: Partial
     async addPlayer(userName, bet, socket) {
         console.log(this.counter);
         console.log(this.maxPlayers);
@@ -46,6 +49,7 @@ class GameLobby {
         }
     }
 
+    // ChatGPT usage: Partial
     async removePlayer(userName) {
         console.log(this.counter);
         this.counter--;
@@ -61,6 +65,7 @@ class GameLobby {
         console.log("Remove Player successfully");
     }
 
+    // ChatGPT usage: Partial
     async setPlayerReady(userName) {
         this.players[userName].ready = true;
 
@@ -73,6 +78,7 @@ class GameLobby {
         }
     }
 
+    // ChatGPT usage: No
     async setPlayerBet(roomName, userName, bet) {
         this.players[userName].bet = bet;
 
@@ -81,6 +87,7 @@ class GameLobby {
         await this.gameLobbyStore.setPlayerBet(this.roomName, userName, bet);
     }
 
+    // ChatGPT usage: Partial
     async startGame() {
         if (this.gameManager) {
             this.gameStarted = true;
@@ -101,18 +108,22 @@ class GameLobby {
         }
     }
 
+    // ChatGPT usage: No
     async getAllLobby() {
         return await this.gameLobbyStore.getAllLobby();
     }
 
+    // ChatGPT usage: No
     async deleteLobby(roomName) {
         await this.gameLobbyStore.deleteLobby(roomName);
     }
 
+    // ChatGPT usage: No
     async getPlayerCount(roomName) {
         return await this.gameLobbyStore.getPlayerCount(roomName);
     }
 
+    // ChatGPT usage: No
     registerSocketEvents(socket) {
         socket.on('setReady', async (userName) => {
             console.log("User ready");

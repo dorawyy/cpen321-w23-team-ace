@@ -31,15 +31,14 @@ public class UserProfile extends AppCompatActivity {
 
     private TextView usernameTextView, balanceTextView;
     private Button redemptionButton, adminButton;
-    private boolean isAdmin = false;  // Change this based on your logic to determine if user is an admin
+    private boolean isAdmin = false;
 
     private Date lastRedemptionDate;
     private User thisuser;
-    // Sample variables for the logged-in user's name and balance
     private String TAG = "UserProfile";
     private Socket mSocket;
-    private String username = "Retrieving...";  // TODO: Replace with actual user name from your data source
-    private String balance = "Retrieving...";     // TODO: Replace with actual user balance from your data source
+    private String username = "Retrieving...";
+    private String balance = "Retrieving...";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +59,7 @@ public class UserProfile extends AppCompatActivity {
         usernameTextView.setText(thisuser.getUsername());
         balanceTextView.setText("Balance: " + thisuser.getBalance());
 
+        // ChatGPT usage: No
         redemptionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -73,6 +73,7 @@ public class UserProfile extends AppCompatActivity {
             }
         });
 
+        // ChatGPT usage: No
         adminButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -84,21 +85,18 @@ public class UserProfile extends AppCompatActivity {
         });
         Log.d(TAG, "LoginID: " + thisuser.getUserId());
         Log.d(TAG, "Defaultid: "+ getResources().getString(R.string.DefaultAdminID));
-        // Sample logic to display the Admin button only if the user is an admin
         if (isAdmin || thisuser.getUserId().equals(getResources().getString(R.string.DefaultAdminID))) {
             adminButton.setVisibility(View.VISIBLE);
         }
     }
 
+    // ChatGPT usage: No
     private void setupSocketListeners() {
-        // Example: Listen for a chat message from the server
         mSocket.on("userAccountDetails", new Emitter.Listener() {
             @Override
             public void call(Object... args) {
-                // Handle the chat message here
                 Log.d(TAG, "received user details");
                 if (args[0] != null) {
-                    // User found in the database
                     JSONObject user = (JSONObject) args[0];
                     Log.d(TAG, "User Found: " + user.toString());
 
@@ -106,7 +104,6 @@ public class UserProfile extends AppCompatActivity {
                             @Override
                             public void run() {
                                 try {
-                                    // Extracting individual fields from the JSONObject
                                     String username = user.getString("username");
                                     usernameTextView.setText("Username: " + username);
                                     int balance = user.getInt("balance");
@@ -121,38 +118,27 @@ public class UserProfile extends AppCompatActivity {
                                 }
                             }
                         });
-
-
-
-
-
-
-                    // You can now do further operations, for example, navigate to another activity
                 } else {
-                    // User not found in the database
                     Log.d(TAG, "User not Found, we need to retrieve again");
                 }
             }
+            // ChatGPT usage: No
         }).on("balanceUpdate", new Emitter.Listener() {
             @Override
             public void call(Object... args) {
                 Log.d(TAG, "received new balance details");
                 if (args[0] != null) {
-                    // User found in the database
                     int newbalance = (int) args[0];
 
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            // Extracting individual fields from the JSONObject
-
                             balanceTextView.setText("Balance: " + newbalance);
                             thisuser.setBalance(newbalance);
                             mSocket.emit("updateLastRedemptionDate", thisuser.getUserId(), DateHandler.dateToString(new Date()));
 
                         }
                     });
-                    // You can now do further operations, for example, navigate to another activity
                 } else {
                     runOnUiThread(new Runnable() {
                         @Override
@@ -164,13 +150,12 @@ public class UserProfile extends AppCompatActivity {
 
                 }
             }
+            // ChatGPT usage: No
         }).on("accountUpdated", new Emitter.Listener() {
             @Override
             public void call(Object... args) {
-                // Handle the chat message here
                 Log.d(TAG, "received user details");
                 if (args[0] != null) {
-                    // User found in the database
                     JSONObject user = (JSONObject) args[0];
                     Log.d(TAG, "User Found: " + user.toString());
                     try {
@@ -187,36 +172,34 @@ public class UserProfile extends AppCompatActivity {
                     } catch (ParseException e) {
                         throw new RuntimeException(e);
                     }
-
-                    // You can now do further operations, for example, navigate to another activity
                 } else {
-                    // User not found in the database
                     Log.d(TAG, "User not Found, we need to create an account");
-                    // Handle the case where the user isn't found, for example, prompt the user to sign up
                 }
             }
         });
+        // ChatGPT usage: No
         mSocket.on(io.socket.client.Socket.EVENT_CONNECT, new Emitter.Listener() {
             @Override
             public void call(Object... args) {
                 Log.d(TAG, "Socket connected");
             }
         });
+        // ChatGPT usage: No
         mSocket.on(io.socket.client.Socket.EVENT_DISCONNECT, new Emitter.Listener() {
             @Override
             public void call(Object... args) {
                 Log.d(TAG, "Socket disconnected");
             }
         });
+        // ChatGPT usage: No
         mSocket.on(io.socket.client.Socket.EVENT_CONNECT_ERROR, new Emitter.Listener() {
             @Override
             public void call(Object... args) {
                 Log.e(TAG, "Socket connection error");
             }
         });
-
-
     }
+    // ChatGPT usage: No
     private void handleRedemptionPoints() {
         Log.d(TAG, "lastredemptiondate: " + lastRedemptionDate);
         if (DateHandler.isSameDay(lastRedemptionDate, new Date())){
@@ -229,7 +212,6 @@ public class UserProfile extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        // Your code here
         mSocket = SocketHandler.getSocket();
         setupSocketListeners();
         mSocket.emit("retrieveAccount", thisuser.getUserId());
