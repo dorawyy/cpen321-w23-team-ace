@@ -135,6 +135,11 @@ class GameLobby {
             await this.setPlayerReady(userName);
         });
     }
+
+    // ChatGPT usage: No
+    async _delay(duration) {
+        return new Promise(resolve => setTimeout(resolve, duration));
+    }
 }
 
 module.exports = GameLobby;

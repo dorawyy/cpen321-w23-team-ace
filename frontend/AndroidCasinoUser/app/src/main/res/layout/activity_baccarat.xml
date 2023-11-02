@@ -15,7 +15,7 @@
 
         <!-- Lobby Details -->
         <TextView
-            android:id="@+id/tvLobbyName"
+            android:id="@+id/lobbyNameLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Lobby Name:" />

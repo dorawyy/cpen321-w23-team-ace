@@ -162,16 +162,7 @@ public class LobbyActivityBlackJack extends AppCompatActivity {
                 Log.d(TAG, "New Game Signal: " + gameType);
 
                 Intent gameIntent = null;
-                if (gameType == "roulette") {
-                    gameIntent = new Intent(LobbyActivityBlackJack.this, RouletteActivity.class);
-                } else if (gameType == "baccarat") {
-                    gameIntent = new Intent(LobbyActivityBlackJack.this, BaccaratActivity.class);
-                } else if (gameType == "blackjack") {
-                    gameIntent = new Intent(LobbyActivityBlackJack.this, BlackJackActivity.class);
-                } else {
-                    Log.e(TAG, "No matching game type to: " + gameType);
-                    return;
-                }
+                gameIntent = new Intent(LobbyActivityBlackJack.this, BlackJackActivity.class);
                 gameIntent.putExtra("userName", currentPlayer.getUsername());
                 gameIntent.putExtra("roomName", roomName);
                 startActivity(gameIntent);

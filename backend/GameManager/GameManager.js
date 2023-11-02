@@ -193,13 +193,14 @@ class GameManager extends EventEmitter {
 
     // ChatGPT usage: No
     async startGame(lobbyId, gameType, playerList, betsPlaced) {
+        console.log("STARTING NEW GAME");
 
         let defaultItems = {};
         for (let i = 0; i < playerList.length; i++) {
             //defaultItems.playerList[i].playerId = {};
             defaultItems[playerList[i]] = {};
         }
-        
+
         // setup game object with default value
         let gameData = {
             lobbyId: lobbyId,
@@ -295,11 +296,6 @@ class GameManager extends EventEmitter {
     _checkGameOver(gameData) {
         // if there is no more player index, game is over
         return gameData.currentPlayerIndex == -1;
-    }
-    
-    // ChatGPT usage: No
-    async _delay(duration) {
-        return new Promise(resolve => setTimeout(resolve, duration));
     }
 
 

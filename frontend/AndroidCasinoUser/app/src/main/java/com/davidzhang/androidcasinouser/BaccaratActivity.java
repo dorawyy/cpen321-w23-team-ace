@@ -69,8 +69,25 @@ public class BaccaratActivity extends AppCompatActivity {
         String userName = intent.getStringExtra("userName");
         String roomName = intent.getStringExtra("roomName");
 
-        TextView tvLobbyName = findViewById(R.id.tvLobbyName);
-        tvLobbyName.setText("Lobby Name: " + roomName);
+        playerScoreLabel = findViewById(R.id.playerScoreLabel);
+        dealerScoreLabel = findViewById(R.id.dealerScoreLabel);
+
+        lobbyName = findViewById(R.id.lobbyNameLabel);
+        lobbyName.setText("Lobby Name: " + roomName);
+
+        playerCardItems[0] = findViewById(R.id.player_card_1);
+        playerCardItems[1] = findViewById(R.id.player_card_2);
+        playerCardItems[2] = findViewById(R.id.player_card_3);
+        playerCardItems[3] = findViewById(R.id.player_card_4);
+        playerCardItems[4] = findViewById(R.id.player_card_5);
+        playerCardItems[5] = findViewById(R.id.player_card_6);
+
+        dealerCardItems[0] = findViewById(R.id.dealer_card_1);
+        dealerCardItems[1] = findViewById(R.id.dealer_card_2);
+        dealerCardItems[2] = findViewById(R.id.dealer_card_3);
+        dealerCardItems[3] = findViewById(R.id.dealer_card_4);
+        dealerCardItems[4] = findViewById(R.id.dealer_card_5);
+        dealerCardItems[5] = findViewById(R.id.dealer_card_6);
 
         mSocket.on("receiveChatMessage", new Emitter.Listener() {
             @Override
@@ -101,7 +118,7 @@ public class BaccaratActivity extends AppCompatActivity {
             }
         });
 
-        mSocket.on("gameEnded", new Emitter.Listener() {
+        mSocket.on("gameOver", new Emitter.Listener() {
             @Override
             //ChatGPT usage: Partial - for things related to to the popup window and queueing requests
             public void call(Object... args) {
@@ -142,7 +159,14 @@ public class BaccaratActivity extends AppCompatActivity {
                                 } catch (JSONException e) {
                                     throw new RuntimeException(e);
                                 }
-                                dealNewPlayerCard(card);
+                                String finalCard = card;
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    //ChatGPT usage: Partial - The call to showWinningsPopup
+                                    public void run() {
+                                        dealNewPlayerCard(finalCard);
+                                    }
+                                });
                                 updateScores();
 
                                 try {

@@ -75,9 +75,6 @@ public class BlackJackActivity extends AppCompatActivity {
         String userName = intent.getStringExtra("userName");
         String roomName = intent.getStringExtra("roomName");
 
-        TextView tvLobbyName = findViewById(R.id.lobbyNameLabel);
-        tvLobbyName.setText("Lobby Name: " + roomName);
-
         // Initialize UI components
         hitButton = findViewById(R.id.hitButton);
         standButton = findViewById(R.id.standButton);

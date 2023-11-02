@@ -54,14 +54,18 @@ if player wins, he will receive total bet
 const gameAssets = require('./GameAssets');
 
 class Baccarat {
+    gameAssets = new gameAssets();
+
     // ChatGPT usage: No
     static newGame(gameData){
         let gameDataLocal = JSON.parse(JSON.stringify(gameData))
         
         gameDataLocal.gameItems.globalItems = {
-            pokar: GameAssets.getPokar(),
+            pokar: gameAssets.getPokar(),
             playerHand: [],
             bankerHand: [],
+            playerHandIdx: 0,
+            bankerHandIdx: 0,
         };
         return gameDataLocal;
     }
@@ -118,10 +122,10 @@ class Baccarat {
     static playTurn(gameData) {
         let gameDataLocal = JSON.parse(JSON.stringify(gameData))
         // take turn passing 2 card to each player
-        gameDataLocal.gameItems.globalItems.playerHand.append(this._getRandomCard(gameDataLocal));
-        gameDataLocal.gameItems.globalItems.bankerHand.append(this._getRandomCard(gameDataLocal));
-        gameDataLocal.gameItems.globalItems.playerHand.append(this._getRandomCard(gameDataLocal));
-        gameDataLocal.gameItems.globalItems.bankerHand.append(this._getRandomCard(gameDataLocal));
+        gameDataLocal.gameItems.globalItems.playerHand.push(this._getRandomCard(gameDataLocal));
+        gameDataLocal.gameItems.globalItems.bankerHand.push(this._getRandomCard(gameDataLocal));
+        gameDataLocal.gameItems.globalItems.playerHand.push(this._getRandomCard(gameDataLocal));
+        gameDataLocal.gameItems.globalItems.bankerHand.push(this._getRandomCard(gameDataLocal));
         
         // check if more card should be given
         let handValue = this._getHandValue(gameDataLocal);
@@ -133,39 +137,39 @@ class Baccarat {
         // player draw if <=5
         if (gameOver !== 0 && handValue.playerScore <= 5) {
             thirdPlayerCard = this._getRandomCard(gameDataLocal);
-            gameDataLocal.gameItems.globalItems.playerHand.append(thirdPlayerCard);
+            gameDataLocal.gameItems.globalItems.playerHand.push(thirdPlayerCard);
         }
         // banker draw if <=2
         if (gameOver !== 0 && handValue.bankerScore <= 2) {
-            gameDataLocal.gameItems.globalItems.bankerHand.append(this._getRandomCard(gameDataLocal));
+            gameDataLocal.gameItems.globalItems.bankerHand.push(this._getRandomCard(gameDataLocal));
         }
         // banker draw if current score is 3 and player 0-7 or 9
         else if (gameOver !== 0 
             && handValue.bankerScore === 3 
             && (handValue.playerScore <= 7 || handValue.playerScore === 9)
             ) {
-            gameDataLocal.gameItems.globalItems.bankerHand.append(this._getRandomCard(gameDataLocal));
+            gameDataLocal.gameItems.globalItems.bankerHand.push(this._getRandomCard(gameDataLocal));
         }
         // banker draw if current score is 4 and player 2-7
         else if (gameOver !== 0 
             && handValue.bankerScore === 4 
             && (handValue.playerScore <= 7 && handValue.playerScore >= 2)
             ) {
-            gameDataLocal.gameItems.globalItems.bankerHand.append(this._getRandomCard(gameDataLocal));
+            gameDataLocal.gameItems.globalItems.bankerHand.push(this._getRandomCard(gameDataLocal));
         }
         // banker draw if current score is 5 and player 4-7
         else if (gameOver !== 0 
             && handValue.bankerScore === 5 
             && (handValue.playerScore <= 7 && handValue.playerScore >= 4)
             ) {
-            gameDataLocal.gameItems.globalItems.bankerHand.append(this._getRandomCard(gameDataLocal));
+            gameDataLocal.gameItems.globalItems.bankerHand.push(this._getRandomCard(gameDataLocal));
         }
         // banker draw if current score is 6 and player 6-7
         else if (gameOver !== 0 
             && handValue.bankerScore === 6 
             && (handValue.playerScore <= 7 && handValue.playerScore >= 6)
             ) {
-            gameDataLocal.gameItems.globalItems.bankerHand.append(this._getRandomCard(gameDataLocal));
+            gameDataLocal.gameItems.globalItems.bankerHand.push(this._getRandomCard(gameDataLocal));
         }
         
         // game over
