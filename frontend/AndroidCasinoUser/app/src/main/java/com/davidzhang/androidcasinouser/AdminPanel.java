@@ -24,7 +24,7 @@ import io.socket.emitter.Emitter;
 public class AdminPanel extends AppCompatActivity {
 
     private EditText editUserNameEditText, pointValueEditText;
-    private Button banFromChatButton, setAsAdminButton, addPointsButton;
+    private Button banFromChatButton, setAsAdminButton, addPointsButton, unbanFromChatButton, unsetAsAdminButton;
 
     private String TAG = "AdminPanel";
     private Socket mSocket;
@@ -53,6 +53,8 @@ public class AdminPanel extends AppCompatActivity {
         banFromChatButton = findViewById(R.id.banFromChatButton);
         setAsAdminButton = findViewById(R.id.setAsAdminButton);
         addPointsButton = findViewById(R.id.addPointsButton);
+        unbanFromChatButton = findViewById(R.id.unbanFromChatButton);
+        unsetAsAdminButton = findViewById(R.id.unsetAsAdminButton);
 
         // ChatGPT usage: No
         banFromChatButton.setOnClickListener(new View.OnClickListener() {
@@ -67,6 +69,22 @@ public class AdminPanel extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 mSocket.emit("updateAdminStatus", editUserNameEditText.getText().toString(), true);
+            }
+        });
+
+        // ChatGPT usage: No
+        unbanFromChatButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mSocket.emit("updateChatBanned", editUserNameEditText.getText().toString(), false);
+            }
+        });
+
+        // ChatGPT usage: No
+        unsetAsAdminButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mSocket.emit("updateAdminStatus", editUserNameEditText.getText().toString(), false);
             }
         });
 

@@ -23,12 +23,25 @@
             android:layout_height="wrap_content"
             android:text="Ban from Chat"
             android:layout_marginBottom="16dp"/>
+        <Button
+            android:id="@+id/unbanFromChatButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="unban from Chat"
+            android:layout_marginBottom="16dp"/>
 
         <Button
             android:id="@+id/setAsAdminButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Set as Admin"
+            android:layout_marginBottom="16dp"/>
+
+        <Button
+            android:id="@+id/unsetAsAdminButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Unset as Admin"
             android:layout_marginBottom="16dp"/>
 
         <EditText

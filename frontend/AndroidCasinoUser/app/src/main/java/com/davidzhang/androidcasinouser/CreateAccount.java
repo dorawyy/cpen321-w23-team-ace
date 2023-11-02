@@ -51,7 +51,7 @@ public class CreateAccount extends AppCompatActivity {
                         accountData.put("balance", 100);
                         accountData.put("isAdmin", false);
                         accountData.put("isChatBanned", false);
-                        accountData.put("lastRedemptionDate",  DateHandler.dateToString(new Date()));
+                        accountData.put("lastRedemptionDate",  DateHandler.dateToString(DateHandler.yesterday()));
 
                         mSocket.emit("createAccount", accountData);
 
