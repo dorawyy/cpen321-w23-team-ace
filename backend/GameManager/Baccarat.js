@@ -54,19 +54,19 @@ if player wins, he will receive total bet
 const GameAssets = require('./GameAssets');
 
 class Baccarat {
-    GameAssets = new GameAssets();
-
+    
     // ChatGPT usage: No
-    static async newGame(gameData){
+    static newGame(gameData){
         let gameDataLocal = JSON.parse(JSON.stringify(gameData))
         
         gameDataLocal.gameItems.globalItems = {
-            pokar: gameAssets.getPokar(),
+            pokar: GameAssets.getPokar(),
             playerHand: [],
             bankerHand: [],
             playerHandIdx: 0,
             bankerHandIdx: 0,
         };
+
         return gameDataLocal;
     }
 
@@ -78,7 +78,7 @@ class Baccarat {
     static async _getRandomCard(gameData) {
         let randomIndex = (await GameAssets.getRandomNumber(0, 51, 1))[0]
         //get a random card
-        return gameData.gameItems.globalItems.pokar[randomIndex[0]];
+        return gameData.gameItems.globalItems.pokar[randomIndex];
     }
 
     /** get the value of the hand
@@ -87,7 +87,7 @@ class Baccarat {
         {"playerScore": val (int)), "bankerScore": (int)}, val<=9
     */
    // ChatGPT usage: No
-    static async _getHandValue(gameData) {
+    static _getHandValue(gameData) {
         let playerScore = 0;
         let bankerScore = 0;
         let cardValue = 0;
@@ -102,14 +102,17 @@ class Baccarat {
         //get the value of the banker hand
         for (let card of gameData.gameItems.globalItems.bankerHand) {
             cardValue = GameAssets.getPokarFaceValue(card);
-            
             if (cardValue <= 9) {
-                playerScore += cardValue
+                bankerScore += cardValue
             }
         }
+
+        playerScore = playerScore % 10; // ignore the first digit
+        bankerScore = bankerScore % 10;
+        
         return {
-            playerScore: playerScore % 10,  // ignore the first digit
-            bankerScore: bankerScore % 10,
+            playerScore: playerScore, 
+            bankerScore: bankerScore,
         }
     }
 
@@ -123,10 +126,10 @@ class Baccarat {
     static async playTurn(gameData) {
         let gameDataLocal = JSON.parse(JSON.stringify(gameData))
         // take turn passing 2 card to each player
-        gameDataLocal.gameItems.globalItems.playerHand.push(this._getRandomCard(gameDataLocal));
-        gameDataLocal.gameItems.globalItems.bankerHand.push(this._getRandomCard(gameDataLocal));
-        gameDataLocal.gameItems.globalItems.playerHand.push(this._getRandomCard(gameDataLocal));
-        gameDataLocal.gameItems.globalItems.bankerHand.push(this._getRandomCard(gameDataLocal));
+        gameDataLocal.gameItems.globalItems.playerHand.push(await this._getRandomCard(gameDataLocal));
+        gameDataLocal.gameItems.globalItems.bankerHand.push(await this._getRandomCard(gameDataLocal));
+        gameDataLocal.gameItems.globalItems.playerHand.push(await this._getRandomCard(gameDataLocal));
+        gameDataLocal.gameItems.globalItems.bankerHand.push(await this._getRandomCard(gameDataLocal));
         
         // check if more card should be given
         let handValue = this._getHandValue(gameDataLocal);
@@ -137,40 +140,40 @@ class Baccarat {
         }
         // player draw if <=5
         if (gameOver !== 0 && handValue.playerScore <= 5) {
-            thirdPlayerCard = this._getRandomCard(gameDataLocal);
+            thirdPlayerCard = await this._getRandomCard(gameDataLocal);
             gameDataLocal.gameItems.globalItems.playerHand.push(thirdPlayerCard);
         }
         // banker draw if <=2
         if (gameOver !== 0 && handValue.bankerScore <= 2) {
-            gameDataLocal.gameItems.globalItems.bankerHand.push(this._getRandomCard(gameDataLocal));
+            gameDataLocal.gameItems.globalItems.bankerHand.push(await this._getRandomCard(gameDataLocal));
         }
         // banker draw if current score is 3 and player 0-7 or 9
         else if (gameOver !== 0 
             && handValue.bankerScore === 3 
             && (handValue.playerScore <= 7 || handValue.playerScore === 9)
             ) {
-            gameDataLocal.gameItems.globalItems.bankerHand.push(this._getRandomCard(gameDataLocal));
+            gameDataLocal.gameItems.globalItems.bankerHand.push(await this._getRandomCard(gameDataLocal));
         }
         // banker draw if current score is 4 and player 2-7
         else if (gameOver !== 0 
             && handValue.bankerScore === 4 
             && (handValue.playerScore <= 7 && handValue.playerScore >= 2)
             ) {
-            gameDataLocal.gameItems.globalItems.bankerHand.push(this._getRandomCard(gameDataLocal));
+            gameDataLocal.gameItems.globalItems.bankerHand.push(await this._getRandomCard(gameDataLocal));
         }
         // banker draw if current score is 5 and player 4-7
         else if (gameOver !== 0 
             && handValue.bankerScore === 5 
             && (handValue.playerScore <= 7 && handValue.playerScore >= 4)
             ) {
-            gameDataLocal.gameItems.globalItems.bankerHand.push(this._getRandomCard(gameDataLocal));
+            gameDataLocal.gameItems.globalItems.bankerHand.push(await this._getRandomCard(gameDataLocal));
         }
         // banker draw if current score is 6 and player 6-7
         else if (gameOver !== 0 
             && handValue.bankerScore === 6 
             && (handValue.playerScore <= 7 && handValue.playerScore >= 6)
             ) {
-            gameDataLocal.gameItems.globalItems.bankerHand.push(this._getRandomCard(gameDataLocal));
+            gameDataLocal.gameItems.globalItems.bankerHand.push(await this._getRandomCard(gameDataLocal));
         }
         
         // game over
@@ -184,7 +187,7 @@ class Baccarat {
      * @returns {json} gameResult: the amount of money each player wins
      */
     // ChatGPT usage: No
-    static async calculateWinning(gameData){
+    static calculateWinning(gameData){
         // check game is over
         if(gameData.currentPlayerIndex !== -1){
             return 0;
@@ -221,9 +224,10 @@ class Baccarat {
         or 0 on error
     */
    // ChatGPT usage: No
-    static async _didBetWin(betType, handValue, betValue){
+    static _didBetWin(betType, handValue, betValue){
+
         let winningAmount = -betValue;
-        if (betType === "PlayersWin ") {
+        if (betType === "PlayersWin") {
             if (handValue.playerScore > handValue.bankerScore) {
                 winningAmount += betValue * 2;
             }
@@ -236,6 +240,7 @@ class Baccarat {
                 winningAmount += betValue * 8;
             }
         }
+
         return winningAmount;
     }
 }

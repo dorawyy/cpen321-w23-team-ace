@@ -7,7 +7,7 @@ class gameAssets {
     @return {array} rouletteTable: a 0-36 table with colour
     */
    // ChatGPT usage: No
-    static async getRoulette() {
+    static getRoulette() {
         return [
             'green',
             'red',
@@ -53,7 +53,7 @@ class gameAssets {
     @return {array} pokar: a set of pokar cards
     */
    // ChatGPT usage: No
-    static async getPokar(addJockers = false) {
+    static getPokar(addJockers = false) {
         let pokarSet = []
         if (addJockers) {
             pokarSet = [    // 54 cards
@@ -99,7 +99,7 @@ class gameAssets {
     * @return {int} value: the value of the card
     */
     // ChatGPT usage: No
-    static async getPokarFaceValue(card) {
+    static getPokarFaceValue(card) {
         let value = 0;
         if (card.includes('Joker')) {
             value = card.includes('big') ? 101 : 100;
@@ -133,6 +133,7 @@ class gameAssets {
     * @param {string} apiKey: The API key to use. If not provided, the default API key will be used
     * @return {array} value: random numbers
     */
+
     // ChatGPT usage: No
     static async getRandomNumber(min, max, count, callback, apiKey="") {
         let randomNums = [];
@@ -158,7 +159,7 @@ class gameAssets {
         };
 
         const headers = {'Content-Type':'application/json'}
-    
+
         for (let i = 0; i < 2; i++) {
             try {
                 let response = await fetch('https://api.random.org/json-rpc/1/invoke', {
@@ -166,12 +167,15 @@ class gameAssets {
                     body: JSON.stringify(body),
                     headers: headers
                 });
+                console.log('Response status:', response.status, response.statusText);
                 let json = await response.json();
                 console.log(json);
     
                 // Check if the api returned the random numbers
                 if (json && json.result && json.result.random && json.result.random.data) {
                     randomNums = json.result.random.data;
+                    console.log("RANDOM NUMS!");
+                    console.log(randomNums);
                     break;
                 } else {
                     throw new Error('No valid random numbers returned');
@@ -180,7 +184,7 @@ class gameAssets {
                 console.log('Error occurred while calling the RNG API:', error);
             }
         }
-    
+        
         // If the API does not return random numbers in two attempts, use Math.random()
         if (randomNums.length === 0) {
             for (let i = 0; i < count; i++) {

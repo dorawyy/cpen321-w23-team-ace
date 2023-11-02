@@ -17,7 +17,7 @@ public class SocketHandler {
     public synchronized static void setSocket() {
         //if (mSocket == null) {
             try {
-                mSocket = IO.socket("http://10.0.2.2:3000");
+                mSocket = IO.socket("http://10.0.2.2:443");
             } catch (URISyntaxException e) {
                 Log.e(TAG, "Error initializing socket", e);
             }
