@@ -50,6 +50,11 @@ public class RouletteActivity extends AppCompatActivity {
             @Override
             //ChatGPT usage: Yes
             public void onAnimationFinished() {
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 currentlyAnimating = false;
                 runNextFunction();
             }
@@ -119,7 +124,14 @@ public class RouletteActivity extends AppCompatActivity {
                                 e.printStackTrace();
                             }
 
-                            wheelView.spin(ballLocation);
+                            int finalBallLocation = ballLocation;
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                //ChatGPT usage: Partial - The call to showWinningsPopup
+                                public void run() {
+                                    wheelView.spin(finalBallLocation);
+                                }
+                            });
                         }
                     });
                     runNextFunction();
@@ -147,8 +159,6 @@ public class RouletteActivity extends AppCompatActivity {
                             });
 
                             mSocket.emit("depositbyname", userName, finalEarnings);
-                            //Return to the LobbyActivity
-                            finish();
                         }
                     });
                     if (!currentlyAnimating) {
@@ -219,6 +229,9 @@ public class RouletteActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 popupWindow.dismiss();
+
+                //Return to the LobbyActivity
+                finish();
             }
         });
     }

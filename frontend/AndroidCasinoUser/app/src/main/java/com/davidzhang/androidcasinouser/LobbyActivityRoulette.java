@@ -223,6 +223,8 @@ public class LobbyActivityRoulette extends AppCompatActivity {
     //ChatGPT usage: No
     protected void onResume() {
         super.onResume();
+
+        Log.d(TAG, "RESUMING THE LOBBY");
         mSocket.emit("getPlayerCount", roomName);
     }
 
