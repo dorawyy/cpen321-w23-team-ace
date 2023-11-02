@@ -12,20 +12,20 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
 public class LobbyActivityBlackJack extends AppCompatActivity {
     private Socket mSocket;
-    private String TAG = "LEvent";
+    private String TAG = "BJ";
 
     private int counter = 0;
     private EditText etEmailInput;
     private Button btnInvite;
 
     private String roomName = "";
-
 
 
 
@@ -39,11 +39,10 @@ public class LobbyActivityBlackJack extends AppCompatActivity {
         Intent intent = getIntent();
         roomName = intent.getStringExtra("roomName");
         String gameType = intent.getStringExtra("gameType");
-        Boolean gameStarted = intent.getBooleanExtra("gameStarted", false); // default value is false
-        String maxPlayer = intent.getStringExtra("maxPlayer");
-        int playNumber = intent.getIntExtra("playNumber", 0);
         User currentPlayer = intent.getParcelableExtra("currentUser");
         final int[] playerCount = {0};
+
+        setupSocketListeners(gameType, currentPlayer);
 
         TextView tvLobbyName = findViewById(R.id.tvLobbyName);
         TextView tvGameType = findViewById(R.id.tvGameType);
@@ -95,9 +94,78 @@ public class LobbyActivityBlackJack extends AppCompatActivity {
             }
         });
 
+        // Button: Send for Chat
+        Button btnSend = findViewById(R.id.btnSend);
+        final EditText etEnterMessage = findViewById(R.id.etEnterMessage);
+        // ChatGPT usage: No
+        btnSend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String message = etEnterMessage.getText().toString();
+                if (!message.isEmpty()) {
+                    if (currentPlayer.isChatBanned()) {
+                        Toast.makeText(getApplicationContext(), "You are banned from chat", Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        mSocket.emit("sendChatMessage", message);
+                        etEnterMessage.setText(""); // Clear the message input
+                    }
+                }
+            }
+        });
+
+        etEmailInput = findViewById(R.id.etEmailInput);
+        btnInvite = findViewById(R.id.btnInvite);
+        // ChatGPT usage: No
+        btnInvite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String recipientEmail = etEmailInput.getText().toString().trim();
+
+                if (!recipientEmail.isEmpty()) {
+                    GmailUtility.setupContext(LobbyActivityBlackJack.this);
+
+                    GmailUtility.sendEmail(recipientEmail, "Android Casino Invitation", "You are Invited to Play a Game of " + gameType +" in Room: " + roomName +"\nLog in on Android Casino to Play with your Friends!");
+                    Toast.makeText(getApplicationContext(), "Successfully sent the Email", Toast.LENGTH_SHORT).show();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            etEmailInput.setText("");
+                        }
+                    });
+                } else {
+                    Toast.makeText(getApplicationContext(), "Please enter a valid email", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
         // ChatGPT usage: No
         mSocket.emit("getPlayerCount", roomName);
+    }
 
+    @Override
+    //ChatGPT usage: No
+    protected void onResume() {
+        super.onResume();
+        mSocket = SocketHandler.getSocket();
+        Intent intent = getIntent();
+        String gameType = intent.getStringExtra("gameType");
+        User currentPlayer = intent.getParcelableExtra("currentUser");
+
+        setupSocketListeners(gameType, currentPlayer);
+        mSocket.emit("getPlayerCount", roomName);
+    }
+
+    @Override
+    public void onBackPressed() {
+        // Call your specific function here
+        mSocket.emit("leaveLobby");
+        // If you want to continue with the default back press action
+        super.onBackPressed();
+    }
+
+    // ChatGPT usage: Partial
+    private void setupSocketListeners(String gameType, User currentPlayer) {
         // ChatGPT usage: No
         mSocket.on("playerCount", new Emitter.Listener() {
             @Override
@@ -106,23 +174,17 @@ public class LobbyActivityBlackJack extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        playerCount[0] = (Integer) args[0];
-                        tvPlayersReady.setText("Players Ready: " + counter + "/" + playerCount[0]);
-                    }
-                });
-            }
-        });
+                        JSONObject result = (JSONObject) args[0];
+                        try {
+                            int playersReady = result.getInt("pr");
+                            int totalPlayers = result.getInt("tp");
 
-        // ChatGPT usage: No
-        // Update the player ready UI
-        mSocket.on("playerReady", new Emitter.Listener() {
-            @Override
-            public void call(Object... args) {
+                            TextView tvPlayersReady = findViewById(R.id.tvPlayersReady);
+                            tvPlayersReady.setText("Players Ready: " + playersReady + "/" + totalPlayers);
 
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        tvPlayersReady.setText("Players Ready: " + ++counter + "/" + playerCount[0]);
+                        } catch (JSONException e) {
+                            throw new RuntimeException(e);
+                        }
                     }
                 });
             }
@@ -168,53 +230,6 @@ public class LobbyActivityBlackJack extends AppCompatActivity {
                 startActivity(gameIntent);
             }
         });
-
-        // Button: Send for Chat
-        Button btnSend = findViewById(R.id.btnSend);
-        final EditText etEnterMessage = findViewById(R.id.etEnterMessage);
-        // ChatGPT usage: No
-        btnSend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String message = etEnterMessage.getText().toString();
-                if (!message.isEmpty()) {
-                    mSocket.emit("sendChatMessage", message);
-                    etEnterMessage.setText(""); // Clear the message input
-                }
-            }
-        });
-
-        etEmailInput = findViewById(R.id.etEmailInput);
-        btnInvite = findViewById(R.id.btnInvite);
-        // ChatGPT usage: No
-        btnInvite.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String recipientEmail = etEmailInput.getText().toString().trim();
-
-                if (!recipientEmail.isEmpty()) {
-                    GmailUtility.setupContext(LobbyActivityBlackJack.this);
-
-                    GmailUtility.sendEmail(recipientEmail, "Android Casino Invitation", "You are Invited to Play a Game of " + gameType +" in Room: " + roomName +"\nLog in on Android Casino to Play with your Friends!");
-                    Toast.makeText(getApplicationContext(), "Successfully sent the Email", Toast.LENGTH_SHORT).show();
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            etEmailInput.setText("");
-                        }
-                    });
-                } else {
-                    Toast.makeText(getApplicationContext(), "Please enter a valid email", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-    }
-
-    @Override
-    //ChatGPT usage: No
-    protected void onResume() {
-        super.onResume();
-        mSocket.emit("getPlayerCount", roomName);
     }
 
     // ChatGPT usage: No

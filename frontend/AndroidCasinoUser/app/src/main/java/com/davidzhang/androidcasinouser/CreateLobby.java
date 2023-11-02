@@ -52,10 +52,11 @@ public class CreateLobby extends AppCompatActivity {
         setContentView(R.layout.activity_create_lobby);
         //SocketHandler.setSocket();
         //SocketHandler.establishConnection();
-        Intent intent = getIntent();
-        user = intent.getParcelableExtra("user");
         mSocket = SocketHandler.getSocket();
         setupSocketListeners();
+        Intent intent = getIntent();
+        user = intent.getParcelableExtra("user");
+
 
         roomNameEditText = findViewById(R.id.roomNameEditText);
         maxPlayersEditText = findViewById(R.id.maxPlayersEditText);
@@ -130,9 +131,7 @@ public class CreateLobby extends AppCompatActivity {
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                Intent intent = new Intent(CreateLobby.this, Lounge.class);
-                                intent.putExtra("user", user);
-                                startActivity(intent);
+                               finish();
                             }
                         }, 2000);
 
@@ -141,6 +140,7 @@ public class CreateLobby extends AppCompatActivity {
                 });
             }
         });
+
         // ChatGPT usage: No
         mSocket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
             @Override

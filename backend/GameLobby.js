@@ -50,7 +50,7 @@ class GameLobby {
     }
 
     // ChatGPT usage: Partial
-    async removePlayer(userName) {
+    async removePlayer(userName, socket) {
         console.log(this.counter);
         this.counter--;
         
@@ -58,10 +58,11 @@ class GameLobby {
         // this.io.emit('playerLeft', userName, this.roomName);
 
         delete this.players[userName];
+        socket.leave(this.roomName);
 
         await this.gameLobbyStore.updateLobby(this.roomName, { players: this.players });
-        var playerCount = await this.getPlayerCount(this.roomName);
-        this.io.to(this.roomName).emit('playerCount', playerCount);
+        var result = await this.getPlayerCount(this.roomName);
+        this.io.to(this.roomName).emit('playerCount', result);
         console.log("Remove Player successfully");
     }
 
@@ -73,10 +74,15 @@ class GameLobby {
 
         await this.gameLobbyStore.setPlayerReady(this.roomName, userName);
 
+        var result = await this.getPlayerCount(this.roomName);
+        this.io.to(this.roomName).emit('playerCount', result);
+
         if (Object.values(this.players).every(p => p.ready)) {
             this.startGame();
         }
     }
+
+
 
     // ChatGPT usage: No
     async setPlayerBet(roomName, userName, bet) {
@@ -93,7 +99,6 @@ class GameLobby {
             this.gameStarted = true;
 
             this.io.to(this.roomName).emit('gameStarted');
-            await this._delay(3000); //Let the front ends setup their listeners
 
             const readyPlayers = Object.keys(this.players).filter(userName => this.players[userName].ready);
 
@@ -101,7 +106,7 @@ class GameLobby {
             for (let userName of readyPlayers) {
                 bets[userName] = this.players[userName].bet;
             }
-            await this.gameManager.startGame(this.roomName, this.gameType, readyPlayers, bets);
+            await this.gameManager.startGame(this.roomName, readyPlayers, bets, this.gameType);
 
             for (let userName of readyPlayers) {
                 this.players[userName].ready = false;
@@ -134,11 +139,6 @@ class GameLobby {
             console.log("User ready");
             await this.setPlayerReady(userName);
         });
-    }
-
-    // ChatGPT usage: No
-    async _delay(duration) {
-        return new Promise(resolve => setTimeout(resolve, duration));
     }
 }
 
