@@ -84,7 +84,7 @@ BlackJack
 @requirement: gameData should not be modified outside of the gameManager class
 */
 class GameManager extends EventEmitter {
-    /* create a new game manager
+    /** create a new game manager
     the game manager controls all games being currently player
     it utilizes a database for storing game information and will communicate with the frontend
     @param {socketio} io: the socketio object
@@ -100,12 +100,12 @@ class GameManager extends EventEmitter {
         this.timers = {};
     }
 
-    /* create/reset the turn timer for one single game
+    /** create/reset the turn timer for one single game
     *   @param {dictionary} gameData
     *   @return (int) 1 for success, -1 for fail
     */
    // ChatGPT usage: No
-    _resetTimer(gameData) {
+   async _resetTimer(gameData) {
         // reset the timer, if one exists
         if (this.timers[gameData.lobbyName]) {
             clearTimeout(this.timers[gameData.lobbyName]);
@@ -118,13 +118,13 @@ class GameManager extends EventEmitter {
         }, 15000); // 15 seconds
     }
 
-    /* based on player action, get the consequence
+    /** based on player action, get the consequence
     *   @param {dictionary} gameData
     *   @param {dictionary} playerAction
     *  @return {dictionary} gameData
     */
    // ChatGPT usage: No
-    _getActionResult(gameData, username, action) {
+   async _getActionResult(gameData, username, action) {
         let gameType = gameData.gameType;
         if (gameType == 'BlackJack') {
             gameData = Blackjack.playTurn(gameData, username, action);
@@ -139,14 +139,14 @@ class GameManager extends EventEmitter {
         return gameData;
     }
 
-    /* based on game status, calculate the winning and modify gameData
+    /** based on game status, calculate the winning and modify gameData
     *   @param {dictionary} gameData
         @modify {dictionary} gameData
-    * @return {dictionary} gameResult
-    *   return 0 on error, like if game not over
+    *   @return {dictionary} gameResult
+    *       return 0 on error, like if game not over
     */
    // ChatGPT usage: No
-    _calculateWinning(gameData) {
+   async _calculateWinning(gameData) {
         if (gameData.currentPlayerIndex !== -1) {
             return 0;
         }
@@ -165,7 +165,7 @@ class GameManager extends EventEmitter {
         return gameResult;
     }
 
-    /* get the default action for the current player
+    /** get the default action for the current player
         gameData.currentTurn will be updated
         gameData.currentPlayerIndex will be updated to next player, or -1 if game is over
     *   @param {dictionary} gameData
@@ -184,9 +184,9 @@ class GameManager extends EventEmitter {
     }
 
 
-    /* create a new game by creating a new gameData object
-    *  @param (string) lobbyId
-    *  @param (string) gameType
+    /** create a new game by creating a new gameData object
+    *  @param {string} lobbyId
+    *  @param {string} gameType
     *  @param {dictionary} playerList
     *  @emit {dictionary} gameData back to caller
     */
@@ -231,7 +231,7 @@ class GameManager extends EventEmitter {
     }
 
 
-    /* play a single turn in the game
+    /** play a single turn in the game
     *   @param {dictionary} lobbyId
     *   @param {dictionary} action
     *  @emit {dictionary} gameData back to caller
@@ -288,17 +288,20 @@ class GameManager extends EventEmitter {
         
     }
 
-    /* check if the game is over
+    /** check if the game is over
     *   @param {dictionary} gameData
     *   @return {boolean} true if game is over, false if not
     */
    // ChatGPT usage: No
-    _checkGameOver(gameData) {
+   async _checkGameOver(gameData) {
         // if there is no more player index, game is over
         return gameData.currentPlayerIndex == -1;
     }
 
 
+    /**
+     * connect to the database
+     */
     // ChatGPT usage: No
     async connect() {
         await this.gameStore.connect();
@@ -326,7 +329,7 @@ class GameStore {
         
     }
 
-    /* create a new game by creating a new gameData object
+    /** create a new game by creating a new gameData object
     *  @param {dictionary} gameData
     *  @return {dictionary} gameData
     */
@@ -335,15 +338,15 @@ class GameStore {
         return await this.games.insertOne(gameData);
     }
 
-    /* using a lobbyName, set the gameData object
-    *   @param (string) lobbyName
+    /** using a lobbyName, set the gameData object
+    *   @param {string} lobbyName
     *   @return {dictionary} gameData
     */
    // ChatGPT usage: No
     async getGame(lobbyName) {
         return await this.games.findOne({ lobbyId: lobbyName });
     }
-    /* save/update the gameData object, replacing the existing information
+    /** save/update the gameData object, replacing the existing information
     *   @param {dictionary} gameData
     *   @return {dictionary} gameData
     */
@@ -355,6 +358,11 @@ class GameStore {
         );
     }
 
+    /**
+     * Delete the game from the database
+     * @param {str} lobbyName 
+     * @returns {Promise} deleteOne promise
+     */
     // ChatGPT usage: No
     async deleteGame(lobbyName) {
         return await this.games.deleteOne({ lobbyId: lobbyName });

@@ -28,7 +28,7 @@ const GameAssets = require('./GameAssets');
 
 class Blackjack {
     // ChatGPT usage: No
-    static newGame(gameData){
+    static async newGame(gameData){
         let gameDataLocal = JSON.parse(JSON.stringify(gameData))
         
         gameDataLocal.gameItems.globalItems = {
@@ -51,9 +51,10 @@ class Blackjack {
     @return {str} card: the card generated, see getPokar() for values
     */
    // ChatGPT usage: No
-    static _getRandomCard(gameData) {
+    static async _getRandomCard(gameData) {
+        let randomIndex = (await GameAssets.getRandomNumber(0, 51, 1))[0]
         //get a random card
-        return gameData.gameItems.globalItems.pokar[Math.floor(Math.random() * 52)];
+        return gameData.gameItems.globalItems.pokar[randomIndex[0]];
     }
 
 
@@ -63,7 +64,7 @@ class Blackjack {
         {"PLAYERNAME": val (int)), "PLAYERNAME": val (int)), ...,  "bankerScore": (int)}
     */
     // ChatGPT usage: No
-    static _getHandValue(gameData) {
+    static async _getHandValue(gameData) {
         let playerScore = 0;
         let dealerScore = 0;
         let cardValue = 0;
@@ -72,7 +73,7 @@ class Blackjack {
 
         //get the value of the dealer hand
         for (let card of gameData.gameItems.globalItems.dealerHand) {
-            cardValue = gameAssets.getPokarFaceValue(card);
+            cardValue = GameAssets.getPokarFaceValue(card);
             // ignore card 10-13 (0)
             if (cardValue >= 9) {
                 dealerScore += 10
@@ -83,7 +84,7 @@ class Blackjack {
 
         //Check 1 at a time if Aces can be 11 instead of 1. 
         for (let card of gameData.gameItems.globalItems.dealerHand) {
-            cardValue = gameAssets.getPokarFaceValue(card);
+            cardValue = GameAssets.getPokarFaceValue(card);
             if ((cardValue == 1) && (dealerScore + 10 <= 21)) {
                 dealerScore += 10
             } 
@@ -98,7 +99,7 @@ class Blackjack {
 
             //get the value of the player hand
             for (let card of gameData.gameItems.playerItems[playerId].playerHand) {
-                cardValue = gameAssets.getPokarFaceValue(card);
+                cardValue = GameAssets.getPokarFaceValue(card);
                 // ignore card 10-13 (0)
                 if (cardValue >= 9) {
                     playerScore += 10
@@ -109,7 +110,7 @@ class Blackjack {
 
             //Check 1 at a time if Aces can be 11 instead of 1. 
             for (let card of gameData.gameItems.playerItems[playerId].playerHand) {
-                cardValue = gameAssets.getPokarFaceValue(card);
+                cardValue = GameAssets.getPokarFaceValue(card);
                 if ((cardValue == 1) && (playerScore + 10 <= 21)) {
                     playerScore += 10
                 } 
@@ -121,9 +122,14 @@ class Blackjack {
         return returnObject;
     }
 
-
+    /** play a turn of the game
+    for blackjack, this gets if player hit or not and determine next player
+    @param {json} gameData: the gameData object
+    @return {json} gameData: the gameData object with the next player
+        return 0 on error
+    */
     // ChatGPT usage: No
-    static playTurn(gameData, username, action) {
+    static async playTurn(gameData, username, action) {
         let gameDataLocal = JSON.parse(JSON.stringify(gameData))
         // check if more card should be given
         let handValue = this._getHandValue(gameDataLocal);
@@ -185,9 +191,13 @@ class Blackjack {
         return gameDataLocal;
     }
 
-
+    /**
+     * calculate the winning amount of each player
+     * @param {*} gameData: the gameData object 
+     * @returns {json} gameResult: the amount of money each player wins
+     */
     // ChatGPT usage: No
-    static calculateWinning(gameData){
+    static async calculateWinning(gameData){
         // ensure game is over
         if(gameData.currentPlayerIndex !== -1){
             return 0;
@@ -218,8 +228,15 @@ class Blackjack {
     }
 
 
+    /**
+     * determine if a bet won
+     * @param {*} betType: the type of bet placed
+     * @param {*} handValue: the value of the player and banker hand
+     * @param {*} betValue: the amount of money placed on the bet
+     * @returns {int} winningAmount: the amount of money the player wins
+     */
     // ChatGPT usage: No
-    static _didBetWin(betType, handValue, betValue){
+    static async _didBetWin(betType, handValue, betValue){
         let winningAmount = -betValue;
         if (betType === "self") {
             if (handValue.playerScore > 21) {
@@ -235,9 +252,13 @@ class Blackjack {
         return winningAmount;
     }
 
-
+    /**
+     * Get the next player that is still in the game
+     * @param {*} gameData: the gameData object 
+     * @returns {json} gameData: the gameData object with the next player
+     */
     // ChatGPT usage: No
-    static _getNextPlayer(gameData){
+    static async _getNextPlayer(gameData){
         let playerId = "";
         let playerCount = gameData.playerList.length;
         
