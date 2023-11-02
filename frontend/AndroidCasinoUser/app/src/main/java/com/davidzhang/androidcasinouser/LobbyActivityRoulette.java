@@ -173,11 +173,11 @@ public class LobbyActivityRoulette extends AppCompatActivity {
                 Log.d(TAG, "New Game Signal: " + gameType);
 
                 Intent gameIntent = null;
-                if (gameType == "roulette") {
+                if (gameType.equals("Roulette")) {
                     gameIntent = new Intent(LobbyActivityRoulette.this, RouletteActivity.class);
-                } else if (gameType == "baccarat") {
+                } else if (gameType.equals("Baccarat")) {
                     gameIntent = new Intent(LobbyActivityRoulette.this, BaccaratActivity.class);
-                } else if (gameType == "blackjack") {
+                } else if (gameType.equals("BlackJack")) {
                     gameIntent = new Intent(LobbyActivityRoulette.this, BlackJackActivity.class);
                 } else {
                     Log.e(TAG, "No matching game type to: " + gameType);

@@ -93,6 +93,7 @@ class GameLobby {
             this.gameStarted = true;
 
             this.io.to(this.roomName).emit('gameStarted');
+            await this._delay(3000); //Let the front ends setup their listeners
 
             const readyPlayers = Object.keys(this.players).filter(userName => this.players[userName].ready);
 

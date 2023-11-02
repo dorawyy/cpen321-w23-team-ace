@@ -193,13 +193,13 @@ class GameManager extends EventEmitter {
 
     // ChatGPT usage: No
     async startGame(lobbyId, gameType, playerList, betsPlaced) {
-        // prepare default user items structure
-        // defaultItems = {eachUser: {}}
+
         let defaultItems = {};
         for (let i = 0; i < playerList.length; i++) {
             //defaultItems.playerList[i].playerId = {};
             defaultItems[playerList[i]] = {};
         }
+        
         // setup game object with default value
         let gameData = {
             lobbyId: lobbyId,
@@ -213,6 +213,7 @@ class GameManager extends EventEmitter {
                 playerItems: defaultItems
             },
         };
+
         // setup new game based on game type
         if (gameType == "Blackjack") {
             gameData = Blackjack.newGame(gameData);
@@ -240,28 +241,38 @@ class GameManager extends EventEmitter {
         let gameData = await this.gameStore.getGame(lobbyId);
         let gameResult = null;
 
+        //console.log("PLAYING TURN")
+        //console.log(gameData)
+
         // get action
         gameData = this._getActionResult(gameData, username ,action);
 
         // update the game data in the database
-        this.gameStore.updateGame(gameData);
+        //await this.gameStore.updateGame(gameData);
         
         // Notify all players whose turn it is
         if (this._checkGameOver(gameData)) {
 
             gameResult = this._calculateWinning(gameData);
+
+            //console.log("Calculated Winnings")
+            //console.log(gameData.gameItems.globalItems.ballLocation)
+            //console.log(gameResult)
             
             // game is over
             this.io.to(gameData.lobbyId).emit('gameOver', {
                 "gameData": gameData, 
-                "gameResult": gameResult
+                "gameResult": gameResult,
+            
             });
+
+            console.log("EMITTED GAME OVER")
             
             if (this.timers[gameData.lobbyName]) {
                 clearTimeout(this.timers[gameData.lobbyName]);
             }
 
-            await this.gameStore.deleteGame(gameData.lobbyId);
+            //await this.gameStore.deleteGame(gameData.lobbyId);
             
         } else {
             //game not over
@@ -287,7 +298,7 @@ class GameManager extends EventEmitter {
     }
     
     // ChatGPT usage: No
-    _delay(duration) {
+    async _delay(duration) {
         return new Promise(resolve => setTimeout(resolve, duration));
     }
 
@@ -302,7 +313,7 @@ class GameManager extends EventEmitter {
 class GameStore {
     // ChatGPT usage: No
     constructor() {
-        this.client = new MongoClient("mongodb://localhost:27017");
+        this.client = new MongoClient("mongodb://127.0.0.1:27017");
     }
 
     // ChatGPT usage: No
@@ -334,7 +345,7 @@ class GameStore {
     */
    // ChatGPT usage: No
     async getGame(lobbyName) {
-        return await this.games.findOne({ lobbyName: lobbyName });
+        return await this.games.findOne({ lobbyId: lobbyName });
     }
     /* save/update the gameData object, replacing the existing information
     *   @param {dictionary} gameData
@@ -343,14 +354,14 @@ class GameStore {
    // ChatGPT usage: No
     async updateGame(gameData) {
         return await this.games.updateOne(
-            { lobbyName: gameData.lobbyId }, 
+            { lobbyId: gameData.lobbyId }, 
             { $set: gameData }
         );
     }
 
     // ChatGPT usage: No
     async deleteGame(lobbyName) {
-        return await this.games.deleteOne({ lobbyName: lobbyName });
+        return await this.games.deleteOne({ lobbyId: lobbyName });
     }
 }
 

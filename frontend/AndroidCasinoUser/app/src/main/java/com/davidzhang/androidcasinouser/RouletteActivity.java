@@ -69,6 +69,7 @@ public class RouletteActivity extends AppCompatActivity {
             @Override
             //TODO: ChatGPT usage: ASK DINGWEN AND DAVIDZ
             public void call(Object... args) {
+                Log.d(TAG, "RECEIVED CHAT HERE");
                 JSONObject data = (JSONObject) args[0];
                 Log.e(TAG, data.toString());
                 String user = "";
@@ -93,10 +94,12 @@ public class RouletteActivity extends AppCompatActivity {
             }
         });
 
+        Log.d(TAG, "Setting up gameOver listener");
         mSocket.on("gameOver", new Emitter.Listener() {
             @Override
             //ChatGPT usage: Partial - for things related to to the popup window and queueing requests
             public void call(Object... args) {
+                Log.d(TAG, "Game Results ARRIVED");
                 if (args[0] != null) {
                     JSONObject gameResults = (JSONObject) args[0];
                     Log.d(TAG, "Game Results: " + gameResults.toString());
@@ -158,24 +161,6 @@ public class RouletteActivity extends AppCompatActivity {
             }
         });
 
-        mSocket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
-            @Override
-            public void call(Object... args) {
-                Log.d(TAG, "Socket connected");
-            }
-        });
-        mSocket.on(Socket.EVENT_DISCONNECT, new Emitter.Listener() {
-            @Override
-            public void call(Object... args) {
-                Log.d(TAG, "Socket disconnected");
-            }
-        });
-        mSocket.on(Socket.EVENT_CONNECT_ERROR, new Emitter.Listener() {
-            @Override
-            public void call(Object... args) {
-                Log.e(TAG, "Socket connection error");
-            }
-        });
 
 
         // Button: Send for Chat

@@ -16,7 +16,7 @@ const GameLobbyStore = require('./GameLobbyStore');
 const LiveChat = require('./LiveChat');
 const GameManager = require('./GameManager/GameManager');
 
-const MONGO_CONNECTION_STRING = 'mongodb://localhost:27017'; // Adjust to your MongoDB connection string
+const MONGO_CONNECTION_STRING = 'mongodb://127.0.0.1:27017'; // Adjust to your MongoDB connection string
 const USERDB_NAME = 'UserDB'; // Name of the database
 const LOBBYDB_NAME = 'gameLobbyDB'
 

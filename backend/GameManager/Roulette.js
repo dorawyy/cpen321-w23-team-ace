@@ -94,15 +94,15 @@ class Roulette{
             let playerBets = gameDataLocal.betsPlaced[playerIdValue];
             let winningAmount = 0;
             // for each bet placed by player, calculate each winning amount, ignore no win
-            currentBetOptionsInFE = ["red", "black", "odd", "even", "green"];
+            let currentBetOptionsInFE = ["red", "black", "odd", "even", "green"];
 
             for (let j = 0; j < currentBetOptionsInFE.length; j++) {
                 let betType = currentBetOptionsInFE[j];
-                console.log("BetType: " + betType);
+                //console.log("BetType: " + betType);
                 let betValue = playerBets[currentBetOptionsInFE[j]];
-                console.log("BetValue: " + betValue);
+                //console.log("BetValue: " + betValue);
                 winningAmount += this._didBetWin(betType, rouletteNumber, landColour, betValue);
-                console.log("WinningAmount: " + winningAmount)
+                //console.log("WinningAmount: " + winningAmount)
             }
             gameResult[playerIdValue] = winningAmount;
         }
@@ -147,7 +147,9 @@ class Roulette{
                 winningAmount += betValue * 3; //Column bet pays 2:1
             }
         }else if(betType === "green") {
-            winningAmount += betValue * 36; 
+            if (rouletteNumber == 0) {
+                winningAmount += betValue * 36; 
+            }
         }
         // if not defined term, bet is on single number
         else{
