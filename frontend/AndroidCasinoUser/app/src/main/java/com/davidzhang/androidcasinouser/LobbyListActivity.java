@@ -36,8 +36,8 @@ public class LobbyListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_lobbylist);
         Intent intent = getIntent();
         user = intent.getParcelableExtra("user");
-        SocketHandler.setSocket();
-        SocketHandler.establishConnection();
+        //SocketHandler.setSocket();
+        //SocketHandler.establishConnection();
         mSocket = SocketHandler.getSocket();
         //mSocket.emit("createLobby", "TestRoom", "qq", "4", "User1");
 
@@ -80,10 +80,10 @@ public class LobbyListActivity extends AppCompatActivity {
     }
 
 
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        mSocket = SocketHandler.getSocket();
         if(mSocket != null) {
             mSocket.disconnect();
         }

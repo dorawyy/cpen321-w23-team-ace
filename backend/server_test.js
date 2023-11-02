@@ -1,27 +1,12 @@
 const express = require('express');
 const http = require('http');
-const https = require('https')
 const socketIo = require('socket.io');
-const fs = require('fs');
-const cors = require('cors');
 
-// server configuration
 const app = express();
 app.use(express.static(__dirname));
-const options = {
-    key: fs.readFileSync('data/private.key'),
-    cert: fs.readFileSync('data/certificate.crt'),
-    ca: fs.readFileSync('data/ca_bundle.crt')
-};
-
-// server types
 const server = http.createServer(app);
-const https_server = https.createServer(options, app);
-const SERVER_TYPE = 'https';
-const SERVER_PORT = 443;
-
-// io and access management
 const io = socketIo(server);
+const cors = require('cors');
 app.use(cors());
 
 const UserStore = require('./UserStore');
@@ -211,21 +196,6 @@ io.on('connection', (socket) => {
 });
 
 // ChatGPT usage: No
-app.get('/test', (req, res) => {
-    res.send('Greetings from ACE');
-});
-
-// ChatGPT usage: No
-if (SERVER_TYPE === 'http') {
-    server.listen(SERVER_PORT, () => {
-        console.log('listen to port: ' + SERVER_PORT + ': http');
-    })
-} else if (SERVER_TYPE === 'https') {
-    https_server.listen(SERVER_PORT, () => {
-        console.log('listen to port: ' + SERVER_PORT + ': https');
-    })
-} else {
-    // throw exception
-    console.log('server type not supported');
-}
-
+server.listen(3000, () => {
+    console.log('listen to port 3000');
+})
