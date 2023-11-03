@@ -2,6 +2,8 @@ package com.davidzhang.androidcasinouser;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -42,26 +44,28 @@ public class BlackJackActivity extends AppCompatActivity {
 
     private int[] playerCardVals = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     private int[] dealerCardVals = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-    private Map<String, Integer> cardValues = new HashMap<>() {{
-        put("ace", 1); //or 11
-        put("two", 2);
-        put("three", 3);
-        put("four", 4);
-        put("five", 5);
-        put("six", 6);
-        put("seven", 7);
-        put("eight", 8);
-        put("nine", 9);
-        put("ten", 10);
-        put("jack", 10);
-        put("queen", 10);
-        put("king", 10);
+    private Map<String, Integer> cardValues = new HashMap<String, Integer>() {{
+        put("Ace", 1); //or 11
+        put("2", 2);
+        put("3", 3);
+        put("4", 4);
+        put("5", 5);
+        put("6", 6);
+        put("7", 7);
+        put("8", 8);
+        put("9", 9);
+        put("10", 10);
+        put("Jack", 10);
+        put("Queen", 10);
+        put("King", 10);
     }};
     private TextView[] playerCardItems = new TextView[6];
     private TextView[] dealerCardItems = new TextView[6];
 
     private int dealerCardIdx = 0;
+    private int dealerCardLastIdx = -1;
     private int playerCardIdx = 0;
+    private int playerCardLastIdx = -1;
 
     @Override
     //ChatGPT usage: Partial - things related to queueing requests and popup windows, and socket handling
@@ -112,7 +116,8 @@ public class BlackJackActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(), "HIT", Toast.LENGTH_SHORT).show();
 
-                mSocket.emit("playTurn", lobbyName, userName, "hit");
+                mSocket.emit("playTurn", roomName, userName, "hit");
+                showButtonsForPlayerTurn(false);
             }
         });
 
@@ -122,7 +127,8 @@ public class BlackJackActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(), "STAND", Toast.LENGTH_SHORT).show();
 
-                mSocket.emit("playTurn", lobbyName, userName, "stand");
+                mSocket.emit("playTurn", roomName, userName, "stand");
+                showButtonsForPlayerTurn(false);
             }
         });
 
@@ -163,129 +169,10 @@ public class BlackJackActivity extends AppCompatActivity {
                         @Override
                         //ChatGPT usage: No
                         public void run() {
-                            new Thread(() -> {
-                                currentlyAnimating = true;
+                            currentlyAnimating = true;
 
-                                JSONObject gameState = (JSONObject) args[0];
-                                Log.d(TAG, "BlackJack Init: " + gameState.toString());
-
-                                //Get Dealer and Player Cards, and Current Player
-                                JSONObject gameData = null;
-                                JSONObject gameItems = null;
-                                JSONObject globalItems = null;
-                                JSONObject playerItems = null;
-                                JSONObject currentUserData = null;
-                                JSONObject turnPlayerData = null;
-
-                                JSONArray playerHandJsonArray = null;
-                                JSONArray dealerHandJsonArray = null;
-                                JSONArray turnPlayerHandJsonArray = null; //This one is for future updates to the UI
-
-                                JSONArray playerList = null;
-                                int currentPlayerIndex = -1;
-                                String turnPlayer = "";
-
-                                String card;
-
-                                try {
-                                    gameData = gameState.getJSONObject("gameData");
-                                    gameItems = gameData.getJSONObject("gameItems");
-                                    globalItems = gameItems.getJSONObject("globalItems");
-                                    playerItems = gameItems.getJSONObject("playerItems");
-
-                                    playerList = gameState.getJSONArray("playerList");
-                                    currentPlayerIndex = gameState.getInt("currentPlayerIndex");
-                                    turnPlayer = playerList.getString(currentPlayerIndex);
-
-                                    currentUserData = playerItems.getJSONObject(userName);
-                                    turnPlayerData = playerItems.getJSONObject(turnPlayer);
-
-                                    playerHandJsonArray = currentUserData.getJSONArray("playerHand");
-                                    turnPlayerHandJsonArray = turnPlayerData.getJSONArray("playerHand");
-                                    dealerHandJsonArray = globalItems.getJSONArray("dealerHand");
-
-                                }
-                                catch (JSONException e) {
-                                    throw new RuntimeException(e);
-                                }
-
-                                //See who's turn it is and change UI accordingly
-                                if (userName != turnPlayer) {
-                                    //in the future, we will replace the user's cards with the cards of whoever is currently going so they can watch.
-                                    hideButtonsForOtherTurn(turnPlayer);
-                                }
-                                else {
-                                    showButtonsForPlayerTurn();
-                                }
-
-                                //Set all user's cards in the game state that haven't been set yet
-                                for (int i = playerCardIdx; i < 21; i++) {
-                                    try {
-                                        card = playerHandJsonArray.getString(i);
-                                    } catch (JSONException e) {
-                                        break;
-                                    }
-                                    dealNewPlayerCard(card);
-                                    updateScores();
-
-                                    try {
-                                        Thread.sleep(500);
-                                    } catch (InterruptedException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-
-
-                                //Set all dealer cards in the game state that haven't been set yet
-                                for (int i = dealerCardIdx; i < 21; i++) {
-                                    try {
-                                        card = dealerHandJsonArray.getString(1);
-                                    } catch (JSONException e) {
-                                        break;
-                                    }
-                                    dealNewDealerCard(card);
-                                    updateScores();
-
-                                    try {
-                                        Thread.sleep(500);
-                                    } catch (InterruptedException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-
-                                //Short sleep before letting next request start
-                                try {
-                                    Thread.sleep(1000);
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                }
-
-                                currentlyAnimating = false;
-                                runNextFunction();
-                            }).start();
-                        }
-                    });
-                    if (currentlyAnimating != true) {
-                        runNextFunction();
-                    }
-                }
-                else {
-                    Log.e(TAG, "No data sent in play turn signal.");
-                }
-            }
-        });
-
-        mSocket.on("gameOver", new Emitter.Listener() {
-            @Override
-            //ChatGPT usage: Partial - for things related to to the popup window and queueing requests
-            public void call(Object... args) {
-                if (args[0] != null) {
-                    JSONObject gameState = (JSONObject) args[0];
-                    Log.d(TAG, "Game Results: " + gameState.toString());
-
-                    requestQueue.offer(new Runnable() {
-                        @Override
-                        public void run() {
+                            JSONObject gameState = (JSONObject) args[0];
+                            Log.d(TAG, "BlackJack Init: " + gameState.toString());
 
                             //Get Dealer and Player Cards, and Current Player
                             JSONObject gameData = null;
@@ -310,75 +197,184 @@ public class BlackJackActivity extends AppCompatActivity {
                                 gameItems = gameData.getJSONObject("gameItems");
                                 globalItems = gameItems.getJSONObject("globalItems");
                                 playerItems = gameItems.getJSONObject("playerItems");
+
+                                playerList = gameData.getJSONArray("playerList");
+                                currentPlayerIndex = gameData.getInt("currentPlayerIndex");
+                                turnPlayer = playerList.getString(currentPlayerIndex);
+
                                 currentUserData = playerItems.getJSONObject(userName);
+                                turnPlayerData = playerItems.getJSONObject(turnPlayer);
+
                                 playerHandJsonArray = currentUserData.getJSONArray("playerHand");
+                                turnPlayerHandJsonArray = turnPlayerData.getJSONArray("playerHand");
                                 dealerHandJsonArray = globalItems.getJSONArray("dealerHand");
 
-                            }
-                            catch (JSONException e) {
+                            } catch (JSONException e) {
                                 throw new RuntimeException(e);
                             }
 
+                            playerCardLastIdx = playerHandJsonArray.length();
+                            dealerCardLastIdx = dealerHandJsonArray.length();
 
-                            //Set all user's cards in the game state that haven't been set yet
-                            for (int i = playerCardIdx; i < 21; i++) {
-                                try {
-                                    card = playerHandJsonArray.getString(i);
-                                } catch (JSONException e) {
-                                    break;
+                            //Set up handlers to do animations in order
+                            Handler handler = new Handler(Looper.getMainLooper());
+
+                            JSONArray finalDealerHandJsonArray = dealerHandJsonArray;
+
+                            Runnable endAnimation = new Runnable() {
+                                @Override
+                                public void run() {
+                                    Log.d(TAG,"ENDING TURN ANIMATION");
+
+                                    currentlyAnimating = false;
+                                    runNextFunction();
                                 }
-                                dealNewPlayerCard(card);
-                                updateScores();
+                            };
 
-                                try {
-                                    Thread.sleep(500);
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
+                            String finalTurnPlayer = turnPlayer;
+                            Runnable updateUIForTurn = new Runnable() {
+                                @Override
+                                public void run() {
+                                    //See who's turn it is and change UI accordingly
+                                    if (userName.equals(finalTurnPlayer) == false) {
+                                        //in the future, we will replace the user's cards with the cards of whoever is currently going so they can watch.
+                                        hideButtonsForOtherTurn(finalTurnPlayer);
+                                    } else {
+                                        showButtonsForPlayerTurn(true);
+                                    }
+
+                                    handler.post(endAnimation);
                                 }
-                            }
+                            };
 
-                            //Set all dealer cards in the game state that haven't been set yet
-                            for (int i = dealerCardIdx; i < 21; i++) {
-                                try {
-                                    card = dealerHandJsonArray.getString(1);
-                                } catch (JSONException e) {
-                                    break;
+                            Runnable updateDealerCards = new Runnable() {
+                                @Override
+                                public void run() {
+                                    Log.d(TAG,"updateDealerCards");
+                                    String card;
+                                    String value;
+                                    try {
+                                        if (dealerCardIdx < dealerCardLastIdx) {
+                                            card = finalDealerHandJsonArray.getString(dealerCardIdx);
+
+                                            dealNewCard(card, "dealer");
+                                            updateScores();
+                                        }
+
+                                        if (dealerCardIdx < dealerCardLastIdx) {
+                                            handler.postDelayed(this, 1000);
+                                        } else {
+                                            handler.post(updateUIForTurn); // Move to dealer cards once all player cards are shown.
+                                        }
+
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
                                 }
-                                dealNewDealerCard(card);
-                                updateScores();
+                            };
 
-                                try {
-                                    Thread.sleep(500);
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
+                            JSONArray finalPlayerHandJsonArray = playerHandJsonArray;
+                            Runnable updatePlayerCards = new Runnable() {
+                                @Override
+                                public void run() {
+                                    Log.d(TAG, "Update player cards");
+                                    String card;
+                                    String value;
+                                    try {
+                                        if (playerCardIdx < playerCardLastIdx) {
+                                            card = finalPlayerHandJsonArray.getString(playerCardIdx);
+
+                                            dealNewCard(card, "player");
+                                            updateScores();
+                                        }
+
+                                        if (playerCardIdx < playerCardLastIdx) {
+                                            handler.postDelayed(this, 1000);
+                                        } else {
+                                            handler.postDelayed(updateDealerCards, 1000); // Move to dealer cards once all player cards are shown.
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
                                 }
-                            }
+                            };
 
-                            //Give some time to see results before bet winnings pops up
-                            try {
-                                Thread.sleep(1000);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                            runNextFunction();
+                            handler.post(updatePlayerCards); // Start with player cards.
                         }
                     });
-                    runNextFunction();
+                    if (currentlyAnimating != true) {
+                        runNextFunction();
+                    }
+                }
+                else {
+                    Log.e(TAG, "No data sent in play turn signal.");
+                }
+            }
+        });
 
-                    requestQueue.offer(new Runnable() {
+        mSocket.on("gameOver", new Emitter.Listener() {
+            @Override
+            //ChatGPT usage: Partial - for things related to to the popup window and queueing requests
+            public void call(Object... args) {
+                if (args[0] != null) {
+                    JSONObject gameState = (JSONObject) args[0];
+                    Log.d(TAG, "GAME OVER");
+                    Log.d(TAG, "Game Results: " + gameState.toString());
+
+                    Log.d(TAG,"RUNNING FINAL ANIMATIONS");
+
+                    currentlyAnimating = true;
+
+                    //Get Dealer and Player Cards, and Current Player
+                    JSONObject gameData = null;
+                    JSONObject gameItems = null;
+                    JSONObject globalItems = null;
+                    JSONObject playerItems = null;
+                    JSONObject currentUserData = null;
+                    JSONObject turnPlayerData = null;
+
+                    JSONArray playerHandJsonArray = null;
+                    JSONArray dealerHandJsonArray = null;
+                    JSONArray turnPlayerHandJsonArray = null; //This one is for future updates to the UI
+
+                    JSONArray playerList = null;
+                    int currentPlayerIndex = -1;
+                    String turnPlayer = "";
+
+                    String card;
+                    double earnings = 0;
+
+                    try {
+                        gameData = gameState.getJSONObject("gameData");
+                        gameItems = gameData.getJSONObject("gameItems");
+                        globalItems = gameItems.getJSONObject("globalItems");
+                        playerItems = gameItems.getJSONObject("playerItems");
+                        currentUserData = playerItems.getJSONObject(userName);
+                        playerHandJsonArray = currentUserData.getJSONArray("playerHand");
+                        dealerHandJsonArray = globalItems.getJSONArray("dealerHand");
+
+                        JSONObject gameResult = gameState.getJSONObject("gameResult");
+                        earnings = gameResult.getDouble(userName);
+                    }
+                    catch (JSONException e) {
+                        throw new RuntimeException(e);
+                    }
+
+                    playerCardLastIdx = playerHandJsonArray.length();
+                    dealerCardLastIdx = dealerHandJsonArray.length();
+
+                    //Set up handler for animations
+                    Handler handler = new Handler(Looper.getMainLooper());
+
+                    earnings = Math.round(earnings * 100.0) / 100.0;
+                    mSocket.emit("depositbyname", userName, earnings);
+
+                    //Finish dealing cards, allow the popup to run
+                    double finalEarnings = earnings;
+                    Runnable popupEnding = new Runnable() {
                         @Override
-                        //ChatGPT usage: Partial - The call to showWinningsPopup
                         public void run() {
-                            double earnings = 0;
-                            try {
-                                JSONObject gameResult = gameState.getJSONObject("gameResult");
-                                earnings = gameResult.getDouble(userName);
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-
                             //Send User to Results Popup
-                            double finalEarnings = earnings;
                             runOnUiThread(new Runnable() {
                                 @Override
                                 //ChatGPT usage: Partial - The call to showWinningsPopup
@@ -386,12 +382,65 @@ public class BlackJackActivity extends AppCompatActivity {
                                     showWinningsPopup(finalEarnings);
                                 }
                             });
-
-                            mSocket.emit("depositbyname", userName, finalEarnings);
-                            //Return to the LobbyActivity
-                            finish();
                         }
-                    });
+                    };
+
+                    //Set all dealer cards in the game state that haven't been set yet
+                    JSONArray finalDealerHandJsonArray = dealerHandJsonArray;
+                    Runnable updateDealerCards = new Runnable() {
+                        @Override
+                        public void run() {
+                            String card;
+                            try {
+                                hideButtonsForOtherTurn("Dealer");
+                                if (dealerCardIdx < dealerCardLastIdx) {
+                                    card = finalDealerHandJsonArray.getString(dealerCardIdx);
+
+                                    dealNewCard(card, "dealer");
+                                    updateScores();
+                                }
+
+                                if (dealerCardIdx < dealerCardLastIdx) {
+                                    handler.postDelayed(this, 1000);
+                                } else {
+                                    handler.postDelayed(popupEnding, 3000); // Move to dealer cards once all player cards are shown.
+                                }
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    };
+
+                    //Set all user's cards in the game state that haven't been set yet
+                    JSONArray finalPlayerHandJsonArray = playerHandJsonArray;
+                    Runnable updatePlayerCards = new Runnable() {
+                        @Override
+                        public void run() {
+                            Log.d(TAG, "Update player cards");
+                            String card;
+                            try {
+                                if (playerCardIdx < playerCardLastIdx) {
+                                    card = finalPlayerHandJsonArray.getString(playerCardIdx);
+
+                                    dealNewCard(card, "player");
+                                    updateScores();
+                                }
+
+                                if (playerCardIdx < playerCardLastIdx) {
+                                    handler.postDelayed(this, 1000);
+                                } else {
+                                    handler.postDelayed(updateDealerCards, 1000); // Move to dealer cards once all player cards are shown.
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    };
+                    handler.post(updatePlayerCards);
+
+                    Log.d(TAG,"CURRENTLY ANIMATING?" + currentlyAnimating);
+
                     if (!currentlyAnimating) {
                         runNextFunction();
                     }
@@ -488,57 +537,55 @@ public class BlackJackActivity extends AppCompatActivity {
             @Override
             //ChatGPT usage: Yes
             public void onClick(View v) {
+
                 popupWindow.dismiss();
+
+                //Return to the LobbyActivity
+                finish();
             }
         });
     }
 
     // Call this method to show buttons when it's the player's turn
     //ChatGPT usage: partial - how to do View.VISIBLE
-    private void showButtonsForPlayerTurn() {
-        hitButton.setVisibility(View.VISIBLE);
-        standButton.setVisibility(View.VISIBLE);
-        turnIndicator.setText("Your Turn");
+    private void showButtonsForPlayerTurn(Boolean showButtons) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (showButtons) {
+                    hitButton.setVisibility(View.VISIBLE);
+                    standButton.setVisibility(View.VISIBLE);
+                } else {
+                    hitButton.setVisibility(View.GONE);
+                    standButton.setVisibility(View.GONE);
+                }
+                turnIndicator.setText("Your Turn");
+            }
+        });
     }
 
     // Call this method to hide buttons when it's not the player's turn
     //ChatGPT usage: Partial - how to do View.GONE
     private void hideButtonsForOtherTurn(String userName) {
-        hitButton.setVisibility(View.GONE);
-        standButton.setVisibility(View.GONE);
-        turnIndicator.setText(userName + "'s Turn");
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                hitButton.setVisibility(View.GONE);
+                standButton.setVisibility(View.GONE);
+                turnIndicator.setText(userName + "'s Turn");
+            }
+        });
     }
 
-    //ChatGPT usage: No
-    private void dealNewDealerCard(String card) {
-        String[] cardDetails = getCardDetails(card);
-
-        String value = cardDetails[0];
-        String suit = cardDetails[1];
-
-        if (dealerCardIdx <= 5) {
-            dealerCardItems[dealerCardIdx].setText(value+ "\n" + suit);
-        } else {
-            Toast.makeText(getApplicationContext(), "Too many cards to display", Toast.LENGTH_SHORT).show();
-        }
-        dealerCardVals[dealerCardIdx] = cardValues.get(value);
-        dealerCardIdx++;
-    }
-
-    //ChatGPT usage: No
-    private void dealNewPlayerCard(String card) {
-        String[] cardDetails = getCardDetails(card);
-
-        String value = cardDetails[0];
-        String suit = cardDetails[1];
-
-        if (playerCardIdx <= 5) {
-            playerCardItems[playerCardIdx].setText(value+ "\n" + suit);
-        } else {
-            Toast.makeText(getApplicationContext(), "Too many cards to display", Toast.LENGTH_SHORT).show();
-        }
-        playerCardVals[playerCardIdx] = cardValues.get(value);
-        playerCardIdx++;
+    private void showGameOver() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                hitButton.setVisibility(View.GONE);
+                standButton.setVisibility(View.GONE);
+                turnIndicator.setText("Game Over");
+            }
+        });
     }
 
     //ChatGPT usage: No
@@ -573,8 +620,15 @@ public class BlackJackActivity extends AppCompatActivity {
             }
         }
 
-        dealerScoreLabel.setText(String.valueOf(dealerScore));
-        playerScoreLabel.setText(String.valueOf(playerScore));
+        int finalDealerScore = dealerScore;
+        int finalPlayerScore = playerScore;
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                dealerScoreLabel.setText("Dealer Score: " + finalDealerScore);
+                playerScoreLabel.setText("Player Score: " + finalPlayerScore);
+            }
+        });
     }
 
     //ChatGPT usage: No
@@ -592,23 +646,25 @@ public class BlackJackActivity extends AppCompatActivity {
             suitAbbrv = String.valueOf(card.charAt(1));
         }
 
-        if (suitAbbrv == "H") {
+        if (suitAbbrv.equals("H")) {
             suit = "Heart";
-        } else if (suitAbbrv == "D") {
+        } else if (suitAbbrv.equals("D")) {
             suit = "Diamond";
-        } else if (suitAbbrv == "C") {
+        } else if (suitAbbrv.equals("C")) {
             suit = "Club";
-        } else if (suitAbbrv == "S") {
+        } else if (suitAbbrv.equals("S")) {
             suit = "Spade";
+        } else {
+            suit = "None";
         }
 
-        if (valAbbrv == "A") {
+        if (valAbbrv.equals("A")) {
             val = "Ace";
-        } else if (valAbbrv == "J") {
+        } else if (valAbbrv.equals("J")) {
             val = "Jack";
-        } else if (valAbbrv == "Q") {
+        } else if (valAbbrv.equals("Q")) {
             val = "Queen";
-        } else if (valAbbrv == "K") {
+        } else if (valAbbrv.equals("K")) {
             val = "King";
         } else {
             val = valAbbrv;
@@ -616,5 +672,41 @@ public class BlackJackActivity extends AppCompatActivity {
 
         String[] returnObj = {val, suit};
         return returnObj;
+    }
+
+    //ChatGPT usage: No
+    private String dealNewCard(String card, String type) {
+        String[] cardDetails = getCardDetails(card);
+
+        String value = cardDetails[0];
+        String suit = cardDetails[1];
+
+        Log.d(TAG, "NEW CARD: " + value + " : " + suit);
+
+        int cardIdx;
+        TextView cardUI;
+
+        if (type.equals("player")) {
+            cardIdx = playerCardIdx;
+            cardUI = playerCardItems[playerCardIdx];
+            playerCardVals[playerCardIdx] = cardValues.get(value);
+            playerCardIdx++;
+        } else {
+            cardIdx = dealerCardIdx;
+            cardUI = dealerCardItems[dealerCardIdx];
+            dealerCardVals[dealerCardIdx] = cardValues.get(value);
+            dealerCardIdx++;
+        }
+
+        if (cardIdx <= 5) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    cardUI.setText(value+ "\n" + suit);
+                }
+            });
+        }
+
+        return value;
     }
 }

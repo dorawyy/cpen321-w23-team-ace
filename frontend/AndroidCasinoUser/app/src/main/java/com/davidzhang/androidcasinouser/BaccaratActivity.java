@@ -40,7 +40,7 @@ public class BaccaratActivity extends AppCompatActivity {
     private int[] playerCardVals = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     private int[] dealerCardVals = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     private Map<String, Integer> cardValues = new HashMap<String, Integer>() {{
-        put("Ace", 1); //or 11
+        put("Ace", 1);
         put("2", 2);
         put("3", 3);
         put("4", 4);
@@ -397,7 +397,7 @@ public class BaccaratActivity extends AppCompatActivity {
                     updateScores();
 
                     if (dealerCardIdx < dealerCardLastIdx) {
-                        handler.postDelayed(this, 500);
+                        handler.postDelayed(this, 1000);
                     } else {
                         handler.postDelayed(popupEnding, 3000); // Move to dealer cards once all player cards are shown.
                     }
@@ -422,7 +422,7 @@ public class BaccaratActivity extends AppCompatActivity {
                     if (playerCardIdx < playerCardLastIdx) {
                         handler.postDelayed(this, 1000);
                     } else {
-                        handler.postDelayed(updateDealerCards, 500); // Move to dealer cards once all player cards are shown.
+                        handler.postDelayed(updateDealerCards, 1000); // Move to dealer cards once all player cards are shown.
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

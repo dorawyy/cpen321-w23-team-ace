@@ -130,7 +130,6 @@ io.on('connection', (socket) => {
     socket.on('createLobby', async (roomName, gameType, maxPlayers, userName) => {
         console.log("Lobby created");
         if(!gameLobbies[roomName]) {
-            // Set GameManager = null for now
             const lobby = new GameLobby(roomName, gameType, maxPlayers, gameManager, gameLobbyStore, io);
             await lobby.init(roomName, gameType, maxPlayers);
             gameLobbies[roomName] = lobby;
@@ -209,7 +208,7 @@ io.on('connection', (socket) => {
 
     // ChatGPT usage: partial
     socket.on('playTurn', (lobbyName, username, action) => {
-        this.GameManager.playTurn(lobbyName, username, action);
+        gameManager.playTurn(lobbyName, username, action);
     })
 
     // ChatGPT usage: Partial

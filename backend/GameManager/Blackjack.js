@@ -28,7 +28,7 @@ const GameAssets = require('./GameAssets');
 
 class Blackjack {
     // ChatGPT usage: No
-    static async newGame(gameData){
+    static newGame(gameData){
         let gameDataLocal = JSON.parse(JSON.stringify(gameData))
         
         gameDataLocal.gameItems.globalItems = {
@@ -54,9 +54,8 @@ class Blackjack {
     static async _getRandomCard(gameData) {
         let randomIndex = (await GameAssets.getRandomNumber(0, 51, 1))[0]
         //get a random card
-        return gameData.gameItems.globalItems.pokar[randomIndex[0]];
+        return gameData.gameItems.globalItems.pokar[randomIndex];
     }
-
 
     /* get the value of the hand
     @param {json/object} gameData: the gameData object
@@ -64,7 +63,7 @@ class Blackjack {
         {"PLAYERNAME": val (int)), "PLAYERNAME": val (int)), ...,  "bankerScore": (int)}
     */
     // ChatGPT usage: No
-    static async _getHandValue(gameData) {
+    static _getHandValue(gameData) {
         let playerScore = 0;
         let dealerScore = 0;
         let cardValue = 0;
@@ -132,9 +131,11 @@ class Blackjack {
     static async playTurn(gameData, username, action) {
         let gameDataLocal = JSON.parse(JSON.stringify(gameData))
         // check if more card should be given
-        let handValue = this._getHandValue(gameDataLocal);
-        let playerHand = []
-        let dealerHand = gameDataLocal.gameItems.globalItems.dealerHand
+        console.log("PLAY TURN : " + JSON.stringify(gameData));
+        
+        let playerHand = [];
+        let dealerHand = [];
+        let handValue = [];
         
         // if first round, deal cards
         if (gameDataLocal.currentTurn === 0) {
@@ -142,12 +143,13 @@ class Blackjack {
 
             // deal cards to all player
             for (let playerId of gameDataLocal.playerList) {
-                playerHand = gameDataLocal.gameItems.playerItems[playerId].playerHand;
-                playerHand.append(this._getRandomCard(gameDataLocal));
-                playerHand.append(this._getRandomCard(gameDataLocal));
+                playerHand.push(await this._getRandomCard(gameDataLocal));
+                playerHand.push(await this._getRandomCard(gameDataLocal));
+                gameDataLocal.gameItems.playerItems[playerId]["playerHand"] = playerHand;
             }
             // deal cards to dealer
-            dealerHand.append(this._getRandomCard(gameDataLocal));
+            dealerHand.push(await this._getRandomCard(gameDataLocal));
+            gameDataLocal.gameItems.globalItems["dealerHand"] = dealerHand;
 
         } else {
 
@@ -156,19 +158,21 @@ class Blackjack {
                 return gameDataLocal;
             }
 
-            if (action == "hit") {
+            console.log("NEW ACTION: " + action);
+            if (action === "hit") {
                 playerHand = gameDataLocal.gameItems.playerItems[username].playerHand;
-                playerHand.append(this._getRandomCard(gameDataLocal));
+                playerHand.push(await this._getRandomCard(gameDataLocal));
                 handValue = this._getHandValue(gameDataLocal);
 
-                if (handValue[playerId] >= 21) {
+                if (handValue[username] >= 21) {
                     //Their turn is over
-                    gameDataLocal.gameItems.playerItems[playerId].playerState = 1;
+                    console.log("PLAYER BUSTED OR HIT 21")
+                    gameDataLocal.gameItems.playerItems[username].playerState = 1;
                     gameDataLocal.currentTurn = gameDataLocal.currentTurn + 1;
                 }
-            } else if (action == "stand") {
+            } else if (action === "stand") {
                 //Their turn is over
-                gameDataLocal.gameItems.playerItems[playerId].playerState = 1;
+                gameDataLocal.gameItems.playerItems[username].playerState = 1;
                 gameDataLocal.currentTurn = gameDataLocal.currentTurn + 1;
             } else {
                 //bad action
@@ -177,13 +181,18 @@ class Blackjack {
         }
 
         // get next player, and determine if game is over
-        gameDataLocal = this._getNextPlayer(gameDataLocal);        
+        console.log("GET NEXT PLAYER: " + gameDataLocal.currentPlayerIndex)
+        gameDataLocal = this._getNextPlayer(gameDataLocal);     
+        console.log("GOT NEXT PLAYER: " + gameDataLocal.currentPlayerIndex)
+   
 
-        // if user all made action, dealer will play
+        // if user all made action, dealer will play\
         if (gameDataLocal.currentPlayerIndex === -1){
             // dealer will play
+            console.log("DEALER's TURN")
+            handValue = this._getHandValue(gameDataLocal);
             while (handValue.dealerScore < 17) {
-                dealerHand.append(this._getRandomCard(gameDataLocal));
+                gameDataLocal.gameItems.globalItems["dealerHand"].push(await this._getRandomCard(gameDataLocal));
                 handValue = this._getHandValue(gameDataLocal);
             }
         }
@@ -197,7 +206,7 @@ class Blackjack {
      * @returns {json} gameResult: the amount of money each player wins
      */
     // ChatGPT usage: No
-    static async calculateWinning(gameData){
+    static calculateWinning(gameData){
         // ensure game is over
         if(gameData.currentPlayerIndex !== -1){
             return 0;
@@ -236,7 +245,7 @@ class Blackjack {
      * @returns {int} winningAmount: the amount of money the player wins
      */
     // ChatGPT usage: No
-    static async _didBetWin(betType, handValue, betValue){
+    static _didBetWin(betType, handValue, betValue){
         let winningAmount = -betValue;
         if (betType === "self") {
             if (handValue.playerScore > 21) {
@@ -258,7 +267,7 @@ class Blackjack {
      * @returns {json} gameData: the gameData object with the next player
      */
     // ChatGPT usage: No
-    static async _getNextPlayer(gameData){
+    static _getNextPlayer(gameData){
         let playerId = "";
         let playerCount = gameData.playerList.length;
         

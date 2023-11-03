@@ -118,6 +118,8 @@ class Roulette{
     // ChatGPT usage: No
     static _didBetWin(betType, rouletteNumber, landColour, betValue){
         let winningAmount = -betValue;
+        console.log("ROULETTE BET TYPE: " + betType + " ROULETTE NUMBER: " + rouletteNumber + " BET VALUE: " + betValue + " LAND COLOUR: " + landColour);
+
         if(betType === 'red' || betType === 'black'){
             if(landColour == betType){
                 winningAmount += betValue * 2; //Red/Black bet pays 1:1
@@ -149,13 +151,8 @@ class Roulette{
                 winningAmount += betValue * 36; 
             }
         }
-        // if not defined term, bet is on single number
-        else{
-            if(rouletteNumber == betType){
-                //Straight bet pays 35:1 in addition to the original bet
-                winningAmount += betValue * 36; 
-            }
-        }
+       
+        console.log("WINNING AMOUNT : " +  winningAmount);
         return winningAmount;
     }
 

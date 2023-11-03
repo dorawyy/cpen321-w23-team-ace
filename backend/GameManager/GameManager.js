@@ -114,7 +114,7 @@ class GameManager extends EventEmitter {
         // Implement actual timeout
         this.timers[gameData.lobbyName] = setTimeout(() => {
             //Force them to stand
-            this.playTurn(gameData, gameData.playerList[gameData.currentPlayerIndex], "stand");;
+            this.playTurn(gameData.lobbyId, gameData.playerList[gameData.currentPlayerIndex], "stand");;
         }, 15000); // 15 seconds
     }
 
@@ -156,7 +156,7 @@ class GameManager extends EventEmitter {
         }
         let gameType = gameData.gameType;
         let gameResult = null;
-        if (gameType == 'Blackjack') {
+        if (gameType == 'BlackJack') {
             gameResult = Blackjack.calculateWinning(gameData);
         }
         else if (gameType == 'Baccarat') {
@@ -220,7 +220,7 @@ class GameManager extends EventEmitter {
         };
 
         // setup new game based on game type
-        if (gameType == "Blackjack") {
+        if (gameType == "BlackJack") {
             gameData = Blackjack.newGame(gameData);
         } else if (gameType == "Baccarat") {
             gameData = Baccarat.newGame(gameData);
@@ -248,6 +248,7 @@ class GameManager extends EventEmitter {
     async playTurn(lobbyId, username="none", action="none") {
         console.log("SPOT 3")
 
+        console.log("LOBBY: " + lobbyId);
         let gameData = await this.gameStore.getGame(lobbyId);
         let gameResult = null;
 
@@ -258,16 +259,21 @@ class GameManager extends EventEmitter {
         gameData = await this._getActionResult(gameData, username ,action);
 
         // update the game data in the database
-        //await this.gameStore.updateGame(gameData);
+        await this.gameStore.updateGame(gameData);
         
         // Notify all players whose turn it is
         if (this._checkGameOver(gameData)) {
 
+            console.log("GETTING RESULTS")
             gameResult = this._calculateWinning(gameData);
+            console.log(gameResult);
 
             //console.log("Calculated Winnings")
             //console.log(gameData.gameItems.globalItems.ballLocation)
             //console.log(gameResult)
+
+            console.log("GAME OVER")
+            console.log(gameData)
             
             // game is over
             this.io.to(gameData.lobbyId).emit('gameOver', {
@@ -282,7 +288,7 @@ class GameManager extends EventEmitter {
                 clearTimeout(this.timers[gameData.lobbyName]);
             }
 
-            //await this.gameStore.deleteGame(gameData.lobbyId);
+            await this.gameStore.deleteGame(gameData.lobbyId);
             
         } else {
             //game not over
@@ -359,6 +365,7 @@ class GameStore {
     */
    // ChatGPT usage: No
     async updateGame(gameData) {
+        delete gameData._id;
         return await this.games.updateOne(
             { lobbyId: gameData.lobbyId }, 
             { $set: gameData }

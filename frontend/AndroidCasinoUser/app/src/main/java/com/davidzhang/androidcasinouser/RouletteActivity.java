@@ -149,6 +149,9 @@ public class RouletteActivity extends AppCompatActivity {
                                 e.printStackTrace();
                             }
 
+                            earnings = Math.round(earnings * 100.0) / 100.0;
+                            mSocket.emit("depositbyname", userName, earnings);
+
                             //Send User to Results Popup
                             double finalEarnings = earnings;
                             runOnUiThread(new Runnable() {
@@ -158,8 +161,6 @@ public class RouletteActivity extends AppCompatActivity {
                                     showWinningsPopup(finalEarnings);
                                 }
                             });
-
-                            mSocket.emit("depositbyname", userName, finalEarnings);
                         }
                     });
                     if (!currentlyAnimating) {

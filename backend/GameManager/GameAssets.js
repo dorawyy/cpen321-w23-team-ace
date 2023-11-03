@@ -167,15 +167,15 @@ class gameAssets {
                     body: JSON.stringify(body),
                     headers: headers
                 });
-                console.log('Response status:', response.status, response.statusText);
+                //console.log('Response status:', response.status, response.statusText);
                 let json = await response.json();
-                console.log(json);
+                //console.log(json);
     
                 // Check if the api returned the random numbers
                 if (json && json.result && json.result.random && json.result.random.data) {
                     randomNums = json.result.random.data;
-                    console.log("RANDOM NUMS!");
-                    console.log(randomNums);
+                    //console.log("RANDOM NUMS!");
+                    //console.log(randomNums);
                     break;
                 } else {
                     throw new Error('No valid random numbers returned');
