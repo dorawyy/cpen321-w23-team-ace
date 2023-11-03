@@ -50,13 +50,5 @@
         android:layout_marginTop="16dp"
         android:text="Create Lobby" />
 
-    <Button
-        android:id="@+id/changeThemeButtonLounge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center_horizontal"
-        android:layout_marginTop="250dp"
-        android:text="Change Theme" />
-
 </LinearLayout>
 
