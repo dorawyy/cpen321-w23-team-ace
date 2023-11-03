@@ -14,6 +14,7 @@ class LiveChat {
             };
 
             this.io.to(roomName).emit('receiveChatMessage', chatMessage);
+
         });
     }
 }

@@ -38,7 +38,7 @@ class GameLobby {
 
             this.io.to(this.roomName).emit('newPlayer', userName);
 
-            this.liveChat.registerSocketEvents(socket, this.roomName, userName);
+            // this.liveChat.registerSocketEvents(socket, this.roomName, userName);
 
             socket.join(this.roomName);
 
@@ -48,6 +48,8 @@ class GameLobby {
             socket.emit('PlayerExceedMax', "PlayerExceedMax");
         }
     }
+
+
 
     // ChatGPT usage: Partial
     async removePlayer(userName, socket) {
@@ -135,14 +137,6 @@ class GameLobby {
     // ChatGPT usage: No
     async getPlayerCount(roomName) {
         return await this.gameLobbyStore.getPlayerCount(roomName);
-    }
-
-    // ChatGPT usage: No
-    registerSocketEvents(socket) {
-        socket.on('setReady', async (userName) => {
-            console.log("User ready");
-            await this.setPlayerReady(userName);
-        });
     }
 
     // ChatGPT usage: No

@@ -121,7 +121,7 @@ public class LobbyActivityBaccarat extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "Bet cannot be greater than balance", Toast.LENGTH_SHORT).show();
                         } else {
                             mSocket.emit("setBet", roomName, currentPlayer.getUsername(), betObject);
-                            mSocket.emit("setReady", currentPlayer.getUsername());
+                            mSocket.emit("setReady", roomName, currentPlayer.getUsername());
                         }
                     } catch (Exception e) {
                         Toast.makeText(getApplicationContext(), "Invalid bet. Please enter a valid integer", Toast.LENGTH_SHORT).show();
@@ -143,7 +143,7 @@ public class LobbyActivityBaccarat extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "You are banned from chat", Toast.LENGTH_SHORT).show();
                     }
                     else {
-                        mSocket.emit("sendChatMessage", message);
+                        mSocket.emit("sendChatMessage", roomName, currentPlayer.getUsername(), message);
                         etEnterMessage.setText(""); // Clear the message input
                     }
                 }
