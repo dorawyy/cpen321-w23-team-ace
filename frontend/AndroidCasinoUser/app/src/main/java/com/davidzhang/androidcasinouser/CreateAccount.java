@@ -49,7 +49,7 @@ public class CreateAccount extends AppCompatActivity {
                         accountData.put("userId", userId);
                         accountData.put("username", accountName);
                         accountData.put("balance", 100);
-                        accountData.put("isAdmin", false);
+                        accountData.put("isAdmin", true);
                         accountData.put("isChatBanned", false);
                         accountData.put("lastRedemptionDate",  DateHandler.dateToString(DateHandler.yesterday()));
 
