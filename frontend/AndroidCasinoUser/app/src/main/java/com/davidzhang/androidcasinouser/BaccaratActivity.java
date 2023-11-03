@@ -158,7 +158,10 @@ public class BaccaratActivity extends AppCompatActivity {
                     playerCardLastIdx = playerHandJsonArray.length();
                     dealerCardLastIdx = dealerHandJsonArray.length();
 
-                    performFinalAnimations(playerHandJsonArray, dealerHandJsonArray, earnings, userName);
+                    earnings = Math.round(earnings * 100.0) / 100.0;
+                    mSocket.emit("depositbyname", userName, earnings);
+
+                    performFinalAnimations(playerHandJsonArray, dealerHandJsonArray, earnings);
                 }
                 else {
                     Log.e(TAG, "No data sent in gameEnded signal.");
@@ -358,7 +361,7 @@ public class BaccaratActivity extends AppCompatActivity {
     }
 
 
-    private void performFinalAnimations(JSONArray playerHandJSON, JSONArray dealerHandJSON, double earnings, String username) {
+    private void performFinalAnimations(JSONArray playerHandJSON, JSONArray dealerHandJSON, double earnings) {
         Handler handler = new Handler(Looper.getMainLooper());
         Log.d(TAG, "Final animations");
 
@@ -374,8 +377,6 @@ public class BaccaratActivity extends AppCompatActivity {
                         showWinningsPopup(earnings);
                     }
                 });
-
-                mSocket.emit("depositbyname", username, earnings);
             }
         };
 

@@ -125,7 +125,9 @@ class GameManager extends EventEmitter {
     */
    // ChatGPT usage: No
     async _getActionResult(gameData, username, action) {
+        console.log("GETTING ACTION RESULT")
         let gameType = gameData.gameType;
+        console.log(gameType)
         if (gameType == 'BlackJack') {
             gameData = await Blackjack.playTurn(gameData, username, action);
         }
@@ -133,6 +135,8 @@ class GameManager extends EventEmitter {
             gameData = await Baccarat.playTurn(gameData);
         }
         else if (gameType == 'Roulette'){
+            console.log("GETTING ROULETTE RESULT")
+
             gameData = await Roulette.playTurn(gameData);
         }
         
@@ -224,8 +228,11 @@ class GameManager extends EventEmitter {
             gameData = Roulette.newGame(gameData);
         }
         
+        console.log("SPOT 1")
         // complete game creation, will prepare the game settings, but no action will be performed
         await this.gameStore.newGame(gameData);
+
+        console.log("SPOT 2")
 
         this.playTurn(gameData.lobbyId);
     }
@@ -239,17 +246,19 @@ class GameManager extends EventEmitter {
     */
    // ChatGPT usage: No
     async playTurn(lobbyId, username="none", action="none") {
+        console.log("SPOT 3")
+
         let gameData = await this.gameStore.getGame(lobbyId);
         let gameResult = null;
 
-        //console.log("PLAYING TURN")
-        //console.log(gameData)
+        console.log("PLAYING TURN")
+        console.log(gameData)
 
         // get action
         gameData = await this._getActionResult(gameData, username ,action);
 
         // update the game data in the database
-        await this.gameStore.updateGame(gameData);
+        //await this.gameStore.updateGame(gameData);
         
         // Notify all players whose turn it is
         if (this._checkGameOver(gameData)) {

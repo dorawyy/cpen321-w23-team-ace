@@ -100,13 +100,17 @@ class GameLobby {
 
             this.io.to(this.roomName).emit('gameStarted');
 
+            await this._delay(3000); //Let the front ends setup their listeners
+
             const readyPlayers = Object.keys(this.players).filter(userName => this.players[userName].ready);
 
             const bets = {};
             for (let userName of readyPlayers) {
                 bets[userName] = this.players[userName].bet;
             }
-            await this.gameManager.startGame(this.roomName, readyPlayers, bets, this.gameType);
+            await this.gameManager.startGame(this.roomName, this.gameType, readyPlayers, bets);
+
+
 
             for (let userName of readyPlayers) {
                 this.players[userName].ready = false;
@@ -139,6 +143,11 @@ class GameLobby {
             console.log("User ready");
             await this.setPlayerReady(userName);
         });
+    }
+
+    // ChatGPT usage: No
+    async _delay(duration) {
+        return new Promise(resolve => setTimeout(resolve, duration));
     }
 }
 

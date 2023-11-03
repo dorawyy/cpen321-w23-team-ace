@@ -21,7 +21,7 @@
             android:text="Lobby Name:" />
 
         <TextView
-            android:id="@+id/tvGameType"
+            android:id="@+id/gameTypeLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Game Type: Baccarat" />
@@ -42,7 +42,6 @@
                 android:text="Dealer Cards: " />
 
             <LinearLayout
-                xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -50,79 +49,62 @@
 
                 <TextView
                     android:id="@+id/dealer_card_1"
-                    android:layout_width="50dp"
+                    android:layout_width="70dp"
+                    android:layout_height="100dp"
                     android:layout_weight="1"
-                    android:layout_height="80dp"
+                    android:background="@drawable/card_background"
                     android:gravity="center"
-                    android:layout_row="1"
-                    android:layout_column="0"
-                    android:text=""
-                    android:background="@drawable/card_background" />
+                    android:textSize="12sp"
+                    android:text="\n" />
 
                 <TextView
                     android:id="@+id/dealer_card_2"
-                    android:layout_width="50dp"
+                    android:layout_width="70dp"
                     android:layout_weight="1"
-                    android:layout_height="80dp"
+                    android:layout_height="100dp"
                     android:gravity="center"
-                    android:layout_row="1"
-                    android:layout_column="1"
-                    android:text=""
+                    android:textSize="12sp"
+                    android:text="\n"
                     android:background="@drawable/card_background" />
 
                 <TextView
                     android:id="@+id/dealer_card_3"
-                    android:layout_width="50dp"
+                    android:layout_width="70dp"
                     android:layout_weight="1"
-                    android:layout_height="80dp"
+                    android:layout_height="100dp"
                     android:gravity="center"
-                    android:layout_row="1"
-                    android:layout_column="2"
-                    android:text=""
+                    android:textSize="12sp"
+                    android:text="\n"
                     android:background="@drawable/card_background" />
 
                 <TextView
                     android:id="@+id/dealer_card_4"
-                    android:layout_width="50dp"
+                    android:layout_width="70dp"
                     android:layout_weight="1"
-                    android:layout_height="80dp"
+                    android:layout_height="100dp"
                     android:gravity="center"
-                    android:layout_row="1"
-                    android:layout_column="3"
-                    android:text=""
+                    android:textSize="12sp"
+                    android:text="\n"
                     android:background="@drawable/card_background" />
 
                 <TextView
                     android:id="@+id/dealer_card_5"
-                    android:layout_width="50dp"
+                    android:layout_width="70dp"
                     android:layout_weight="1"
-                    android:layout_height="80dp"
+                    android:layout_height="100dp"
                     android:gravity="center"
-                    android:layout_row="1"
-                    android:layout_column="4"
-                    android:text=""
+                    android:textSize="12sp"
+                    android:text="\n"
                     android:background="@drawable/card_background" />
 
                 <TextView
                     android:id="@+id/dealer_card_6"
-                    android:layout_width="50dp"
+                    android:layout_width="70dp"
                     android:layout_weight="1"
-                    android:layout_height="80dp"
+                    android:layout_height="100dp"
                     android:gravity="center"
-                    android:layout_row="1"
-                    android:layout_column="5"
-                    android:text=""
-                    android:background="@drawable/card_background" />
-
-                <TextView
-                    android:id="@+id/dealer_card_7"
-                    android:layout_width="50dp"
-                    android:layout_weight="1"
-                    android:layout_height="80dp"
-                    android:gravity="center"
-                    android:layout_row="1"
-                    android:layout_column="6"
-                    android:text=""
+                    android:textSize="12sp"
+                    android:text="\n"
                     android:background="@drawable/card_background" />
             </LinearLayout>
 
@@ -135,7 +117,7 @@
 
             <Space
                 android:layout_width="match_parent"
-                android:layout_height="50dp" />
+                android:layout_height="20dp" />
 
             <TextView
                 android:id="@+id/playerCardsLabel"
@@ -154,79 +136,62 @@
 
                 <TextView
                     android:id="@+id/player_card_1"
-                    android:layout_width="50dp"
+                    android:layout_width="70dp"
                     android:layout_weight="1"
-                    android:layout_height="80dp"
+                    android:layout_height="100dp"
                     android:gravity="center"
-                    android:layout_row="1"
-                    android:layout_column="0"
-                    android:text=""
+                    android:textSize="12sp"
+                    android:text="\n"
                     android:background="@drawable/card_background" />
 
                 <TextView
                     android:id="@+id/player_card_2"
-                    android:layout_width="50dp"
+                    android:layout_width="70dp"
                     android:layout_weight="1"
-                    android:layout_height="80dp"
+                    android:layout_height="100dp"
                     android:gravity="center"
-                    android:layout_row="1"
-                    android:layout_column="1"
-                    android:text=""
+                    android:textSize="12sp"
+                    android:text="\n"
                     android:background="@drawable/card_background" />
 
                 <TextView
                     android:id="@+id/player_card_3"
-                    android:layout_width="50dp"
+                    android:layout_width="70dp"
                     android:layout_weight="1"
-                    android:layout_height="80dp"
+                    android:layout_height="100dp"
                     android:gravity="center"
-                    android:layout_row="1"
-                    android:layout_column="2"
-                    android:text=""
+                    android:textSize="12sp"
+                    android:text="\n"
                     android:background="@drawable/card_background" />
 
                 <TextView
                     android:id="@+id/player_card_4"
-                    android:layout_width="50dp"
+                    android:layout_width="70dp"
                     android:layout_weight="1"
-                    android:layout_height="80dp"
+                    android:layout_height="100dp"
                     android:gravity="center"
-                    android:layout_row="1"
-                    android:layout_column="3"
-                    android:text=""
+                    android:textSize="12sp"
+                    android:text="\n"
                     android:background="@drawable/card_background" />
 
                 <TextView
                     android:id="@+id/player_card_5"
-                    android:layout_width="50dp"
+                    android:layout_width="70dp"
                     android:layout_weight="1"
-                    android:layout_height="80dp"
+                    android:layout_height="100dp"
                     android:gravity="center"
-                    android:layout_row="1"
-                    android:layout_column="4"
-                    android:text=""
+                    android:textSize="12sp"
+                    android:text="\n"
                     android:background="@drawable/card_background" />
 
                 <TextView
                     android:id="@+id/player_card_6"
-                    android:layout_width="50dp"
+                    android:layout_width="70dp"
                     android:layout_weight="1"
-                    android:layout_height="80dp"
+                    android:layout_height="100dp"
                     android:gravity="center"
-                    android:layout_row="1"
-                    android:layout_column="5"
-                    android:text=""
-                    android:background="@drawable/card_background" />
-
-                <TextView
-                    android:id="@+id/player_card_7"
-                    android:layout_width="50dp"
-                    android:layout_weight="1"
-                    android:layout_height="80dp"
-                    android:gravity="center"
-                    android:layout_row="1"
-                    android:layout_column="6"
-                    android:text=""
+                    android:textSize="12sp"
+                    android:text="\n"
                     android:background="@drawable/card_background" />
             </LinearLayout>
 
@@ -278,15 +243,6 @@
                 android:layout_height="wrap_content"
                 android:text="Send" />
         </LinearLayout>
-
-        <Button
-            android:id="@+id/spinButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/wheelView"
-            android:layout_centerHorizontal="true"
-            android:onClick="onSpinButtonClick"
-            android:text="Spin" />
     </LinearLayout>
 
 
