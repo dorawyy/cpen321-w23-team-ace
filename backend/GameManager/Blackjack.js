@@ -140,6 +140,7 @@ class Blackjack {
 
             // deal cards to all player
             for (let playerId of gameDataLocal.playerList) {
+                playerHand = [];
                 playerHand.push(await this._getRandomCard(gameDataLocal));
                 playerHand.push(await this._getRandomCard(gameDataLocal));
                 gameDataLocal.gameItems.playerItems[playerId]["playerHand"] = playerHand;

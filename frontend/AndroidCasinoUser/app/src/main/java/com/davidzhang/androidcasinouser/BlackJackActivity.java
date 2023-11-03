@@ -132,9 +132,9 @@ public class BlackJackActivity extends AppCompatActivity {
             }
         });
 
-        // ChatGPT usage: No
         mSocket.on("receiveChatMessage", new Emitter.Listener() {
             @Override
+            // ChatGPT usage: No
             public void call(Object... args) {
                 JSONObject data = (JSONObject) args[0];
                 Log.e(TAG, data.toString());
@@ -223,6 +223,7 @@ public class BlackJackActivity extends AppCompatActivity {
 
                             Runnable endAnimation = new Runnable() {
                                 @Override
+                                //ChatGPT usage: No
                                 public void run() {
                                     Log.d(TAG,"ENDING TURN ANIMATION");
 
@@ -234,6 +235,7 @@ public class BlackJackActivity extends AppCompatActivity {
                             String finalTurnPlayer = turnPlayer;
                             Runnable updateUIForTurn = new Runnable() {
                                 @Override
+                                //ChatGPT usage: No
                                 public void run() {
                                     //See who's turn it is and change UI accordingly
                                     if (userName.equals(finalTurnPlayer) == false) {
@@ -249,6 +251,7 @@ public class BlackJackActivity extends AppCompatActivity {
 
                             Runnable updateDealerCards = new Runnable() {
                                 @Override
+                                //ChatGPT usage: No
                                 public void run() {
                                     Log.d(TAG,"updateDealerCards");
                                     String card;
@@ -276,6 +279,7 @@ public class BlackJackActivity extends AppCompatActivity {
                             JSONArray finalPlayerHandJsonArray = playerHandJsonArray;
                             Runnable updatePlayerCards = new Runnable() {
                                 @Override
+                                //ChatGPT usage: No
                                 public void run() {
                                     Log.d(TAG, "Update player cards");
                                     String card;
@@ -314,7 +318,7 @@ public class BlackJackActivity extends AppCompatActivity {
 
         mSocket.on("gameOver", new Emitter.Listener() {
             @Override
-            //ChatGPT usage: Partial - for things related to to the popup window and queueing requests
+            //ChatGPT usage: Partial - for things related to to the popup window
             public void call(Object... args) {
                 if (args[0] != null) {
                     JSONObject gameState = (JSONObject) args[0];
@@ -373,6 +377,7 @@ public class BlackJackActivity extends AppCompatActivity {
                     double finalEarnings = earnings;
                     Runnable popupEnding = new Runnable() {
                         @Override
+                        //ChatGPT usage: Partial - how to call the popup window
                         public void run() {
                             //Send User to Results Popup
                             runOnUiThread(new Runnable() {
@@ -389,6 +394,7 @@ public class BlackJackActivity extends AppCompatActivity {
                     JSONArray finalDealerHandJsonArray = dealerHandJsonArray;
                     Runnable updateDealerCards = new Runnable() {
                         @Override
+                        //ChatGPT usage: No
                         public void run() {
                             String card;
                             try {
@@ -416,6 +422,7 @@ public class BlackJackActivity extends AppCompatActivity {
                     JSONArray finalPlayerHandJsonArray = playerHandJsonArray;
                     Runnable updatePlayerCards = new Runnable() {
                         @Override
+                        //ChatGPT usage: No
                         public void run() {
                             Log.d(TAG, "Update player cards");
                             String card;
@@ -577,6 +584,7 @@ public class BlackJackActivity extends AppCompatActivity {
         });
     }
 
+    //ChatGPT usage: Partial - how to do View.GONE
     private void showGameOver() {
         runOnUiThread(new Runnable() {
             @Override

@@ -365,6 +365,7 @@ public class BaccaratActivity extends AppCompatActivity {
     }
 
 
+    //ChatGPT Usage: Partial - for the Popup window
     private void performFinalAnimations(JSONArray playerHandJSON, JSONArray dealerHandJSON, double earnings) {
         Handler handler = new Handler(Looper.getMainLooper());
         Log.d(TAG, "Final animations");
@@ -372,6 +373,7 @@ public class BaccaratActivity extends AppCompatActivity {
         //Finish dealing cards, allow the popup to run
         Runnable popupEnding = new Runnable() {
             @Override
+            //ChatGPT usage: Yes
             public void run() {
                 //Send User to Results Popup
                 runOnUiThread(new Runnable() {
@@ -387,6 +389,7 @@ public class BaccaratActivity extends AppCompatActivity {
         // Define the logic to update player cards.
         Runnable updateDealerCards = new Runnable() {
             @Override
+            //ChatGPT usage: No
             public void run() {
                 String card;
                 String value;
@@ -409,6 +412,7 @@ public class BaccaratActivity extends AppCompatActivity {
         };
         Runnable updatePlayerCards = new Runnable() {
             @Override
+            //ChatGPT usage: No
             public void run() {
                 Log.d(TAG, "Update player cards");
                 String card;
