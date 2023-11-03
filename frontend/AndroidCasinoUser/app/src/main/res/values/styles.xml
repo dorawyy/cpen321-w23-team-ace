@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--
+    <style name="Template" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/</item>
+        <item name="colorPrimaryDark">@color/</item>
+        <item name="colorAccent">@color/</item>
+        <item name="android:windowBackground">@color/</item>
+        <item name="android:textColor">@color/</item>
+        <item name="android:background">@color/</item>
+        <item name="android:statusBarColor">@color/</item>
+        <item name="android:navigationBarColor">@color/</item>
+    </style>
+    -->
+    <style name="HolidayStorm" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/holidayStormOrange</item>
+        <item name="colorPrimaryDark">@color/holidayStormDeepOrange</item>
+        <item name="colorAccent">@color/holidayStormBlue</item>
+        <item name="android:windowBackground">@color/holidayStormLightBlue</item>
+        <item name="android:navigationBarColor">@color/holidayStormDeepOrange</item>
+    </style>
+    <style name="FrostNova" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/frostNovaGrey</item>
+        <item name="colorPrimaryDark">@color/frostNovaDeepGrey</item>
+        <item name="colorAccent">@color/frostNovaBlue</item>
+        <item name="android:windowBackground">@color/frostNovaWhite</item>
+        <item name="android:statusBarColor">@color/frostNovaOrange</item>
+        <item name="android:navigationBarColor">@color/frostNovaGrey</item>
+    </style>
+    <style name="Victoria" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/victoriaGold</item>
+        <item name="colorPrimaryDark">@color/victoriaDeepGold</item>
+        <item name="colorAccent">@color/victoriaPurple</item>
+        <item name="android:windowBackground">@color/victoriaBrown</item>
+        <item name="android:statusBarColor">@color/victoriaDeepGold</item>
+        <item name="android:navigationBarColor">@color/victoriaGold</item>
+    </style>
+    <style name="Merchant" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/merchantRed</item>
+        <item name="colorPrimaryDark">@color/merchantDeepRed</item>
+        <item name="colorAccent">@color/merchantGrey</item>
+        <item name="android:windowBackground">@color/merchantBlack</item>
+        <item name="android:statusBarColor">@color/merchantDeepRed</item>
+        <item name="android:navigationBarColor">@color/merchantRed</item>
+    </style>
+    <style name="GameReady" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/gameReadyBlue</item>
+        <item name="colorPrimaryDark">@color/gameReadyRed</item>
+        <item name="colorAccent">@color/gameReadyGrey</item>
+        <item name="android:windowBackground">@color/gameReadyWhite</item>
+        <item name="android:statusBarColor">@color/gameReadyRed</item>
+        <item name="android:navigationBarColor">@color/gameReadyRed</item>
+    </style>
+
+
+</resources>

@@ -2,4 +2,33 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <!-- Theme HolidayStorm -->
+    <color name="holidayStormOrange">#DCEF9729</color>
+    <color name="holidayStormDeepOrange">#B5711E</color>
+    <color name="holidayStormBlue">#DC1866EC</color>
+    <color name="holidayStormLightBlue">#66ccff</color>
+    <!-- Theme FrostNova -->
+    <color name="frostNovaGrey">#F5768288</color>
+    <color name="frostNovaDeepGrey">#DC546073</color>
+    <color name="frostNovaBlue">#6A8FD1</color>
+    <color name="frostNovaWhite">#E5E8EC</color>
+    <color name="frostNovaOrange">#C17855</color>
+    <!-- Theme Victoria -->
+    <color name="victoriaGold">#FFCC00</color>
+    <color name="victoriaDeepGold">#B8860B</color>
+    <color name="victoriaPurple">#9736DC</color>
+    <color name="victoriaBrown">#604035</color>
+    <color name="victoriaYellow">#FFEB3B</color>
+    <!-- Theme Merchant -->
+    <color name="merchantRed">#DC1616</color>
+    <color name="merchantDeepRed">#8E0303</color>
+    <color name="merchantGrey">#7E7575</color>
+    <color name="merchantBlack">#231814</color>
+    <color name="merchantWhite">#FBF8F1</color>
+    <!-- Theme gameReady -->
+    <color name="gameReadyRed">#AF3132</color>
+    <color name="gameReadyBlue">#363F9F</color>
+    <color name="gameReadyGrey">#888484</color>
+    <color name="gameReadyWhite">#FFFFFF</color>
+
 </resources>

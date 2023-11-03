@@ -9,10 +9,13 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
@@ -52,12 +55,23 @@ public class MainActivity extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ThemeManager.getInstance(this).applyCurrentTheme(this);
         setContentView(R.layout.activity_main);
-       //connect the socket
+        //connect the socket
         SocketHandler.setSocket();
         SocketHandler.establishConnection();
         mSocket = SocketHandler.getSocket();
         setupSocketListeners();
+
+        // ChatGPT usage: No
+        // change theme button
+        Button changeThemeButton = findViewById(R.id.changeThemeButtonMain);
+        changeThemeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showThemeChooser();
+            }
+        });
 
         // ChatGPT usage: Partial
         //set up sign button
@@ -75,6 +89,25 @@ public class MainActivity extends AppCompatActivity {
                 signIn();
             }
         });
+    }
+
+    // ChatGPT usage: Partial
+    // Theme Management and directing
+    public void showThemeChooser(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Choose a theme:");
+        builder.setItems((CharSequence[])ThemeManager.getThemeList(false), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                // Save the theme on selection
+                ThemeManager.getInstance(MainActivity.this).setTheme(i);
+
+                // Restart Activity to apply new theme
+                MainActivity.this.recreate();
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     // ChatGPT usage: Partial
