@@ -39,7 +39,7 @@
         <item name="colorPrimary">@color/merchantRed</item>
         <item name="colorPrimaryDark">@color/merchantDeepRed</item>
         <item name="colorAccent">@color/merchantGrey</item>
-        <item name="android:windowBackground">@color/merchantBlack</item>
+        <item name="android:windowBackground">@color/merchantWhite</item>
         <item name="android:statusBarColor">@color/merchantDeepRed</item>
         <item name="android:navigationBarColor">@color/merchantRed</item>
     </style>

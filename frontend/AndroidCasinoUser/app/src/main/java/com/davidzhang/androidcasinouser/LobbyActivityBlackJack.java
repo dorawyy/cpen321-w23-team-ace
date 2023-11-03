@@ -10,14 +10,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
-public class LobbyActivityBlackJack extends AppCompatActivity {
+public class LobbyActivityBlackJack extends ThemedActivity {
     private Socket mSocket;
     private String TAG = "BJ";
 

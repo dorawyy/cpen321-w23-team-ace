@@ -8,8 +8,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -27,7 +25,7 @@ import io.socket.client.IO;
 import io.socket.emitter.Emitter;
 import io.socket.client.Socket;
 
-public class UserProfile extends AppCompatActivity {
+public class UserProfile extends ThemedActivity {
 
     private TextView usernameTextView, balanceTextView;
     private Button redemptionButton, adminButton;

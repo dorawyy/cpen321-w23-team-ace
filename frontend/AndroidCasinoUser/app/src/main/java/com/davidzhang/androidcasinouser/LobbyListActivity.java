@@ -1,5 +1,4 @@
 package com.davidzhang.androidcasinouser;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,7 +20,7 @@ import io.socket.client.IO;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
 
-public class LobbyListActivity extends AppCompatActivity {
+public class LobbyListActivity extends ThemedActivity {
     private RecyclerView lobbiesRecyclerView;
     private List<Lobby> lobbyList = new ArrayList<>();
     private LobbyAdapter lobbyAdapter;
