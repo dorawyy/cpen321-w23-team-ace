@@ -148,12 +148,22 @@ io.on('connection', (socket) => {
         if(gameLobbies[roomName]) {
             // Set bet = 0 initially
             await gameLobbies[roomName].addPlayer(userName, 0, socket);
-            gameLobbies[roomName].registerSocketEvents(socket);
         }
         else {
             socket.emit('roomDoesNot', "Room does not exist");
         }
     });
+
+    // ChatGPT usage: Partial
+    socket.on('sendChatMessage', async (roomName, userName, message) =>{
+        console.log("Send chat Live");
+            const chatMessage = {
+                user: userName,
+                text: message,
+            };
+
+        io.to(roomName).emit('receiveChatMessage', chatMessage);
+    })
 
     // ChatGPT usage: No
     socket.on('getAllLobby', async () => {
@@ -165,6 +175,13 @@ io.on('connection', (socket) => {
     socket.on('setBet', async(roomName, userName, bet) => {
         await gameLobbies[roomName].setPlayerBet(roomName, userName, bet);
     })
+
+    // ChatGPT usage: No
+    socket.on('setReady', async(roomName, userName) => {
+        console.log("User ready");
+        await gameLobbies[roomName].setPlayerReady(userName);
+    })
+
 
     // ChatGPT usage: No
     socket.on('getPlayerCount', async(roomName) => {

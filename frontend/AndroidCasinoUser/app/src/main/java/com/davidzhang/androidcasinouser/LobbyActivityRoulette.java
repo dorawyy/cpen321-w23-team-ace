@@ -99,7 +99,7 @@ public class LobbyActivityRoulette extends AppCompatActivity {
                 }
 
                 mSocket.emit("setBet", roomName, currentPlayer.getUsername(), bets);
-                mSocket.emit("setReady", currentPlayer.getUsername());
+                mSocket.emit("setReady", roomName, currentPlayer.getUsername());
             }
         });
 
@@ -116,7 +116,7 @@ public class LobbyActivityRoulette extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "You are banned from chat", Toast.LENGTH_SHORT).show();
                     }
                     else {
-                        mSocket.emit("sendChatMessage", message);
+                        mSocket.emit("sendChatMessage", roomName, currentPlayer.getUsername(), message);
                         etEnterMessage.setText(""); // Clear the message input
                     }
                 }
