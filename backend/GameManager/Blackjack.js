@@ -67,14 +67,12 @@ class Blackjack {
         let playerScore = 0;
         let dealerScore = 0;
         let cardValue = 0;
-        let aceCount = 0
         let returnObject = {}
 
         //get the value of the dealer hand
         for (let card of gameData.gameItems.globalItems.dealerHand) {
             cardValue = GameAssets.getPokarFaceValue(card);
-            // ignore card 10-13 (0)
-            if (cardValue >= 9) {
+            if (cardValue > 9) {
                 dealerScore += 10
             } else {
                 dealerScore += cardValue
@@ -94,13 +92,12 @@ class Blackjack {
 
         for (let playerId of gameData.playerList) {
             playerScore = 0;
-            aceCount = 0;
 
             //get the value of the player hand
             for (let card of gameData.gameItems.playerItems[playerId].playerHand) {
                 cardValue = GameAssets.getPokarFaceValue(card);
                 // ignore card 10-13 (0)
-                if (cardValue >= 9) {
+                if (cardValue > 9) {
                     playerScore += 10
                 } else {
                     playerScore += cardValue
@@ -211,6 +208,8 @@ class Blackjack {
         if(gameData.currentPlayerIndex !== -1){
             return 0;
         }
+        console.log("Calculating Winnings")
+        console.log(JSON.stringify(gameData))
 
         let gameDataLocal = JSON.parse(JSON.stringify(gameData))
         let handValue = this._getHandValue(gameDataLocal);
@@ -225,11 +224,11 @@ class Blackjack {
             let playerBets = gameDataLocal.betsPlaced[playerIdValue];
             let winningAmount = 0;
 
-            let betType = "self"; //Currently the only FE option
             let betValue = playerBets; //integer
             
             //Calculate bet result
-            winningAmount += this._didBetWin(betType, handValue, betValue);
+            console.log("Calculating bets for player :  " + playerIdValue);
+            winningAmount += this._didBetWin(handValue, betValue, playerIdValue);
             
             gameResult[playerIdValue] = winningAmount;
         }
@@ -245,19 +244,38 @@ class Blackjack {
      * @returns {int} winningAmount: the amount of money the player wins
      */
     // ChatGPT usage: No
-    static _didBetWin(betType, handValue, betValue){
+    static _didBetWin(handValue, betValue, username){
+        // BlackJack (21) pays 3:2 (1.5x on top of bet payback)
+        // Ties go to dealer
+        // If a player busts, they lose
+        // If the player has higher score than dealer, they win
+        // If the player has lower score than the dealer, but the dealer busted, they win.
+        // Regular wins pay 1:1 (1x on top of bet payback)
+
+
+        console.log("Hand value: " + JSON.stringify(handValue));
+        console.log("Bet value: " + betValue);
+        console.log("PLAYER HAND: " + JSON.stringify(handValue[username]))
+        console.log("DEALER HAND: " + JSON.stringify(handValue.dealerScore))
+
         let winningAmount = -betValue;
-        if (betType === "self") {
-            if (handValue.playerScore > 21) {
-                winningAmount += 0;
-            } else {
-                if (handValue.playerScore === 21 || handValue.playerScore > handValue.dealerScore) {
-                    winningAmount += betValue * 2;
-                }  else if (handValue.playerScore === handValue.dealerScore) {
-                    winningAmount += betValue;
-                }
-            }
+        
+        if (handValue[username] > 21) {
+            console.log("Player busted");
         } 
+        else {
+            if ((handValue[username] > handValue.dealerScore) || handValue.dealerScore > 21) {
+                console.log("Player Has the Better Hand");
+                if (handValue[username] === 21) {
+                    winningAmount += betValue * 2.5;
+                } else {
+                    winningAmount += betValue * 2;
+                }
+            }  
+            else {
+                console.log("Dealer Has the Better Hand");
+            }
+        }
         return winningAmount;
     }
 

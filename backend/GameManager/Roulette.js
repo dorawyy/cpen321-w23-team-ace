@@ -100,7 +100,9 @@ class Roulette{
             for (let j = 0; j < currentBetOptionsInFE.length; j++) {
                 let betType = currentBetOptionsInFE[j];
                 let betValue = playerBets[currentBetOptionsInFE[j]];
+                console.log("PLAYER SCORE: " + winningAmount);
                 winningAmount += this._didBetWin(betType, rouletteNumber, landColour, betValue);
+                console.log("PLAYER SCORE: " + winningAmount);
             }
             gameResult[playerIdValue] = winningAmount;
         }
