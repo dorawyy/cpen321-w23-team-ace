@@ -77,7 +77,7 @@ public class CreateLobby extends AppCompatActivity {
                 String gameType = gameTypeSpinner.getSelectedItem().toString();
                 String maxPlayers = maxPlayersEditText.getText().toString().trim();
 
-                if (!roomName.isEmpty() && !gameType .isEmpty() && Integer.parseInt(maxPlayers) > 0) {
+                if (!roomName.isEmpty() && !gameType .isEmpty() && !maxPlayers.isEmpty() && Integer.parseInt(maxPlayers) > 0) {
                     mSocket.emit("createLobby", roomName, gameType, maxPlayers, user.getUsername());
 
                 } else {
