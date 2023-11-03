@@ -296,7 +296,7 @@ class GameManager extends EventEmitter {
                 "gameData": gameData, 
             });
             // reset the timer, if one exists
-            if (gameData.gameType == "BlackJack") {
+            if (gameData.gameType === "BlackJack") {
                 this._resetTimer(gameData);
             }
         }
