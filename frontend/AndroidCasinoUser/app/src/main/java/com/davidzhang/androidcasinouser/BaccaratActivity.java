@@ -16,8 +16,6 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -31,7 +29,7 @@ import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
 
 //ChatGPT usage for this class: Partial - things related to queueing requests and popup windows, and socket handling
-public class BaccaratActivity extends AppCompatActivity {
+public class BaccaratActivity extends ThemedActivity {
     private Socket mSocket;
     private String TAG = "BaccaratEvent";
     private boolean currentlyAnimating = false;

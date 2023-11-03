@@ -10,7 +10,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,7 +20,7 @@ import java.util.Date;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
 
-public class AdminPanel extends AppCompatActivity {
+public class AdminPanel extends ThemedActivity {
 
     private EditText editUserNameEditText, pointValueEditText;
     private Button banFromChatButton, setAsAdminButton, addPointsButton, unbanFromChatButton, unsetAsAdminButton;

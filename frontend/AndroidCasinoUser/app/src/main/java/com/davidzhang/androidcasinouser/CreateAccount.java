@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import org.json.JSONException;
@@ -17,7 +16,7 @@ import org.json.JSONObject;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
 
-public class CreateAccount extends AppCompatActivity {
+public class CreateAccount extends ThemedActivity {
 
     private EditText accountNameEditText;
     private Socket mSocket;

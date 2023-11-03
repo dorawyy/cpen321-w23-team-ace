@@ -10,8 +10,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.client.googleapis.json.GoogleJsonResponseException;
@@ -27,7 +25,7 @@ import java.util.Collections;
 
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
-public class LobbyActivityBaccarat extends AppCompatActivity {
+public class LobbyActivityBaccarat extends ThemedActivity {
     private Socket mSocket;
     private Button btnPlayersWin;
     private Button btnDealerWins;

@@ -1,6 +1,5 @@
 package com.davidzhang.androidcasinouser;
 
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,7 +22,7 @@ import java.util.Date;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
 
-public class CreateLobby extends AppCompatActivity {
+public class CreateLobby extends ThemedActivity {
 
     private EditText roomNameEditText;
     private EditText maxPlayersEditText;
