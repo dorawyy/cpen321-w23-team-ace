@@ -20,8 +20,12 @@ const https_server = https.createServer(options, app);
 const SERVER_TYPE = 'https';
 const SERVER_PORT = 443;
 
-// io and access management
-const io = socketIo(server);
+// io and access management based on https or http
+if (SERVER_TYPE === 'http') {
+    var io = socketIo(server);
+} else if (SERVER_TYPE === 'https') {
+    var io = socketIo(https_server);
+}
 app.use(cors());
 
 const UserStore = require('./UserStore');
