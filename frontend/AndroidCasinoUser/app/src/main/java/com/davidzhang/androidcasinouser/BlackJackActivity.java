@@ -74,6 +74,7 @@ public class BlackJackActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String userName = intent.getStringExtra("userName");
         String roomName = intent.getStringExtra("roomName");
+        Boolean isChatBanned = intent.getBooleanExtra("isChatBanned", false);
 
         // Initialize UI components
         hitButton = findViewById(R.id.hitButton);
@@ -125,9 +126,9 @@ public class BlackJackActivity extends AppCompatActivity {
             }
         });
 
+        // ChatGPT usage: No
         mSocket.on("receiveChatMessage", new Emitter.Listener() {
             @Override
-            //TODO: ChatGPT usage: ASK DINGWEN AND DAVIDZ
             public void call(Object... args) {
                 JSONObject data = (JSONObject) args[0];
                 Log.e(TAG, data.toString());
@@ -145,7 +146,6 @@ public class BlackJackActivity extends AppCompatActivity {
 
                 runOnUiThread(new Runnable() {
                     @Override
-                    //TODO: ChatGPT usage: ASK DINGWEN AND DAVIDZ
                     public void run() {
                         addChatMessage(message);
                     }
@@ -427,19 +427,24 @@ public class BlackJackActivity extends AppCompatActivity {
         final EditText etEnterMessage = findViewById(R.id.etEnterMessage);
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
-            //TODO: ChatGPT usage: ASK DAVIDZ AND DINGWEN
+            // ChatGPT usage: No
             public void onClick(View view) {
                 String message = etEnterMessage.getText().toString();
                 if (!message.isEmpty()) {
-                    mSocket.emit("sendChatMessage", message);
-                    etEnterMessage.setText(""); // Clear the message input
+                    if (isChatBanned) {
+                        Toast.makeText(getApplicationContext(), "You are banned from chat", Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        mSocket.emit("sendChatMessage", roomName, userName, message);
+                        etEnterMessage.setText(""); // Clear the message input
+                    }
                 }
             }
         });
     }
 
+    // ChatGPT usage: No
     // Add a chat message to the chat UI
-    //TODO: ChatGPT usage: ASK DAVIDZ AND DINGWEN
     private void addChatMessage(String message) {
         LinearLayout llChatContainer = findViewById(R.id.llChatContainer);
         TextView tvMessage = new TextView(this);

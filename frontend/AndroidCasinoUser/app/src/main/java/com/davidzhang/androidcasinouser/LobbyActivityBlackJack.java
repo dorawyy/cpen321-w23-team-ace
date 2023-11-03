@@ -227,6 +227,7 @@ public class LobbyActivityBlackJack extends AppCompatActivity {
                 gameIntent = new Intent(LobbyActivityBlackJack.this, BlackJackActivity.class);
                 gameIntent.putExtra("userName", currentPlayer.getUsername());
                 gameIntent.putExtra("roomName", roomName);
+                gameIntent.putExtra("isChatBanned", currentPlayer.isChatBanned());
                 startActivity(gameIntent);
             }
         });

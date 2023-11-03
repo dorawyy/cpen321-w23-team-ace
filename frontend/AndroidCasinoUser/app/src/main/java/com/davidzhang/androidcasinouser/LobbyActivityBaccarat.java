@@ -267,6 +267,7 @@ public class LobbyActivityBaccarat extends AppCompatActivity {
                 Intent gameIntent = new Intent(LobbyActivityBaccarat.this, BaccaratActivity.class);
                 gameIntent.putExtra("userName", currentPlayer.getUsername());
                 gameIntent.putExtra("roomName", roomName);
+                gameIntent.putExtra("isChatBanned", currentPlayer.isChatBanned());
                 startActivity(gameIntent);
             }
         });
