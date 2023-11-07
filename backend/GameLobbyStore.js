@@ -21,10 +21,10 @@ class GameLobbyStore {
     // ChatGPT usage: Partial
     async insertLobby(roomName, gameType, maxPlayers) {
         const lobbyData = {
-            roomName: roomName,
-            gameType: gameType,
+            roomName,
+            gameType,
             gameStarted: false,
-            maxPlayers: maxPlayers,
+            maxPlayers,
             players: {}
         };
         await this.collection.insertOne(lobbyData);
@@ -33,20 +33,20 @@ class GameLobbyStore {
 
     // ChatGPT usage: No
     async updateLobby(roomName, updateData) {
-        await this.collection.updateOne({ roomName: roomName }, { $set: updateData });
+        await this.collection.updateOne({ roomName }, { $set: updateData });
         console.log("Update lobby successfully");
     }
 
     // ChatGPT usage: No
     async setPlayerReady(roomName, userName) {
         const key = `players.${userName}.ready`;
-        await this.collection.updateOne({ roomName: roomName }, { $set: { [key]: true } });
+        await this.collection.updateOne({ roomName }, { $set: { [key]: true } });
         console.log("Set ready successfully");
     }
 
     // ChatGPT usage: Partial
     async getLobby(roomName) {
-        return await this.collection.findOne({ roomName: roomName });
+        return await this.collection.findOne({ roomName });
     }
 
     // ChatGPT usage: No
@@ -56,7 +56,7 @@ class GameLobbyStore {
 
     // ChatGPT usage: No
     async deleteLobby(roomName) {
-        await this.collection.deleteOne({ roomName: roomName });
+        await this.collection.deleteOne({ roomName });
     }
 
     // ChatGPT usage: No
@@ -68,7 +68,7 @@ class GameLobbyStore {
 
     // ChatGPT usage: No
     async getPlayerCount(roomName) {
-        const lobby = await this.collection.findOne({ roomName: roomName });
+        const lobby = await this.collection.findOne({ roomName });
         var totalPlayers = 0;
         var playersReady = 0;
 
@@ -78,6 +78,7 @@ class GameLobbyStore {
             playersReady++;
         }
     }
+        // Return number of total players and ready players
         return {"tp": totalPlayers, "pr": playersReady};
     }
 

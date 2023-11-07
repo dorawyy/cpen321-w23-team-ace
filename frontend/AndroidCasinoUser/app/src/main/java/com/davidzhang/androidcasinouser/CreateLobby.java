@@ -13,12 +13,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.Date;
-
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
 
@@ -27,7 +21,7 @@ public class CreateLobby extends ThemedActivity {
     private EditText roomNameEditText;
     private EditText maxPlayersEditText;
     private Spinner gameTypeSpinner;
-    private Button createLobbyButton;
+
     private Socket mSocket;
     private User user;
     private String TAG = "CreateLobby";
@@ -51,6 +45,7 @@ public class CreateLobby extends ThemedActivity {
         setContentView(R.layout.activity_create_lobby);
         //SocketHandler.setSocket();
         //SocketHandler.establishConnection();
+        Button createLobbyButton;
         mSocket = SocketHandler.getSocket();
         setupSocketListeners();
         Intent intent = getIntent();
@@ -100,7 +95,7 @@ public class CreateLobby extends ThemedActivity {
                 Log.d(TAG, "Room already exist, need to create again");
                 if (args[0] != null) {
 
-                    String msg  = (String) args[0];
+                    //String msg  = (String) args[0];
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
