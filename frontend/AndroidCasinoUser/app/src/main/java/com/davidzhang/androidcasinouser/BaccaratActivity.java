@@ -21,9 +21,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map;
-import java.util.Queue;
 
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
@@ -415,7 +413,6 @@ public class BaccaratActivity extends ThemedActivity {
             public void run() {
                 Log.d(TAG, "Update player cards");
                 String card;
-                String value;
                 try {
                     card = playerHandJSON.getString(playerCardIdx);
 

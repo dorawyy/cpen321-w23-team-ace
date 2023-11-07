@@ -282,7 +282,6 @@ public class BlackJackActivity extends ThemedActivity {
                                 public void run() {
                                     Log.d(TAG, "Update player cards");
                                     String card;
-                                    String value;
                                     try {
                                         if (playerCardIdx < playerCardLastIdx) {
                                             card = finalPlayerHandJsonArray.getString(playerCardIdx);
@@ -353,7 +352,9 @@ public class BlackJackActivity extends ThemedActivity {
                         earnings = gameResult.getDouble(userName);
                     }
                     catch (JSONException e) {
-                        throw new RuntimeException(e);
+                        Log.e(TAG, "FAILED TO PARSE JSON OBJECT.");
+                        Toast.makeText(getApplicationContext(), "An error has occurred. Returning to lobby", Toast.LENGTH_SHORT).show();
+                        finish();
                     }
 
                     playerCardLastIdx = playerHandJsonArray.length();
