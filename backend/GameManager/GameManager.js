@@ -325,6 +325,7 @@ class GameStore {
 
     // ChatGPT usage: No
     async connect() {
+        // trying to adding a comment to suppress the block error
         try {
             await this.client.connect()
             this.db = this.client.db('casinoApp');
