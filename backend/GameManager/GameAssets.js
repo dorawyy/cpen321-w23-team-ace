@@ -118,7 +118,7 @@ class gameAssets {
                     value = 13;
                     break;
                 default:
-                    value = parseInt(card);
+                    value = parseInt(card, 10);
             }
         }
         return value;
@@ -152,8 +152,8 @@ class gameAssets {
             "params": {
                 "apiKey": apiKey,
                 "n": count,
-                "min": min,
-                "max": max,
+                min,
+                max,
             },
             "id": 1
         };
@@ -165,7 +165,7 @@ class gameAssets {
                 let response = await fetch('https://api.random.org/json-rpc/1/invoke', {
                     method: 'post',
                     body: JSON.stringify(body),
-                    headers: headers
+                    headers
                 });
                 //console.log('Response status:', response.status, response.statusText);
                 let json = await response.json();

@@ -1,13 +1,4 @@
 const Baccarat = require('../GameManager/Baccarat');
-const ioMock = {
-  to: jest.fn().mockImplementation(() => {
-      return {
-          emit: jest.fn((event, data) => {
-              console.log(event, data);
-          })
-      };
-  })
-};  // jest's jest.fn() method returns a new mock function
 
 jest.mock('mongodb', () => {
   const mClient = {
@@ -36,17 +27,16 @@ jest.mock('mongodb', () => {
   return { MongoClient: jest.fn(() => mClient) };
 });
 
+let gameData;
+
 describe('Baccarat', () => {
   beforeAll(() => {
-    // global setup
   });
 
   afterAll(() => {
-    // global tear down
   });
 
   beforeEach(async ()=> {
-    // per test setup
     gameData = {
       lobbyId: 'abc123',
       gameType: 'baccarat',
@@ -65,7 +55,6 @@ describe('Baccarat', () => {
   });
 
   afterEach(() => {
-    // per test tear down
     
   });
 
@@ -75,7 +64,6 @@ describe('Baccarat', () => {
   });
 
   it('random', async () => {
-    expect(typeof await Blackjack._getRandomCard(gameData) === "string");
+    expect(typeof await Baccarat._getRandomCard(gameData) === "string");
   });
-  // Add more tests as needed
 });

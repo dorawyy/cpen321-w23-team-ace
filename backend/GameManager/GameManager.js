@@ -1,12 +1,8 @@
-
-const { info } = require('console');
-const socketio = require('socket.io');
 const Baccarat = require('./Baccarat'); 
 const Blackjack = require('./Blackjack');
 const Roulette = require('./Roulette');
 const EventEmitter = require('events');
 const { MongoClient } = require('mongodb');
-const { get } = require('http');
 
 /*
 playerList structure: 
@@ -207,12 +203,12 @@ class GameManager extends EventEmitter {
 
         // setup game object with default value
         let gameData = {
-            lobbyId: lobbyId,
-            gameType: gameType,
-            playerList: playerList,
+            lobbyId,
+            gameType,
+            playerList,
             currentPlayerIndex: 0,
             currentTurn: 0,
-            betsPlaced: betsPlaced,
+            betsPlaced,
             gameItems: {
                 globalItems: {}, 
                 playerItems: defaultItems

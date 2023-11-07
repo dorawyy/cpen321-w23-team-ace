@@ -21,10 +21,11 @@ const SERVER_TYPE = 'http';
 const SERVER_PORT = 443;
 
 // io and access management based on https or http
+var io;
 if (SERVER_TYPE === 'http') {
-    var io = socketIo(server);
+    io = socketIo(server);
 } else if (SERVER_TYPE === 'https') {
-    var io = socketIo(https_server);
+    io = socketIo(https_server);
 }
 app.use(cors());
 

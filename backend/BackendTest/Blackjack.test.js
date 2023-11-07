@@ -1,17 +1,8 @@
 const Blackjack = require('../GameManager/Blackjack');
-const ioMock = {
-  to: jest.fn().mockImplementation(() => {
-      return {
-          emit: jest.fn((event, data) => {
-              console.log(event, data);
-          })
-      };
-  })
-};  // jest's jest.fn() method returns a new mock function
 
 jest.mock('mongodb', () => {
   const mClient = {
-    connect: jest.fn().mockImplementation(() => Promise.resolve()), // Mock promise that resolves to undefined
+    connect: jest.fn().mockImplementation(() => Promise.resolve()), 
     db: jest.fn().mockReturnThis(),
     collection: jest.fn().mockReturnThis(),
     insertOne: jest.fn(),
@@ -36,17 +27,16 @@ jest.mock('mongodb', () => {
   return { MongoClient: jest.fn(() => mClient) };
 });
 
+let gameData;
+
 describe('Blackjack', () => {
   beforeAll(() => {
-    // global setup
   });
 
   afterAll(() => {
-    // global tear down
   });
 
   beforeEach(async ()=> {
-    // per test setup
     gameData = {
       lobbyId: 'abc123',
       gameType: 'Blackjack',
@@ -79,5 +69,4 @@ describe('Blackjack', () => {
     expect(typeof randomCard === "string");
     expect(randomCard.length >= 2);
   });
-  // Add more tests as needed
 });
