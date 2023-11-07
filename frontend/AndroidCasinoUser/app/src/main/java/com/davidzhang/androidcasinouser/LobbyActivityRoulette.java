@@ -20,8 +20,6 @@ public class LobbyActivityRoulette extends ThemedActivity {
     private Socket mSocket;
     private String TAG = "LEvent";
     private EditText etEmailInput;
-    private Button btnInvite;
-
     private String roomName = "";
 
 
@@ -122,7 +120,7 @@ public class LobbyActivityRoulette extends ThemedActivity {
             }
         });
         etEmailInput = findViewById(R.id.etEmailInput);
-        btnInvite = findViewById(R.id.btnInvite);
+        Button btnInvite = findViewById(R.id.btnInvite);
         btnInvite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -185,8 +183,9 @@ public class LobbyActivityRoulette extends ThemedActivity {
                             tvPlayersReady.setText("Players Ready: " + playersReady + "/" + totalPlayers);
 
                         } catch (JSONException e) {
-                            throw new RuntimeException(e);
-                        }                    }
+                            Log.e("JSON Parsing failed", e.toString());
+                        }
+                    }
                 });
             }
         });

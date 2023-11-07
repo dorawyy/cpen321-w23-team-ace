@@ -18,11 +18,7 @@ import io.socket.emitter.Emitter;
 public class LobbyActivityBlackJack extends ThemedActivity {
     private Socket mSocket;
     private String TAG = "BJ";
-
-    private int counter = 0;
     private EditText etEmailInput;
-    private Button btnInvite;
-
     private String roomName = "";
 
 
@@ -113,7 +109,7 @@ public class LobbyActivityBlackJack extends ThemedActivity {
         });
 
         etEmailInput = findViewById(R.id.etEmailInput);
-        btnInvite = findViewById(R.id.btnInvite);
+        Button btnInvite = findViewById(R.id.btnInvite);
         // ChatGPT usage: No
         btnInvite.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -181,7 +177,7 @@ public class LobbyActivityBlackJack extends ThemedActivity {
                             tvPlayersReady.setText("Players Ready: " + playersReady + "/" + totalPlayers);
 
                         } catch (JSONException e) {
-                            throw new RuntimeException(e);
+                            Log.e("JSON Parsing failed", e.toString());
                         }
                     }
                 });

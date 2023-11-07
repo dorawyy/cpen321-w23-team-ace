@@ -10,31 +10,18 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
-import com.google.api.client.googleapis.json.GoogleJsonResponseException;
-import com.google.api.services.gmail.Gmail;
-import com.google.api.services.gmail.GmailScopes;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.IOException;
-import java.security.GeneralSecurityException;
-import java.util.Collections;
 
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
 public class LobbyActivityBaccarat extends ThemedActivity {
     private Socket mSocket;
-    private Button btnPlayersWin;
-    private Button btnDealerWins;
     private String selectedBetChoice = "";
     private String TAG = "LEvent";
     private String roomName = "";
 
     private EditText etEmailInput;
-    private Button btnInvite;
 
 
 
@@ -74,8 +61,8 @@ public class LobbyActivityBaccarat extends ThemedActivity {
         });
 
         // Button: PlayersWin or DealerWins
-        btnPlayersWin = findViewById(R.id.btnPlayersWin);
-        btnDealerWins = findViewById(R.id.btnDealerWins);
+        Button btnPlayersWin = findViewById(R.id.btnPlayersWin);
+        Button btnDealerWins = findViewById(R.id.btnDealerWins);
 
         // ChatGPT usage: No
         btnPlayersWin.setOnClickListener(new View.OnClickListener() {
@@ -149,7 +136,7 @@ public class LobbyActivityBaccarat extends ThemedActivity {
         });
 
         etEmailInput = findViewById(R.id.etEmailInput);
-        btnInvite = findViewById(R.id.btnInvite);
+        Button btnInvite = findViewById(R.id.btnInvite);
 
         // ChatGPT usage: No
         btnInvite.setOnClickListener(new View.OnClickListener() {
@@ -221,9 +208,8 @@ public class LobbyActivityBaccarat extends ThemedActivity {
                             tvPlayersReady.setText("Players Ready: " + playersReady + "/" + totalPlayers);
 
                         } catch (JSONException e) {
-                            throw new RuntimeException(e);
+                            Log.e("JSON Parsing failed", e.toString());
                         }
-
                     }
                 });
             }

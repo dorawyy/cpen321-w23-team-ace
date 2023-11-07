@@ -2,12 +2,8 @@ package com.davidzhang.androidcasinouser;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -16,16 +12,13 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.socket.client.IO;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
 
 public class LobbyListActivity extends ThemedActivity {
     private RecyclerView lobbiesRecyclerView;
     private List<Lobby> lobbyList = new ArrayList<>();
-    private LobbyAdapter lobbyAdapter;
     private Socket mSocket;
-    private JSONArray lobbies;
     private User user;
     private String TAG = "Event";
 
@@ -47,6 +40,7 @@ public class LobbyListActivity extends ThemedActivity {
         mSocket.on("AllLobby", new Emitter.Listener() {
             @Override
             public void call(Object... args) {
+                JSONArray lobbies;
                 lobbies = (JSONArray) args[0];
                 Log.e(TAG, lobbies.toString());
                 // Handle the new message
@@ -69,6 +63,7 @@ public class LobbyListActivity extends ThemedActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        LobbyAdapter lobbyAdapter;
                         // This ensures that the adapter is set after the lobbyList is populated.
                         lobbyAdapter = new LobbyAdapter(LobbyListActivity.this, lobbyList);
                         lobbiesRecyclerView.setAdapter(lobbyAdapter);
