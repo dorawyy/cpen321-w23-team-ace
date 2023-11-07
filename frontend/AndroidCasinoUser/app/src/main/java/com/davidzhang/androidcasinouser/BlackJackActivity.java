@@ -37,8 +37,11 @@ public class BlackJackActivity extends ThemedActivity {
 
     private final Queue<Runnable> requestQueue = new LinkedList<>();
 
-    private Button hitButton, standButton;
-    private TextView turnIndicator, playerScoreLabel, dealerScoreLabel, lobbyName;
+    private Button hitButton;
+    private Button standButton;
+    private TextView turnIndicator;
+    private TextView playerScoreLabel;
+    private TextView dealerScoreLabel;
 
     private int[] playerCardVals = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     private int[] dealerCardVals = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
@@ -87,6 +90,7 @@ public class BlackJackActivity extends ThemedActivity {
         playerScoreLabel = findViewById(R.id.playerScoreLabel);
         dealerScoreLabel = findViewById(R.id.dealerScoreLabel);
 
+        TextView lobbyName;
         lobbyName = findViewById(R.id.lobbyNameLabel);
         lobbyName.setText("Lobby Name: " + roomName);
 
@@ -178,17 +182,15 @@ public class BlackJackActivity extends ThemedActivity {
                             JSONObject globalItems = null;
                             JSONObject playerItems = null;
                             JSONObject currentUserData = null;
-                            JSONObject turnPlayerData = null;
+                            //JSONObject turnPlayerData = null;
 
                             JSONArray playerHandJsonArray = null;
                             JSONArray dealerHandJsonArray = null;
-                            JSONArray turnPlayerHandJsonArray = null; //This one is for future updates to the UI
+                            //JSONArray turnPlayerHandJsonArray = null;
 
                             JSONArray playerList = null;
                             int currentPlayerIndex = -1;
                             String turnPlayer = "";
-
-                            String card;
 
                             try {
                                 gameData = gameState.getJSONObject("gameData");
@@ -201,14 +203,14 @@ public class BlackJackActivity extends ThemedActivity {
                                 turnPlayer = playerList.getString(currentPlayerIndex);
 
                                 currentUserData = playerItems.getJSONObject(userName);
-                                turnPlayerData = playerItems.getJSONObject(turnPlayer);
+                                //turnPlayerData = playerItems.getJSONObject(turnPlayer);
 
                                 playerHandJsonArray = currentUserData.getJSONArray("playerHand");
-                                turnPlayerHandJsonArray = turnPlayerData.getJSONArray("playerHand");
+                                //turnPlayerHandJsonArray = turnPlayerData.getJSONArray("playerHand");
                                 dealerHandJsonArray = globalItems.getJSONArray("dealerHand");
 
                             } catch (JSONException e) {
-                                throw new RuntimeException(e);
+                                Log.e(TAG, "FAILED TO PARSE JSON OBJECT.");
                             }
 
                             playerCardLastIdx = playerHandJsonArray.length();
@@ -236,11 +238,11 @@ public class BlackJackActivity extends ThemedActivity {
                                 //ChatGPT usage: No
                                 public void run() {
                                     //See who's turn it is and change UI accordingly
-                                    if (userName.equals(finalTurnPlayer) == false) {
+                                    if (userName.equals(finalTurnPlayer)) {
+                                        showButtonsForPlayerTurn(true);
+                                    } else {
                                         //in the future, we will replace the user's cards with the cards of whoever is currently going so they can watch.
                                         hideButtonsForOtherTurn(finalTurnPlayer);
-                                    } else {
-                                        showButtonsForPlayerTurn(true);
                                     }
 
                                     handler.post(endAnimation);
@@ -253,7 +255,6 @@ public class BlackJackActivity extends ThemedActivity {
                                 public void run() {
                                     Log.d(TAG,"updateDealerCards");
                                     String card;
-                                    String value;
                                     try {
                                         if (dealerCardIdx < dealerCardLastIdx) {
                                             card = finalDealerHandJsonArray.getString(dealerCardIdx);
@@ -304,7 +305,7 @@ public class BlackJackActivity extends ThemedActivity {
                             handler.post(updatePlayerCards); // Start with player cards.
                         }
                     });
-                    if (currentlyAnimating != true) {
+                    if (!currentlyAnimating) {
                         runNextFunction();
                     }
                 }
@@ -333,17 +334,10 @@ public class BlackJackActivity extends ThemedActivity {
                     JSONObject globalItems = null;
                     JSONObject playerItems = null;
                     JSONObject currentUserData = null;
-                    JSONObject turnPlayerData = null;
 
                     JSONArray playerHandJsonArray = null;
                     JSONArray dealerHandJsonArray = null;
-                    JSONArray turnPlayerHandJsonArray = null; //This one is for future updates to the UI
 
-                    JSONArray playerList = null;
-                    int currentPlayerIndex = -1;
-                    String turnPlayer = "";
-
-                    String card;
                     double earnings = 0;
 
                     try {
@@ -582,18 +576,6 @@ public class BlackJackActivity extends ThemedActivity {
         });
     }
 
-    //ChatGPT usage: Partial - how to do View.GONE
-    private void showGameOver() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                hitButton.setVisibility(View.GONE);
-                standButton.setVisibility(View.GONE);
-                turnIndicator.setText("Game Over");
-            }
-        });
-    }
-
     //ChatGPT usage: No
     private void updateScores() {
         int playerScore = 0;
@@ -610,19 +592,15 @@ public class BlackJackActivity extends ThemedActivity {
         //Check if we can use aces as 11 points
         for (int i = 0; i < playerCardIdx; i++) {
             int value = playerCardVals[i];
-            if (value == 1) {
-                if (playerScore + 10 <= 21) {
-                    playerScore += 10;
-                }
+            if ((value == 1) && (playerScore <= 11)) {
+                playerScore += 10;
             }
         }
 
         for (int i = 0; i < dealerCardIdx; i++) {
             int value = dealerCardVals[i];
-            if (value == 1) {
-                if (dealerScore + 10 <= 21) {
-                    dealerScore += 10;
-                }
+            if ((value == 1) && (dealerScore <= 11)) {
+                dealerScore += 10;
             }
         }
 
