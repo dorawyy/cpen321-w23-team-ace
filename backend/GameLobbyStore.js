@@ -62,7 +62,7 @@ class GameLobbyStore {
     // ChatGPT usage: No
     async setPlayerBet(roomName, userName, bet) {
         const key = `players.${userName}.bet`;
-        await this.collection.updateOne({ roomName: roomName }, { $set: { [key]: bet } });
+        await this.collection.updateOne({ roomName }, { $set: { [key]: bet } });
         console.log("Set bet successfully");
     }
 
