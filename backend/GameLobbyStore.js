@@ -75,12 +75,15 @@ class GameLobbyStore {
 
         for (var player in lobby.players) {
             totalPlayers++;
-        if (lobby.players[player].ready) {
-            playersReady++;
+            if (lobby.players[player].ready) {
+                playersReady++;
+            }
         }
-    }
         // Return number of total players and ready players
-        return {"tp": totalPlayers, "pr": playersReady};
+        return {
+            "tp": totalPlayers, 
+            "pr": playersReady
+        };
     }
 
     // ChatGPT usage: No
