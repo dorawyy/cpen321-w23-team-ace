@@ -15,13 +15,8 @@ import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
 
 public class AdminPanel extends ThemedActivity {
-
     private EditText editUserNameEditText;
-    private EditText pointValueEditText;
-    private Button banFromChatButton;
-    private Button setAsAdminButton;
-    private Button unbanFromChatButton;
-    private Button unsetAsAdminButton;
+
 
     private String TAG = "AdminPanel";
     private Socket mSocket;
@@ -43,6 +38,11 @@ public class AdminPanel extends ThemedActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_panel);
         Button addPointsButton;
+        Button banFromChatButton;
+        Button setAsAdminButton;
+        Button unbanFromChatButton;
+        EditText pointValueEditText;
+        Button unsetAsAdminButton;
         mSocket = SocketHandler.getSocket();
         setupSocketListeners();
         editUserNameEditText = findViewById(R.id.editUserNameEditText);

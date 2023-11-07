@@ -11,18 +11,11 @@ import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-
-
 import io.socket.emitter.Emitter;
-import io.socket.client.IO;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.util.Date;
 
-import io.socket.client.IO;
-import io.socket.emitter.Emitter;
 import io.socket.client.Socket;
 
 public class UserProfile extends ThemedActivity {
