@@ -24,12 +24,12 @@ class UserStore {
     
     // ChatGPT usage: Yes
     async getUser(userId) {
-        return await this.usersCollection.findOne({ userId: userId });
+        return await this.usersCollection.findOne({ userId });
     }
 
     // ChatGPT usage: Partial
     async getUserbyname(username){
-        return await this.usersCollection.findOne({ username : username});
+        return await this.usersCollection.findOne({ username});
     }
     
     // ChatGPT usage: Yes
@@ -54,15 +54,14 @@ class UserStore {
     // ChatGPT usage: Partial
     async updateUser(userId, updateDoc) {
         // Only allow certain fields to be updated
-        const result = await this.usersCollection.updateOne({ userId: userId }, { $set: updateDoc });
+        await this.usersCollection.updateOne({ userId }, { $set: updateDoc });
         // Return the updated document
         return await this.getUser(userId);
     }
 
     // ChatGPT usage: Partial
     async deleteUser(userId) {
-        return await this.usersCollection.deleteOne({ userId: userId });
-        
+        return await this.usersCollection.deleteOne({ userId });  
     }
 
     // ChatGPT usage: No

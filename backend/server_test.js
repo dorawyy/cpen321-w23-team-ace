@@ -13,7 +13,6 @@ const UserStore = require('./UserStore');
 const UserAccount = require('./UserAccount'); // Assuming you also export the UserAccount class
 const GameLobby = require('./GameLobby');
 const GameLobbyStore = require('./GameLobbyStore');
-const LiveChat = require('./LiveChat');
 const GameManager = require('./GameManager/GameManager');
 
 const MONGO_CONNECTION_STRING = 'mongodb://127.0.0.1:27017'; // Adjust to your MongoDB connection string

@@ -8,8 +8,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -93,7 +91,7 @@ public class CreateAccount extends ThemedActivity {
                         startActivity(intent);
 
                     } catch (JSONException e) {
-                        throw new RuntimeException(e);
+                        Log.e("JSON parsing Error", e.toString());
                     }
                 } else {
                     // User Create Failed

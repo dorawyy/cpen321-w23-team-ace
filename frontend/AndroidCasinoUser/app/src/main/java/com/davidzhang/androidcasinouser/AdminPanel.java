@@ -1,6 +1,6 @@
 package com.davidzhang.androidcasinouser;
 
-import android.content.Intent;
+
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.text.Spanned;
@@ -9,21 +9,19 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
-
-import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.text.ParseException;
-import java.util.Date;
 
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
 
 public class AdminPanel extends ThemedActivity {
 
-    private EditText editUserNameEditText, pointValueEditText;
-    private Button banFromChatButton, setAsAdminButton, addPointsButton, unbanFromChatButton, unsetAsAdminButton;
+    private EditText editUserNameEditText;
+    private EditText pointValueEditText;
+    private Button banFromChatButton;
+    private Button setAsAdminButton;
+    private Button unbanFromChatButton;
+    private Button unsetAsAdminButton;
 
     private String TAG = "AdminPanel";
     private Socket mSocket;
@@ -44,6 +42,7 @@ public class AdminPanel extends ThemedActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_panel);
+        Button addPointsButton;
         mSocket = SocketHandler.getSocket();
         setupSocketListeners();
         editUserNameEditText = findViewById(R.id.editUserNameEditText);
@@ -154,21 +153,21 @@ public class AdminPanel extends ThemedActivity {
             }
         });
         // ChatGPT usage: No
-        mSocket.on(io.socket.client.Socket.EVENT_CONNECT, new Emitter.Listener() {
+        mSocket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
             @Override
             public void call(Object... args) {
                 Log.d(TAG, "Socket connected");
             }
         });
         // ChatGPT usage: No
-        mSocket.on(io.socket.client.Socket.EVENT_DISCONNECT, new Emitter.Listener() {
+        mSocket.on(Socket.EVENT_DISCONNECT, new Emitter.Listener() {
             @Override
             public void call(Object... args) {
                 Log.d(TAG, "Socket disconnected");
             }
         });
         // ChatGPT usage: No
-        mSocket.on(io.socket.client.Socket.EVENT_CONNECT_ERROR, new Emitter.Listener() {
+        mSocket.on(Socket.EVENT_CONNECT_ERROR, new Emitter.Listener() {
             @Override
             public void call(Object... args) {
                 Log.e(TAG, "Socket connection error");
