@@ -84,7 +84,7 @@ class GameLobbyStore {
             // add comments to suppress error
             tp: totalPlayers, 
             pr: playersReady
-        };
+        }
     }
 
     // ChatGPT usage: No
