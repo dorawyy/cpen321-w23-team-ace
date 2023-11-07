@@ -68,16 +68,17 @@ class GameLobbyStore {
 
     // ChatGPT usage: No
     async getPlayerCount(roomName) {
+        // Find lobby using roomName
         const lobby = await this.collection.findOne({ roomName });
         var totalPlayers = 0;
         var playersReady = 0;
 
         for (var player in lobby.players) {
             totalPlayers++;
-        if (lobby.players[player].ready) {
-            playersReady++;
+            if (lobby.players[player].ready) {
+                playersReady++;
+            }
         }
-    }
         // Return number of total players and ready players
         let returnItem = {"tp": totalPlayers, "pr": playersReady};
         return returnItem;
