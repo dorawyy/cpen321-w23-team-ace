@@ -172,7 +172,7 @@ public class MainActivity extends ThemedActivity {
                         currentUser.setId(user.getString("_id"));
                         currentUser.setUserId(user.getString("userId"));
                         currentUser.setUsername(user.getString("username"));
-                        currentUser.setBalance(user.getInt("balance"));
+                        currentUser.setBalance(user.getDouble("balance"));
                         currentUser.setAdmin(user.getBoolean("isAdmin"));
                         currentUser.setChatBanned(user.getBoolean("isChatBanned"));
                         currentUser.setLastRedemptionDate(user.getString("lastRedemptionDate"));

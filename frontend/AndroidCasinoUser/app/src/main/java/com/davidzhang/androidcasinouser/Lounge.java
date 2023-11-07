@@ -124,7 +124,7 @@ public class Lounge extends ThemedActivity {
                         user.setId(result.getString("_id"));
                         user.setUserId(result.getString("userId"));
                         user.setUsername(result.getString("username"));
-                        user.setBalance(result.getInt("balance"));
+                        user.setBalance(result.getDouble("balance"));
                         user.setAdmin(result.getBoolean("isAdmin"));
                         user.setChatBanned(result.getBoolean("isChatBanned"));
                         user.setLastRedemptionDate(result.getString("lastRedemptionDate"));

@@ -97,7 +97,7 @@ public class UserProfile extends ThemedActivity {
                                 try {
                                     String username = user.getString("username");
                                     usernameTextView.setText("Username: " + username);
-                                    int balance = user.getInt("balance");
+                                    double balance = user.getDouble("balance");
                                     balanceTextView.setText("Balance: " + balance);
                                     isAdmin = user.getBoolean("isAdmin");
                                     if (isAdmin || thisuser.getUserId().equals(getResources().getString(R.string.DefaultAdminID))) {
@@ -119,7 +119,7 @@ public class UserProfile extends ThemedActivity {
             public void call(Object... args) {
                 Log.d(TAG, "received new balance details");
                 if (args[0] != null) {
-                    int newbalance = (int) args[0];
+                    double newbalance = (double) args[0];
 
                     runOnUiThread(new Runnable() {
                         @Override
@@ -153,7 +153,7 @@ public class UserProfile extends ThemedActivity {
                         thisuser.setId(user.getString("_id"));
                         thisuser.setUserId(user.getString("userId"));
                         thisuser.setUsername(user.getString("username"));
-                        thisuser.setBalance(user.getInt("balance"));
+                        thisuser.setBalance(user.getDouble("balance"));
                         thisuser.setAdmin(user.getBoolean("isAdmin"));
                         thisuser.setChatBanned(user.getBoolean("isChatBanned"));
                         thisuser.setLastRedemptionDate(user.getString("lastRedemptionDate"));
