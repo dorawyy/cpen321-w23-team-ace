@@ -275,6 +275,7 @@ public class BlackJackActivity extends ThemedActivity {
                     playerCardLastIdx = playerHandJsonArray.length();
                     dealerCardLastIdx = dealerHandJsonArray.length();
 
+                    earnings = Math.round(earnings * 100.0) / 100.0;
                     performFinalAnimations(dealerHandJsonArray, playerHandJsonArray, userName, earnings);
 
                     Log.d(TAG,"CURRENTLY ANIMATING?" + currentlyAnimating);
@@ -629,7 +630,6 @@ public class BlackJackActivity extends ThemedActivity {
         //Set up handler for animations
         Handler handler = new Handler(Looper.getMainLooper());
 
-        earnings = Math.round(earnings * 100.0) / 100.0;
         mSocket.emit("depositbyname", username, earnings);
 
         //Finish dealing cards, allow the popup to run
