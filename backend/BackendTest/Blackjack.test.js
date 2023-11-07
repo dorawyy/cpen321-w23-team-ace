@@ -43,7 +43,7 @@ describe('Blackjack', () => {
       playerList: ["playera"],
       currentPlayerIndex: 0,
       currentTurn: 0,
-      betsPlaced: {"playera": [{"betOnWhat":"1", "amount": 100}, {"betOnWhat":"red", "amount": 1}]},
+      betsPlaced: {"playera": [{"betOnWhat":"banker", "amount": 100}]},
       gameItems: {
           globalItems: {}, 
           playerItems: {}
