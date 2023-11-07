@@ -82,7 +82,7 @@ class Blackjack {
         //Check 1 at a time if Aces can be 11 instead of 1. 
         for (let card of gameData.gameItems.globalItems.dealerHand) {
             cardValue = GameAssets.getPokarFaceValue(card);
-            if ((cardValue == 1) && (dealerScore + 10 <= 21)) {
+            if ((cardValue === 1) && (dealerScore + 10 <= 21)) {
                 dealerScore += 10
             } 
         }
@@ -107,7 +107,7 @@ class Blackjack {
             //Check 1 at a time if Aces can be 11 instead of 1. 
             for (let card of gameData.gameItems.playerItems[playerId].playerHand) {
                 cardValue = GameAssets.getPokarFaceValue(card);
-                if ((cardValue == 1) && (playerScore + 10 <= 21)) {
+                if ((cardValue === 1) && (playerScore + 10 <= 21)) {
                     playerScore += 10
                 } 
             }

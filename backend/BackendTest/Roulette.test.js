@@ -1,5 +1,4 @@
 
-const Blackjack = require('../GameManager/Blackjack');
 const Roulette = require('../GameManager/Roulette');
 
 jest.mock('mongodb', () => {

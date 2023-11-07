@@ -74,6 +74,8 @@ jest.mock('mongodb', () => {
   return { MongoClient: jest.fn(() => mClient) };
 });
 
+var gameManager;
+
 describe('GameManager', () => {
   beforeAll(() => {
   });
