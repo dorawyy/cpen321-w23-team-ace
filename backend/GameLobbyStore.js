@@ -79,7 +79,8 @@ class GameLobbyStore {
         }
     }
         // Return number of total players and ready players
-        return {"tp": totalPlayers, "pr": playersReady};
+        let returnItem = {"tp": totalPlayers, "pr": playersReady};
+        return returnItem;
     }
 
     // ChatGPT usage: No
