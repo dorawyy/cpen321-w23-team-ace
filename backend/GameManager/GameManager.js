@@ -273,9 +273,8 @@ class GameManager extends EventEmitter {
             
             // game is over
             this.io.to(gameData.lobbyId).emit('gameOver', {
-                "gameData": gameData, 
-                "gameResult": gameResult,
-            
+                gameData, 
+                gameResult
             });
 
             console.log("EMITTED GAME OVER")
