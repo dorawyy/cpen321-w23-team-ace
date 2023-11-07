@@ -3,7 +3,7 @@ const APIKEY = keys.random_org_key;
 const fetch = require('node-fetch');
 
 class gameAssets {
-    /** return a 0-36 roulette table's location maped to colour
+    /** return a 0-36 roulette table's location mapped to colour
     @return {array} rouletteTable: a 0-36 table with colour
     */
    // ChatGPT usage: No
@@ -130,12 +130,11 @@ class gameAssets {
     * @param {int} min: The minimum number (inclusive)
     * @param {int} max: The maximum number (inclusive)
     * @param {int} count: The number of random numbers to generate, if <=0 default to 1
-    * @param {string} apiKey: The API key to use. If not provided, the default API key will be used
     * @return {array} value: random numbers
     */
 
     // ChatGPT usage: No
-    static async getRandomNumber(min, max, count, callback) {
+    static async getRandomNumber(min, max, count) {
         let randomNums = [];
         // input value check
         if (count <= 0) {
@@ -147,7 +146,7 @@ class gameAssets {
             "jsonrpc": "2.0",
             "method": "generateIntegers",
             "params": {
-                apiKey,
+                APIKEY,
                 "n": count,
                 min,
                 max,
