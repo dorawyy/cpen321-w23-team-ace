@@ -110,7 +110,7 @@ public class AdminPanel extends ThemedActivity {
             public void call(Object... args) {
                 Log.d(TAG, "received new balance details");
                 if (args[0] != null) {
-                    int newbalance = (int) args[0];
+                    double newbalance = (double) args[0];
 
                     runOnUiThread(new Runnable() {
                         @Override
