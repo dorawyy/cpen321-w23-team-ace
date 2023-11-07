@@ -135,12 +135,9 @@ class gameAssets {
     */
 
     // ChatGPT usage: No
-    static async getRandomNumber(min, max, count, callback, apiKey="") {
+    static async getRandomNumber(min, max, count, callback) {
         let randomNums = [];
         // input value check
-        if (apiKey == "") {
-            apiKey = APIKEY;
-        }
         if (count <= 0) {
             count = 1;
         }
@@ -150,7 +147,7 @@ class gameAssets {
             "jsonrpc": "2.0",
             "method": "generateIntegers",
             "params": {
-                "apiKey": apiKey,
+                apiKey,
                 "n": count,
                 min,
                 max,
