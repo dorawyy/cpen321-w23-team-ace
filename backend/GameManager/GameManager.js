@@ -288,7 +288,7 @@ class GameManager extends EventEmitter {
         } else {
             //game not over
             this.io.to(gameData.lobbyId).emit('playerTurn', {
-                "gameData": gameData, 
+                gameData, 
             });
             // reset the timer, if one exists
             if (gameData.gameType === "BlackJack") {
