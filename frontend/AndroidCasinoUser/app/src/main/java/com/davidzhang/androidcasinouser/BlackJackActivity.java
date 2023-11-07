@@ -535,7 +535,7 @@ public class BlackJackActivity extends ThemedActivity {
     }
 
 
-    //ChatGPT usage: No
+    //ChatGPT usage: None (Added in code review M5)
     private void performTurnAnimations(JSONArray dealerHandJsonArray, JSONArray playerHandJsonArray, String username, String turnPlayer) {
         //Set up handlers to do animations in order
         Handler handler = new Handler(Looper.getMainLooper());
@@ -625,7 +625,7 @@ public class BlackJackActivity extends ThemedActivity {
         handler.post(updatePlayerCards); // Start with player cards.
     }
 
-
+    //ChatGPT usage - None (Added in code review M5)
     private void performFinalAnimations(JSONArray dealerHandJsonArray, JSONArray playerHandJsonArray, String username, double earnings) {
         //Set up handler for animations
         Handler handler = new Handler(Looper.getMainLooper());
