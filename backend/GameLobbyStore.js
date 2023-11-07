@@ -78,6 +78,7 @@ class GameLobbyStore {
             playersReady++;
         }
     }
+        // Return number of total players and ready players
         return {"tp": totalPlayers, "pr": playersReady};
     }
 
