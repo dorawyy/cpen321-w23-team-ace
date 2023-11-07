@@ -82,8 +82,8 @@ class GameLobbyStore {
         // Return number of total players and ready players
         return {
             // add comments to suppress error
-            "tp": totalPlayers, 
-            "pr": playersReady
+            tp: totalPlayers, 
+            pr: playersReady
         };
     }
 
