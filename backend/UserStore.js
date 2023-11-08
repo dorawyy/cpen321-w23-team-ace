@@ -11,6 +11,7 @@ class UserStore {
 
     // ChatGPT usage: Yes
     async connect() {
+        //handle error when trying to connect to UserDB
         try {
             await this.client.connect();
             this.db = this.client.db(this.dbName);
