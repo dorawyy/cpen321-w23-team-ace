@@ -43,6 +43,7 @@ public class AdminPanel extends ThemedActivity {
         Button unbanFromChatButton;
         EditText pointValueEditText;
         Button unsetAsAdminButton;
+        Button withdrawPointsButton;
         mSocket = SocketHandler.getSocket();
         setupSocketListeners();
         editUserNameEditText = findViewById(R.id.editUserNameEditText);
@@ -53,6 +54,7 @@ public class AdminPanel extends ThemedActivity {
         addPointsButton = findViewById(R.id.addPointsButton);
         unbanFromChatButton = findViewById(R.id.unbanFromChatButton);
         unsetAsAdminButton = findViewById(R.id.unsetAsAdminButton);
+        withdrawPointsButton = findViewById(R.id.withdrawPointsButton);
 
         // ChatGPT usage: No
         banFromChatButton.setOnClickListener(new View.OnClickListener() {
@@ -94,6 +96,21 @@ public class AdminPanel extends ThemedActivity {
                 int intValue;
                 try {
                     intValue = Integer.parseInt(value);
+                    Log.d(TAG, "Entered user Name: " + editUserNameEditText.getText().toString());
+                    mSocket.emit("depositbyname", editUserNameEditText.getText().toString(), intValue);
+                } catch (NumberFormatException e) {
+                }
+
+            }
+        });
+
+        withdrawPointsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String value = pointValueEditText.getText().toString();
+                int intValue;
+                try {
+                    intValue = -1*(Integer.parseInt(value));
                     Log.d(TAG, "Entered user Name: " + editUserNameEditText.getText().toString());
                     mSocket.emit("depositbyname", editUserNameEditText.getText().toString(), intValue);
                 } catch (NumberFormatException e) {

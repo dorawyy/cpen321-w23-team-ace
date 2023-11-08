@@ -57,6 +57,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Add Points to Account"/>
+        <Button
+            android:id="@+id/withdrawPointsButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Withdraw Points to Account"/>
 
     </LinearLayout>
 

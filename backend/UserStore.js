@@ -11,10 +11,15 @@ class UserStore {
 
     // ChatGPT usage: Yes
     async connect() {
-        await this.client.connect();
-        this.db = this.client.db(this.dbName);
-        this.usersCollection = this.db.collection('users');
-        console.log("Connected to userStore db");
+        try {
+            await this.client.connect();
+            this.db = this.client.db(this.dbName);
+            this.usersCollection = this.db.collection('users');
+            console.log("Connected to userStore db");
+        } catch(error){
+            console.error("Connection to MongoDB failed: ", error);
+            throw error
+        }
         // Create unique index for userId
         //await this.usersCollection.createIndex({ "userId": 1 }, { unique: true });
     
