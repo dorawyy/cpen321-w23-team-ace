@@ -1,3 +1,4 @@
+const e = require('express');
 const Baccarat = require('./Baccarat'); 
 const Blackjack = require('./Blackjack');
 const Roulette = require('./Roulette');
@@ -121,22 +122,22 @@ class GameManager extends EventEmitter {
     */
    // ChatGPT usage: No
     async _getActionResult(gameData, username, action) {
-        console.log("GETTING ACTION RESULT")
         let gameType = gameData.gameType;
-        console.log(gameType)
+        let gameDataLocal = JSON.parse(JSON.stringify(gameData));
         if (gameType == 'BlackJack') {
-            gameData = await Blackjack.playTurn(gameData, username, action);
+            gameDataLocal = await Blackjack.playTurn(gameData, username, action);
         }
         else if (gameType == 'Baccarat') {
-            gameData = await Baccarat.playTurn(gameData);
+            gameDataLocal = await Baccarat.playTurn(gameData);
         }
         else if (gameType == 'Roulette'){
-            console.log("GETTING ROULETTE RESULT")
-
-            gameData = await Roulette.playTurn(gameData);
+            gameDataLocal = await Roulette.playTurn(gameData);
         }
-        
-        return gameData;
+        // game already over
+        if (gameDataLocal == 0) {
+            return gameData;
+        }
+        return gameDataLocal;
     }
 
     /* based on game status, calculate the winning and modify gameData
@@ -193,8 +194,6 @@ class GameManager extends EventEmitter {
 
     // ChatGPT usage: No
     async startGame(lobbyId, gameType, playerList, betsPlaced) {
-        console.log("STARTING NEW GAME");
-
         let defaultItems = {};
         for (let i = 0; i < playerList.length; i++) {
             //defaultItems.playerList[i].playerId = {};
@@ -216,19 +215,18 @@ class GameManager extends EventEmitter {
         };
 
         // setup new game based on game type
-        if (gameType == "BlackJack") {
+        if (gameType.low == "BlackJack") {
             gameData = Blackjack.newGame(gameData);
         } else if (gameType == "Baccarat") {
             gameData = Baccarat.newGame(gameData);
         } else if (gameType == "Roulette") {
             gameData = Roulette.newGame(gameData);
+        } else {
+            console.log("Invalid game type");
         }
         
-        console.log("SPOT 1")
         // complete game creation, will prepare the game settings, but no action will be performed
         await this.gameStore.newGame(gameData);
-
-        console.log("SPOT 2")
 
         this.playTurn(gameData.lobbyId);
     }
@@ -242,49 +240,29 @@ class GameManager extends EventEmitter {
     */
    // ChatGPT usage: No
     async playTurn(lobbyId, username="none", action="none") {
-        console.log("SPOT 3")
-
-        console.log("LOBBY: " + lobbyId);
         let gameData = await this.gameStore.getGame(lobbyId);
         let gameResult = null;
-
-        console.log("PLAYING TURN")
-        console.log(gameData)
-
+        
         // get action
         gameData = await this._getActionResult(gameData, username ,action);
 
         // update the game data in the database
         await this.gameStore.updateGame(gameData);
-        
         // Notify all players whose turn it is
         if (this._checkGameOver(gameData)) {
-
-            console.log("GETTING RESULTS")
             gameResult = this._calculateWinning(gameData);
-            console.log(gameResult);
-
-            //console.log("Calculated Winnings")
-            //console.log(gameData.gameItems.globalItems.ballLocation)
-            //console.log(gameResult)
-
-            console.log("GAME OVER")
-            console.log(gameData)
             
             // game is over
             this.io.to(gameData.lobbyId).emit('gameOver', {
                 gameData, 
                 gameResult
             });
-
-            console.log("EMITTED GAME OVER")
             
             if (this.timers[gameData.lobbyName]) {
                 clearTimeout(this.timers[gameData.lobbyName]);
             }
 
             await this.gameStore.deleteGame(gameData.lobbyId);
-            
         } else {
             //game not over
             this.io.to(gameData.lobbyId).emit('playerTurn', {
@@ -295,7 +273,6 @@ class GameManager extends EventEmitter {
                 this._resetTimer(gameData);
             }
         }
-        
     }
 
     /* check if the game is over
@@ -334,7 +311,6 @@ class GameStore {
             console.log(err);
             await this.client.close();
         }
-        
     }
 
     /* create a new game by creating a new gameData object

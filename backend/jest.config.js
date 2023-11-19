@@ -2,6 +2,7 @@
   const config = {
     collectCoverageFrom: [
       '**/*.{js,jsx}',
+      "!jest.config.js"
     ],
     coverageDirectory: './coverage/',
     collectCoverage: true,
