@@ -128,10 +128,10 @@ public class CircularWheelView extends View {
         float startAngle = 0;
 
         for (int i = 0; i < NUM_SLOTS; i++) {
-            if (wheelColors[i] == "green") {
+            if (wheelColors[i].equals("green")) {
                 paint.setColor(Color.GREEN);
             }
-            else if (wheelColors[i] == "red") {
+            else if (wheelColors[i].equals("red")) {
                 paint.setColor(Color.RED);
             } else {
                 paint.setColor(Color.BLACK);

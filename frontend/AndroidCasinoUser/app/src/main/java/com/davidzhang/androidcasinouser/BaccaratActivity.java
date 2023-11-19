@@ -21,9 +21,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map;
-import java.util.Queue;
 
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
@@ -32,9 +30,8 @@ import io.socket.emitter.Emitter;
 public class BaccaratActivity extends ThemedActivity {
     private Socket mSocket;
     private String TAG = "BaccaratEvent";
-    private boolean currentlyAnimating = false;
-    private final Queue<Runnable> requestQueue = new LinkedList<>();
-    private TextView playerScoreLabel, dealerScoreLabel, lobbyName;
+    private TextView playerScoreLabel;
+    private TextView dealerScoreLabel;
     private int[] playerCardVals = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     private int[] dealerCardVals = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     private Map<String, Integer> cardValues = new HashMap<String, Integer>() {{
@@ -75,6 +72,7 @@ public class BaccaratActivity extends ThemedActivity {
         playerScoreLabel = findViewById(R.id.playerScoreLabel);
         dealerScoreLabel = findViewById(R.id.dealerScoreLabel);
 
+        TextView lobbyName;
         lobbyName = findViewById(R.id.lobbyNameLabel);
         lobbyName.setText("Lobby Name: " + roomName);
 
@@ -149,7 +147,9 @@ public class BaccaratActivity extends ThemedActivity {
                         dealerHandJsonArray = globalItems.getJSONArray("bankerHand");
                     }
                     catch (JSONException e) {
-                        throw new RuntimeException(e);
+                        Log.e(TAG, "FAILED TO PARSE JSON OBJECT.");
+                        Toast.makeText(getApplicationContext(), "An error has occurred. Returning to lobby", Toast.LENGTH_SHORT).show();
+                        finish();
                     }
 
                     playerCardLastIdx = playerHandJsonArray.length();
@@ -390,7 +390,6 @@ public class BaccaratActivity extends ThemedActivity {
             //ChatGPT usage: No
             public void run() {
                 String card;
-                String value;
                 try {
                     card = dealerHandJSON.getString(dealerCardIdx);
 
@@ -414,7 +413,6 @@ public class BaccaratActivity extends ThemedActivity {
             public void run() {
                 Log.d(TAG, "Update player cards");
                 String card;
-                String value;
                 try {
                     card = playerHandJSON.getString(playerCardIdx);
 

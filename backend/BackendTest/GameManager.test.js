@@ -7,11 +7,11 @@ const ioMock = {
           })
       };
   })
-};  // jest's jest.fn() method returns a new mock function
+}; 
 
 jest.mock('mongodb', () => {
   const mClient = {
-    connect: jest.fn().mockImplementation(() => Promise.resolve()), // Mock promise that resolves to undefined
+    connect: jest.fn().mockImplementation(() => Promise.resolve()), 
     db: jest.fn().mockReturnThis(),
     collection: jest.fn().mockReturnThis(),
     insertOne: jest.fn(),
@@ -74,22 +74,20 @@ jest.mock('mongodb', () => {
   return { MongoClient: jest.fn(() => mClient) };
 });
 
+var gameManager;
+
 describe('GameManager', () => {
   beforeAll(() => {
-    // global setup
   });
 
   afterAll(() => {
-    // global tear down
   });
 
   beforeEach(() => {
-    // per test setup
     gameManager = new GameManager(ioMock);
   });
 
   afterEach(() => {
-    // per test tear down
   });
 
   it('should initialize the data structure correctly', () => {
@@ -109,5 +107,4 @@ describe('GameManager', () => {
     await gameManager.playTurn('abc123', {"usera":[1]});
   });
 
-  // Add more tests as needed
 });

@@ -37,8 +37,11 @@ public class BlackJackActivity extends ThemedActivity {
 
     private final Queue<Runnable> requestQueue = new LinkedList<>();
 
-    private Button hitButton, standButton;
-    private TextView turnIndicator, playerScoreLabel, dealerScoreLabel, lobbyName;
+    private Button hitButton;
+    private Button standButton;
+    private TextView turnIndicator;
+    private TextView playerScoreLabel;
+    private TextView dealerScoreLabel;
 
     private int[] playerCardVals = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     private int[] dealerCardVals = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
@@ -87,6 +90,7 @@ public class BlackJackActivity extends ThemedActivity {
         playerScoreLabel = findViewById(R.id.playerScoreLabel);
         dealerScoreLabel = findViewById(R.id.dealerScoreLabel);
 
+        TextView lobbyName;
         lobbyName = findViewById(R.id.lobbyNameLabel);
         lobbyName.setText("Lobby Name: " + roomName);
 
@@ -178,17 +182,15 @@ public class BlackJackActivity extends ThemedActivity {
                             JSONObject globalItems = null;
                             JSONObject playerItems = null;
                             JSONObject currentUserData = null;
-                            JSONObject turnPlayerData = null;
+                            //JSONObject turnPlayerData = null;
 
                             JSONArray playerHandJsonArray = null;
                             JSONArray dealerHandJsonArray = null;
-                            JSONArray turnPlayerHandJsonArray = null; //This one is for future updates to the UI
+                            //JSONArray turnPlayerHandJsonArray = null;
 
                             JSONArray playerList = null;
                             int currentPlayerIndex = -1;
                             String turnPlayer = "";
-
-                            String card;
 
                             try {
                                 gameData = gameState.getJSONObject("gameData");
@@ -201,110 +203,23 @@ public class BlackJackActivity extends ThemedActivity {
                                 turnPlayer = playerList.getString(currentPlayerIndex);
 
                                 currentUserData = playerItems.getJSONObject(userName);
-                                turnPlayerData = playerItems.getJSONObject(turnPlayer);
+                                //turnPlayerData = playerItems.getJSONObject(turnPlayer);
 
                                 playerHandJsonArray = currentUserData.getJSONArray("playerHand");
-                                turnPlayerHandJsonArray = turnPlayerData.getJSONArray("playerHand");
+                                //turnPlayerHandJsonArray = turnPlayerData.getJSONArray("playerHand");
                                 dealerHandJsonArray = globalItems.getJSONArray("dealerHand");
 
                             } catch (JSONException e) {
-                                throw new RuntimeException(e);
+                                Log.e(TAG, "FAILED TO PARSE JSON OBJECT.");
                             }
 
                             playerCardLastIdx = playerHandJsonArray.length();
                             dealerCardLastIdx = dealerHandJsonArray.length();
 
-                            //Set up handlers to do animations in order
-                            Handler handler = new Handler(Looper.getMainLooper());
-
-                            JSONArray finalDealerHandJsonArray = dealerHandJsonArray;
-
-                            Runnable endAnimation = new Runnable() {
-                                @Override
-                                //ChatGPT usage: No
-                                public void run() {
-                                    Log.d(TAG,"ENDING TURN ANIMATION");
-
-                                    currentlyAnimating = false;
-                                    runNextFunction();
-                                }
-                            };
-
-                            String finalTurnPlayer = turnPlayer;
-                            Runnable updateUIForTurn = new Runnable() {
-                                @Override
-                                //ChatGPT usage: No
-                                public void run() {
-                                    //See who's turn it is and change UI accordingly
-                                    if (userName.equals(finalTurnPlayer) == false) {
-                                        //in the future, we will replace the user's cards with the cards of whoever is currently going so they can watch.
-                                        hideButtonsForOtherTurn(finalTurnPlayer);
-                                    } else {
-                                        showButtonsForPlayerTurn(true);
-                                    }
-
-                                    handler.post(endAnimation);
-                                }
-                            };
-
-                            Runnable updateDealerCards = new Runnable() {
-                                @Override
-                                //ChatGPT usage: No
-                                public void run() {
-                                    Log.d(TAG,"updateDealerCards");
-                                    String card;
-                                    String value;
-                                    try {
-                                        if (dealerCardIdx < dealerCardLastIdx) {
-                                            card = finalDealerHandJsonArray.getString(dealerCardIdx);
-
-                                            dealNewCard(card, "dealer");
-                                            updateScores();
-                                        }
-
-                                        if (dealerCardIdx < dealerCardLastIdx) {
-                                            handler.postDelayed(this, 1000);
-                                        } else {
-                                            handler.post(updateUIForTurn); // Move to dealer cards once all player cards are shown.
-                                        }
-
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            };
-
-                            JSONArray finalPlayerHandJsonArray = playerHandJsonArray;
-                            Runnable updatePlayerCards = new Runnable() {
-                                @Override
-                                //ChatGPT usage: No
-                                public void run() {
-                                    Log.d(TAG, "Update player cards");
-                                    String card;
-                                    String value;
-                                    try {
-                                        if (playerCardIdx < playerCardLastIdx) {
-                                            card = finalPlayerHandJsonArray.getString(playerCardIdx);
-
-                                            dealNewCard(card, "player");
-                                            updateScores();
-                                        }
-
-                                        if (playerCardIdx < playerCardLastIdx) {
-                                            handler.postDelayed(this, 1000);
-                                        } else {
-                                            handler.postDelayed(updateDealerCards, 1000); // Move to dealer cards once all player cards are shown.
-                                        }
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            };
-
-                            handler.post(updatePlayerCards); // Start with player cards.
+                            performTurnAnimations(dealerHandJsonArray, playerHandJsonArray, userName, turnPlayer);
                         }
                     });
-                    if (currentlyAnimating != true) {
+                    if (!currentlyAnimating) {
                         runNextFunction();
                     }
                 }
@@ -333,17 +248,10 @@ public class BlackJackActivity extends ThemedActivity {
                     JSONObject globalItems = null;
                     JSONObject playerItems = null;
                     JSONObject currentUserData = null;
-                    JSONObject turnPlayerData = null;
 
                     JSONArray playerHandJsonArray = null;
                     JSONArray dealerHandJsonArray = null;
-                    JSONArray turnPlayerHandJsonArray = null; //This one is for future updates to the UI
 
-                    JSONArray playerList = null;
-                    int currentPlayerIndex = -1;
-                    String turnPlayer = "";
-
-                    String card;
                     double earnings = 0;
 
                     try {
@@ -359,90 +267,16 @@ public class BlackJackActivity extends ThemedActivity {
                         earnings = gameResult.getDouble(userName);
                     }
                     catch (JSONException e) {
-                        throw new RuntimeException(e);
+                        Log.e(TAG, "FAILED TO PARSE JSON OBJECT.");
+                        Toast.makeText(getApplicationContext(), "An error has occurred. Returning to lobby", Toast.LENGTH_SHORT).show();
+                        finish();
                     }
 
                     playerCardLastIdx = playerHandJsonArray.length();
                     dealerCardLastIdx = dealerHandJsonArray.length();
 
-                    //Set up handler for animations
-                    Handler handler = new Handler(Looper.getMainLooper());
-
                     earnings = Math.round(earnings * 100.0) / 100.0;
-                    mSocket.emit("depositbyname", userName, earnings);
-
-                    //Finish dealing cards, allow the popup to run
-                    double finalEarnings = earnings;
-                    Runnable popupEnding = new Runnable() {
-                        @Override
-                        //ChatGPT usage: Partial - how to call the popup window
-                        public void run() {
-                            //Send User to Results Popup
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                //ChatGPT usage: Partial - The call to showWinningsPopup
-                                public void run() {
-                                    showWinningsPopup(finalEarnings);
-                                }
-                            });
-                        }
-                    };
-
-                    //Set all dealer cards in the game state that haven't been set yet
-                    JSONArray finalDealerHandJsonArray = dealerHandJsonArray;
-                    Runnable updateDealerCards = new Runnable() {
-                        @Override
-                        //ChatGPT usage: No
-                        public void run() {
-                            String card;
-                            try {
-                                hideButtonsForOtherTurn("Dealer");
-                                if (dealerCardIdx < dealerCardLastIdx) {
-                                    card = finalDealerHandJsonArray.getString(dealerCardIdx);
-
-                                    dealNewCard(card, "dealer");
-                                    updateScores();
-                                }
-
-                                if (dealerCardIdx < dealerCardLastIdx) {
-                                    handler.postDelayed(this, 1000);
-                                } else {
-                                    handler.postDelayed(popupEnding, 3000); // Move to dealer cards once all player cards are shown.
-                                }
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    };
-
-                    //Set all user's cards in the game state that haven't been set yet
-                    JSONArray finalPlayerHandJsonArray = playerHandJsonArray;
-                    Runnable updatePlayerCards = new Runnable() {
-                        @Override
-                        //ChatGPT usage: No
-                        public void run() {
-                            Log.d(TAG, "Update player cards");
-                            String card;
-                            try {
-                                if (playerCardIdx < playerCardLastIdx) {
-                                    card = finalPlayerHandJsonArray.getString(playerCardIdx);
-
-                                    dealNewCard(card, "player");
-                                    updateScores();
-                                }
-
-                                if (playerCardIdx < playerCardLastIdx) {
-                                    handler.postDelayed(this, 1000);
-                                } else {
-                                    handler.postDelayed(updateDealerCards, 1000); // Move to dealer cards once all player cards are shown.
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    };
-                    handler.post(updatePlayerCards);
+                    performFinalAnimations(dealerHandJsonArray, playerHandJsonArray, userName, earnings);
 
                     Log.d(TAG,"CURRENTLY ANIMATING?" + currentlyAnimating);
 
@@ -582,18 +416,6 @@ public class BlackJackActivity extends ThemedActivity {
         });
     }
 
-    //ChatGPT usage: Partial - how to do View.GONE
-    private void showGameOver() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                hitButton.setVisibility(View.GONE);
-                standButton.setVisibility(View.GONE);
-                turnIndicator.setText("Game Over");
-            }
-        });
-    }
-
     //ChatGPT usage: No
     private void updateScores() {
         int playerScore = 0;
@@ -610,19 +432,15 @@ public class BlackJackActivity extends ThemedActivity {
         //Check if we can use aces as 11 points
         for (int i = 0; i < playerCardIdx; i++) {
             int value = playerCardVals[i];
-            if (value == 1) {
-                if (playerScore + 10 <= 21) {
-                    playerScore += 10;
-                }
+            if ((value == 1) && (playerScore <= 11)) {
+                playerScore += 10;
             }
         }
 
         for (int i = 0; i < dealerCardIdx; i++) {
             int value = dealerCardVals[i];
-            if (value == 1) {
-                if (dealerScore + 10 <= 21) {
-                    dealerScore += 10;
-                }
+            if ((value == 1) && (dealerScore <= 11)) {
+                dealerScore += 10;
             }
         }
 
@@ -714,5 +532,178 @@ public class BlackJackActivity extends ThemedActivity {
         }
 
         return value;
+    }
+
+
+    //ChatGPT usage: None (Added in code review M5)
+    private void performTurnAnimations(JSONArray dealerHandJsonArray, JSONArray playerHandJsonArray, String username, String turnPlayer) {
+        //Set up handlers to do animations in order
+        Handler handler = new Handler(Looper.getMainLooper());
+
+        JSONArray finalDealerHandJsonArray = dealerHandJsonArray;
+
+        Runnable endAnimation = new Runnable() {
+            @Override
+            //ChatGPT usage: No
+            public void run() {
+                Log.d(TAG,"ENDING TURN ANIMATION");
+
+                currentlyAnimating = false;
+                runNextFunction();
+            }
+        };
+
+        String finalTurnPlayer = turnPlayer;
+        Runnable updateUIForTurn = new Runnable() {
+            @Override
+            //ChatGPT usage: No
+            public void run() {
+                //See who's turn it is and change UI accordingly
+                if (username.equals(finalTurnPlayer)) {
+                    showButtonsForPlayerTurn(true);
+                } else {
+                    //in the future, we will replace the user's cards with the cards of whoever is currently going so they can watch.
+                    hideButtonsForOtherTurn(finalTurnPlayer);
+                }
+
+                handler.post(endAnimation);
+            }
+        };
+
+        Runnable updateDealerCards = new Runnable() {
+            @Override
+            //ChatGPT usage: No
+            public void run() {
+                Log.d(TAG,"updateDealerCards");
+                String card;
+                try {
+                    if (dealerCardIdx < dealerCardLastIdx) {
+                        card = finalDealerHandJsonArray.getString(dealerCardIdx);
+
+                        dealNewCard(card, "dealer");
+                        updateScores();
+                    }
+
+                    if (dealerCardIdx < dealerCardLastIdx) {
+                        handler.postDelayed(this, 1000);
+                    } else {
+                        handler.post(updateUIForTurn); // Move to dealer cards once all player cards are shown.
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        JSONArray finalPlayerHandJsonArray = playerHandJsonArray;
+        Runnable updatePlayerCards = new Runnable() {
+            @Override
+            //ChatGPT usage: No
+            public void run() {
+                Log.d(TAG, "Update player cards");
+                String card;
+                try {
+                    if (playerCardIdx < playerCardLastIdx) {
+                        card = finalPlayerHandJsonArray.getString(playerCardIdx);
+
+                        dealNewCard(card, "player");
+                        updateScores();
+                    }
+
+                    if (playerCardIdx < playerCardLastIdx) {
+                        handler.postDelayed(this, 1000);
+                    } else {
+                        handler.postDelayed(updateDealerCards, 1000); // Move to dealer cards once all player cards are shown.
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        handler.post(updatePlayerCards); // Start with player cards.
+    }
+
+    //ChatGPT usage - None (Added in code review M5)
+    private void performFinalAnimations(JSONArray dealerHandJsonArray, JSONArray playerHandJsonArray, String username, double earnings) {
+        //Set up handler for animations
+        Handler handler = new Handler(Looper.getMainLooper());
+
+        mSocket.emit("depositbyname", username, earnings);
+
+        //Finish dealing cards, allow the popup to run
+        double finalEarnings = earnings;
+        Runnable popupEnding = new Runnable() {
+            @Override
+            //ChatGPT usage: Partial - how to call the popup window
+            public void run() {
+                //Send User to Results Popup
+                runOnUiThread(new Runnable() {
+                    @Override
+                    //ChatGPT usage: Partial - The call to showWinningsPopup
+                    public void run() {
+                        showWinningsPopup(finalEarnings);
+                    }
+                });
+            }
+        };
+
+        //Set all dealer cards in the game state that haven't been set yet
+        JSONArray finalDealerHandJsonArray = dealerHandJsonArray;
+        Runnable updateDealerCards = new Runnable() {
+            @Override
+            //ChatGPT usage: No
+            public void run() {
+                String card;
+                try {
+                    hideButtonsForOtherTurn("Dealer");
+                    if (dealerCardIdx < dealerCardLastIdx) {
+                        card = finalDealerHandJsonArray.getString(dealerCardIdx);
+
+                        dealNewCard(card, "dealer");
+                        updateScores();
+                    }
+
+                    if (dealerCardIdx < dealerCardLastIdx) {
+                        handler.postDelayed(this, 1000);
+                    } else {
+                        handler.postDelayed(popupEnding, 3000); // Move to dealer cards once all player cards are shown.
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        //Set all user's cards in the game state that haven't been set yet
+        JSONArray finalPlayerHandJsonArray = playerHandJsonArray;
+        Runnable updatePlayerCards = new Runnable() {
+            @Override
+            //ChatGPT usage: No
+            public void run() {
+                Log.d(TAG, "Update player cards");
+                String card;
+                try {
+                    if (playerCardIdx < playerCardLastIdx) {
+                        card = finalPlayerHandJsonArray.getString(playerCardIdx);
+
+                        dealNewCard(card, "player");
+                        updateScores();
+                    }
+
+                    if (playerCardIdx < playerCardLastIdx) {
+                        handler.postDelayed(this, 1000);
+                    } else {
+                        handler.postDelayed(updateDealerCards, 1000); // Move to dealer cards once all player cards are shown.
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        handler.post(updatePlayerCards);
     }
 }

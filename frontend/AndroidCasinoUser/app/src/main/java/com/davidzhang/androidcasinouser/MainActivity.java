@@ -2,41 +2,29 @@ package com.davidzhang.androidcasinouser;
 
 
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.ComponentName;
-import android.content.Context;
+
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.ServiceConnection;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.IBinder;
+
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.tasks.Task;
 import com.google.api.services.gmail.GmailScopes;
 
-import io.socket.client.IO;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import io.socket.client.IO;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
 
@@ -48,9 +36,6 @@ public class MainActivity extends ThemedActivity {
     private static final int RC_SIGN_IN = 9001;
 
     private String loginuserid;
-    private String username;
-
-    private String balance;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -187,7 +172,7 @@ public class MainActivity extends ThemedActivity {
                         currentUser.setId(user.getString("_id"));
                         currentUser.setUserId(user.getString("userId"));
                         currentUser.setUsername(user.getString("username"));
-                        currentUser.setBalance(user.getInt("balance"));
+                        currentUser.setBalance(user.getDouble("balance"));
                         currentUser.setAdmin(user.getBoolean("isAdmin"));
                         currentUser.setChatBanned(user.getBoolean("isChatBanned"));
                         currentUser.setLastRedemptionDate(user.getString("lastRedemptionDate"));
@@ -197,7 +182,7 @@ public class MainActivity extends ThemedActivity {
                         startActivity(intent);
 
                     } catch (JSONException e) {
-                        throw new RuntimeException(e);
+                        Log.e("JSON parsing Error", e.toString());
                     }
 
                 } else {

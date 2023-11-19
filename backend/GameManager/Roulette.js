@@ -149,7 +149,7 @@ class Roulette{
                 winningAmount += betValue * 3; //Column bet pays 2:1
             }
         }else if(betType === "green") {
-            if (rouletteNumber == 0) {
+            if (rouletteNumber === 0) {
                 winningAmount += betValue * 36; 
             }
         }

@@ -109,11 +109,11 @@ class Baccarat {
 
         playerScore = playerScore % 10; // ignore the first digit
         bankerScore = bankerScore % 10;
+
+        // suppress unnecessary block issue
+        let return_value = {playerScore, bankerScore};
         
-        return {
-            playerScore: playerScore, 
-            bankerScore: bankerScore,
-        }
+        return return_value;
     }
 
     /** play a turn of the game

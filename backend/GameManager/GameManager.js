@@ -1,12 +1,8 @@
-
-const { info } = require('console');
-const socketio = require('socket.io');
 const Baccarat = require('./Baccarat'); 
 const Blackjack = require('./Blackjack');
 const Roulette = require('./Roulette');
 const EventEmitter = require('events');
 const { MongoClient } = require('mongodb');
-const { get } = require('http');
 
 /*
 playerList structure: 
@@ -114,7 +110,7 @@ class GameManager extends EventEmitter {
         // Implement actual timeout
         this.timers[gameData.lobbyName] = setTimeout(() => {
             //Force them to stand
-            this.playTurn(gameData.lobbyId, gameData.playerList[gameData.currentPlayerIndex], "stand");;
+            this.playTurn(gameData.lobbyId, gameData.playerList[gameData.currentPlayerIndex], "stand");
         }, 15000); // 15 seconds
     }
 
@@ -207,12 +203,12 @@ class GameManager extends EventEmitter {
 
         // setup game object with default value
         let gameData = {
-            lobbyId: lobbyId,
-            gameType: gameType,
-            playerList: playerList,
+            lobbyId,
+            gameType,
+            playerList,
             currentPlayerIndex: 0,
             currentTurn: 0,
-            betsPlaced: betsPlaced,
+            betsPlaced,
             gameItems: {
                 globalItems: {}, 
                 playerItems: defaultItems
@@ -277,9 +273,8 @@ class GameManager extends EventEmitter {
             
             // game is over
             this.io.to(gameData.lobbyId).emit('gameOver', {
-                "gameData": gameData, 
-                "gameResult": gameResult,
-            
+                gameData, 
+                gameResult
             });
 
             console.log("EMITTED GAME OVER")
@@ -293,7 +288,7 @@ class GameManager extends EventEmitter {
         } else {
             //game not over
             this.io.to(gameData.lobbyId).emit('playerTurn', {
-                "gameData": gameData, 
+                gameData, 
             });
             // reset the timer, if one exists
             if (gameData.gameType === "BlackJack") {
@@ -329,6 +324,7 @@ class GameStore {
 
     // ChatGPT usage: No
     async connect() {
+        // trying to adding a comment to suppress the block error
         try {
             await this.client.connect()
             this.db = this.client.db('casinoApp');

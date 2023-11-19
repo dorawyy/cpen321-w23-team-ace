@@ -1,4 +1,3 @@
-const GameLobbyStore = require('./GameLobbyStore');
 const LiveChat = require('./LiveChat');
 
 class GameLobby {
@@ -32,7 +31,7 @@ class GameLobby {
                 name: userName,
                 ready: false,
                 // Initialize bet = 0
-                bet: bet,
+                bet,
                 socketId: socket.id
             };
 

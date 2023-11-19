@@ -4,10 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 
@@ -24,12 +21,6 @@ import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
 
 public class Lounge extends ThemedActivity {
-
-    private Button userProfileButton;
-    private Button navigateToListButton;
-    private String username;
-    private Button signOutButton;
-    private Button createLobbyButton;
     private Socket mSocket;
     private User user;
 
@@ -37,12 +28,17 @@ public class Lounge extends ThemedActivity {
 
     private GoogleSignInClient mGoogleSignInClient;
 
-    private String[] lobbies = {"Lobby 1", "Lobby 2", "Lobby 3"};
+    //private String[] lobbies = {"Lobby 1", "Lobby 2", "Lobby 3"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lounge);
+        Button userProfileButton;
+        Button navigateToListButton;
+        Button createLobbyButton;
+        String username;
+        Button signOutButton;
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
@@ -128,14 +124,14 @@ public class Lounge extends ThemedActivity {
                         user.setId(result.getString("_id"));
                         user.setUserId(result.getString("userId"));
                         user.setUsername(result.getString("username"));
-                        user.setBalance(result.getInt("balance"));
+                        user.setBalance(result.getDouble("balance"));
                         user.setAdmin(result.getBoolean("isAdmin"));
                         user.setChatBanned(result.getBoolean("isChatBanned"));
                         user.setLastRedemptionDate(result.getString("lastRedemptionDate"));
 
 
                     } catch (JSONException e) {
-                        throw new RuntimeException(e);
+                        Log.e("JSON parsing failed", e.toString(), e);
                     }
 
                 } else {

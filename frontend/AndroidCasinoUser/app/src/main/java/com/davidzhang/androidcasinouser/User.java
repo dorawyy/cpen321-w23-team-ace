@@ -6,7 +6,7 @@ public class User implements Parcelable {
     private String id;
     private String userId;
     private String username;
-    private int balance;
+    private double balance;
     private boolean isAdmin;
     private boolean isChatBanned;
     private String lastRedemptionDate;
@@ -31,7 +31,7 @@ public class User implements Parcelable {
     }
 
     // ChatGPT usage: No
-    public int getBalance() {
+    public double getBalance() {
         return balance;
     }
 
@@ -66,7 +66,7 @@ public class User implements Parcelable {
     }
 
     // ChatGPT usage: No
-    public void setBalance(int balance) {
+    public void setBalance(double balance) {
         this.balance = balance;
     }
 
@@ -90,7 +90,7 @@ public class User implements Parcelable {
         id = in.readString();
         userId = in.readString();
         username = in.readString();
-        balance = in.readInt();
+        balance = in.readDouble();
         isAdmin = in.readByte() != 0;
         isChatBanned = in.readByte() != 0;
         lastRedemptionDate = in.readString();
@@ -102,7 +102,7 @@ public class User implements Parcelable {
         dest.writeString(id);
         dest.writeString(userId);
         dest.writeString(username);
-        dest.writeInt(balance);
+        dest.writeDouble(balance);
         dest.writeByte((byte) (isAdmin ? 1 : 0));
         dest.writeByte((byte) (isChatBanned ? 1 : 0));
         dest.writeString(lastRedemptionDate);

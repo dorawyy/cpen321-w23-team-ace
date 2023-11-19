@@ -3,7 +3,7 @@ const APIKEY = keys.random_org_key;
 const fetch = require('node-fetch');
 
 class gameAssets {
-    /** return a 0-36 roulette table's location maped to colour
+    /** return a 0-36 roulette table's location mapped to colour
     @return {array} rouletteTable: a 0-36 table with colour
     */
    // ChatGPT usage: No
@@ -118,7 +118,7 @@ class gameAssets {
                     value = 13;
                     break;
                 default:
-                    value = parseInt(card);
+                    value = parseInt(card, 10);
             }
         }
         return value;
@@ -130,17 +130,13 @@ class gameAssets {
     * @param {int} min: The minimum number (inclusive)
     * @param {int} max: The maximum number (inclusive)
     * @param {int} count: The number of random numbers to generate, if <=0 default to 1
-    * @param {string} apiKey: The API key to use. If not provided, the default API key will be used
     * @return {array} value: random numbers
     */
 
     // ChatGPT usage: No
-    static async getRandomNumber(min, max, count, callback, apiKey="") {
+    static async getRandomNumber(min, max, count) {
         let randomNums = [];
         // input value check
-        if (apiKey == "") {
-            apiKey = APIKEY;
-        }
         if (count <= 0) {
             count = 1;
         }
@@ -150,10 +146,10 @@ class gameAssets {
             "jsonrpc": "2.0",
             "method": "generateIntegers",
             "params": {
-                "apiKey": apiKey,
+                APIKEY,
                 "n": count,
-                "min": min,
-                "max": max,
+                min,
+                max,
             },
             "id": 1
         };
@@ -165,7 +161,7 @@ class gameAssets {
                 let response = await fetch('https://api.random.org/json-rpc/1/invoke', {
                     method: 'post',
                     body: JSON.stringify(body),
-                    headers: headers
+                    headers
                 });
                 //console.log('Response status:', response.status, response.statusText);
                 let json = await response.json();

@@ -11,37 +11,30 @@ import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-
-
 import io.socket.emitter.Emitter;
-import io.socket.client.IO;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.util.Date;
 
-import io.socket.client.IO;
-import io.socket.emitter.Emitter;
 import io.socket.client.Socket;
 
 public class UserProfile extends ThemedActivity {
 
-    private TextView usernameTextView, balanceTextView;
-    private Button redemptionButton, adminButton;
+    private TextView usernameTextView;
+    private TextView balanceTextView;
+    private Button adminButton;
     private boolean isAdmin = false;
 
     private Date lastRedemptionDate;
     private User thisuser;
     private String TAG = "UserProfile";
     private Socket mSocket;
-    private String username = "Retrieving...";
-    private String balance = "Retrieving...";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
+        Button redemptionButton;
         Intent intent = getIntent();
         thisuser = intent.getParcelableExtra("user");
         mSocket = SocketHandler.getSocket();
@@ -104,7 +97,7 @@ public class UserProfile extends ThemedActivity {
                                 try {
                                     String username = user.getString("username");
                                     usernameTextView.setText("Username: " + username);
-                                    int balance = user.getInt("balance");
+                                    double balance = user.getDouble("balance");
                                     balanceTextView.setText("Balance: " + balance);
                                     isAdmin = user.getBoolean("isAdmin");
                                     if (isAdmin || thisuser.getUserId().equals(getResources().getString(R.string.DefaultAdminID))) {
@@ -126,7 +119,7 @@ public class UserProfile extends ThemedActivity {
             public void call(Object... args) {
                 Log.d(TAG, "received new balance details");
                 if (args[0] != null) {
-                    int newbalance = (int) args[0];
+                    double newbalance = (double) args[0];
 
                     runOnUiThread(new Runnable() {
                         @Override
@@ -160,15 +153,15 @@ public class UserProfile extends ThemedActivity {
                         thisuser.setId(user.getString("_id"));
                         thisuser.setUserId(user.getString("userId"));
                         thisuser.setUsername(user.getString("username"));
-                        thisuser.setBalance(user.getInt("balance"));
+                        thisuser.setBalance(user.getDouble("balance"));
                         thisuser.setAdmin(user.getBoolean("isAdmin"));
                         thisuser.setChatBanned(user.getBoolean("isChatBanned"));
                         thisuser.setLastRedemptionDate(user.getString("lastRedemptionDate"));
                         lastRedemptionDate = DateHandler.stringToDate(thisuser.getLastRedemptionDate());
                     } catch (JSONException e) {
-                        throw new RuntimeException(e);
+                        Log.e("JSON parsing Error", e.toString());
                     } catch (ParseException e) {
-                        throw new RuntimeException(e);
+                        Log.e("Parsing Error", e.toString());
                     }
                 } else {
                     Log.d(TAG, "User not Found, we need to create an account");
@@ -176,21 +169,21 @@ public class UserProfile extends ThemedActivity {
             }
         });
         // ChatGPT usage: No
-        mSocket.on(io.socket.client.Socket.EVENT_CONNECT, new Emitter.Listener() {
+        mSocket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
             @Override
             public void call(Object... args) {
                 Log.d(TAG, "Socket connected");
             }
         });
         // ChatGPT usage: No
-        mSocket.on(io.socket.client.Socket.EVENT_DISCONNECT, new Emitter.Listener() {
+        mSocket.on(Socket.EVENT_DISCONNECT, new Emitter.Listener() {
             @Override
             public void call(Object... args) {
                 Log.d(TAG, "Socket disconnected");
             }
         });
         // ChatGPT usage: No
-        mSocket.on(io.socket.client.Socket.EVENT_CONNECT_ERROR, new Emitter.Listener() {
+        mSocket.on(Socket.EVENT_CONNECT_ERROR, new Emitter.Listener() {
             @Override
             public void call(Object... args) {
                 Log.e(TAG, "Socket connection error");

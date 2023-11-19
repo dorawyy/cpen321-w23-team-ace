@@ -17,14 +17,15 @@ const options = {
 // server types
 const server = http.createServer(app);
 const https_server = https.createServer(options, app);
-const SERVER_TYPE = 'https';
+const SERVER_TYPE = 'http';
 const SERVER_PORT = 443;
 
 // io and access management based on https or http
+var io;
 if (SERVER_TYPE === 'http') {
-    var io = socketIo(server);
+    io = socketIo(server);
 } else if (SERVER_TYPE === 'https') {
-    var io = socketIo(https_server);
+    io = socketIo(https_server);
 }
 app.use(cors());
 
@@ -32,7 +33,6 @@ const UserStore = require('./UserStore');
 const UserAccount = require('./UserAccount'); // Assuming you also export the UserAccount class
 const GameLobby = require('./GameLobby');
 const GameLobbyStore = require('./GameLobbyStore');
-const LiveChat = require('./LiveChat');
 const GameManager = require('./GameManager/GameManager');
 
 const MONGO_CONNECTION_STRING = 'mongodb://127.0.0.1:27017'; // Adjust to your MongoDB connection string
