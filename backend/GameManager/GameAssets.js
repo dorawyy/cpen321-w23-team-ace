@@ -146,7 +146,7 @@ class gameAssets {
             "jsonrpc": "2.0",
             "method": "generateIntegers",
             "params": {
-                APIKEY,
+                "apiKey": APIKEY,
                 "n": count,
                 min,
                 max,
@@ -174,6 +174,7 @@ class gameAssets {
                     //console.log(randomNums);
                     break;
                 } else {
+                    console.log(json);
                     throw new Error('No valid random numbers returned');
                 }
             } catch (error) {

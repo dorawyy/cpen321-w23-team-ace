@@ -4,7 +4,7 @@
   "description": "casino app",
   "main": "GameManager.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest --config jest.config.js"
   },
   "devDependencies": {
     "jest": "^29.7.0"
@@ -14,6 +14,7 @@
     "mongodb": "^6.2.0",
     "mongoose": "^7.6.3",
     "node-fetch": "^2.6.6",
-    "socket.io": "^4.7.2"
+    "socket.io": "^4.7.2",
+    "jest-junit": "^12.0.0"
   }
 }
