@@ -11,10 +11,11 @@
   },
   "dependencies": {
     "express": "^4.18.2",
+    "jest-junit": "^12.0.0",
     "mongodb": "^6.2.0",
     "mongoose": "^7.6.3",
     "node-fetch": "^2.6.6",
     "socket.io": "^4.7.2",
-    "jest-junit": "^12.0.0"
+    "socket.io-client": "^4.7.2"
   }
 }

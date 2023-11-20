@@ -166,7 +166,8 @@ class gameAssets {
                 let json = await response.json();
     
                 // Check if the api returned the random numbers
-                if (json && json.result && json.result.random && json.result.random.data) {
+                if (json && json.result && json.result.random && json.result.random.data
+                    && typeof json.result.random.data[0] == "number") {
                     randomNums = json.result.random.data;
                     break;
                 } else {

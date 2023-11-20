@@ -24,7 +24,7 @@ global.fetch = jest.fn().mockImplementation( () =>{
       return Promise.resolve({
         "result": {
           "random": {
-            "data": [returnVal[callCount - 1] - 4]
+            "data": [returnVal[callCount - 1]]
           }
         }
       }); 
@@ -48,7 +48,7 @@ describe('Roulette', () => {
       playerList: ["playera"],
       currentPlayerIndex: 0,
       currentTurn: 0,
-      betsPlaced: {"playera": [{"betOnWhat":"1", "amount": 100}, {"betOnWhat":"red", "amount": 1}]},
+      betsPlaced: {"playera": {"red": 100, "black": 0, "odd": 0, "even": 0, "green": 0}},
       gameItems: {
           globalItems: {}, 
           playerItems: {}
@@ -78,27 +78,28 @@ describe('Roulette', () => {
 
   it('calculate correct double lose', async () => {
     callCount = 0;
-    returnVal = [1*4, 1*4, 1*4, 1*4, 1*4, 1*4, 10*4, 10*4, 10*4];
-    
+    returnVal = [1];
+    betTypes = {"red": 0, "black": 100, "odd": 0, "even": 0, "green": 100}
+    gameData.betsPlaced.playera = betTypes;
     let gameDataLocal = await Roulette.playTurn(gameData);
     expect(typeof gameDataLocal).toBe("object");
     expect(gameDataLocal.currentPlayerIndex).toBe(-1);
     let gameResult = await Roulette.calculateWinning(gameDataLocal)
     expect(gameResult != 0).toBe(true);    
-    expect(gameResult.playera).toBe(0);
+    expect(gameResult.playera).toBe(-200);
   });
-
 
   it('calculate correct double win', async () => {
     callCount = 0;
     returnVal = [1];
-    
+    betTypes = {"red": 100, "black": 0, "odd": 100, "even": 0, "green": 0}
+    gameData.betsPlaced.playera = betTypes;
     let gameDataLocal = await Roulette.playTurn(gameData);
     expect(typeof gameDataLocal).toBe("object");
     expect(gameDataLocal.currentPlayerIndex).toBe(-1);
     let gameResult = await Roulette.calculateWinning(gameDataLocal)
     expect(gameResult != 0).toBe(true);    
-    expect(gameResult.playera).toBe(100);
+    expect(gameResult.playera).toBe(200);
   });
 
   it('calculate all possible win', async () => {
@@ -108,13 +109,14 @@ describe('Roulette', () => {
     for(let i = 0; i <= 36; i++){
       // interate through bet type: red, black, odd, even, low, high, firstDozen, secondDozen, thirdDozen, 
       //firstColumn, secondColumn, thirdColumn, {single numbers like 0, 1, 2...}
-      betTypes = ["red", "black", "odd", "even", "green", "low", "high", "firstDozen", 
-        "secondDozen", "thirdDozen", "firstColumn", "secondColumn", "thirdColumn", 
-        i.toString(), (i-1).toString()];
+      betTypes = ["red", "black", "odd", "even", "green"]
       callCount = 0;
       returnVal = [i];
+      
       for(let j = 0; j < betTypes.length; j++){
-        gameData.betsPlaced.playera[0].betOnWhat = betTypes[j];
+        betTypes = {"red": 0, "black": 0, "odd": 0, "even": 0, "green": 0}
+        betTypes[betTypes[j]] = 100;
+        gameData.betsPlaced.playera = betTypes;
         // force a turn even with -1
         let gameDataLocal = await Roulette.playTurn(gameData);
         expect(typeof gameDataLocal).toBe("object");
@@ -131,9 +133,16 @@ describe('Roulette', () => {
   it('Calculate winning before gameover', async () => {
     
     callCount = 0;
-    returnVal = [5*4, 4*4, 1*4, 2*4, 2*4, 2*4, 10*4];
+    returnVal = [1];
 
     let gameDataLocal = await Roulette.calculateWinning(gameData)
     expect(gameDataLocal).toBe(0);
+  });
+  it('Unknown bet type', async () => {
+    
+    callCount = 0;
+    returnVal = [1];
+    let gameDataLocal = await Roulette._didBetWin("tear", 1, "red", 100)
+    expect(gameDataLocal).toBe(-100);
   });
 });

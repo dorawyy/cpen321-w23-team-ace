@@ -58,10 +58,6 @@ class Roulette{
     */
     // ChatGPT usage: No
     static async playTurn(gameData){
-        // check game is over
-        if(gameData.currentPlayerIndex === -1){
-            return 0;
-        }
         let gameDataLocal = JSON.parse(JSON.stringify(gameData))
         let rouletteNumber = Math.floor((await GameAssets.getRandomNumber(0, 36, 1))[0]); //Generate a random number: 0-36
         gameDataLocal.gameItems.globalItems.ballLocation = rouletteNumber;
@@ -128,29 +124,10 @@ class Roulette{
                 || (rouletteNumber % 2 === 1 && betType === 'odd')){
                 winningAmount += betValue * 2; //Odd/Even bet pays 1:1
             }
-        }else if(betType === 'low' || betType === 'high'){
-            if((rouletteNumber >=1 && rouletteNumber <= 18 && betType === 'low') 
-                || (rouletteNumber >=19 && rouletteNumber <= 36 && betType === 'high')){
-                winningAmount += betValue * 2; //Low/High bet pays 1:1
-            }
-        }else if(betType.includes('Dozen')){
-            if((rouletteNumber >=1 && rouletteNumber <= 12 && betType === 'firstDozen') 
-                || (rouletteNumber >=13 && rouletteNumber <= 24 && betType === 'secondDozen') 
-                || (rouletteNumber >=25 && rouletteNumber <= 36 && betType === 'thirdDozen')){
-                winningAmount += betValue * 3; //Dozen bet pays 2:1
-            }
-        }else if(betType.includes('Column')){
-            if((rouletteNumber % 3 === 1 && betType === 'firstColumn') 
-                || (rouletteNumber % 3 === 2 && betType === 'secondColumn') 
-                || (rouletteNumber % 3 === 0 && betType === 'thirdColumn')){
-                winningAmount += betValue * 3; //Column bet pays 2:1
-            }
         }else if(betType === "green") {
             if (rouletteNumber === 0) {
                 winningAmount += betValue * 36; 
             }
-        }else if(betType === rouletteNumber.toString()){
-            winningAmount += betValue * 36; //Single number bet pays 35:1
         }else {
             console.log("Unknown bet type")
         }
