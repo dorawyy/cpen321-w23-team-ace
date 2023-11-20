@@ -124,7 +124,7 @@ describe('GameManager', () => {
   
     // then call your method
     await gameManager.startGame('abc123', 'Roulette', [], []);
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    await new Promise(resolve => setTimeout(resolve, 500));
     // Now you can console.log toParameters and emitParameters.
     expect(toParameters.length).toBe(1);
     expect(toParameters[0][0]).toEqual(expect.stringContaining('abc123'));
@@ -150,7 +150,7 @@ describe('GameManager', () => {
   
     // then call your method
     await gameManager.playTurn('abc123', {"usera":[1]});
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    await new Promise(resolve => setTimeout(resolve, 500));
     // Now you can console.log toParameters and emitParameters.
     expect(toParameters.length).toBe(1);
     expect(toParameters[0][0]).toEqual(expect.stringContaining('abc123'));

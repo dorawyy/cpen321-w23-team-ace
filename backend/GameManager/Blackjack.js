@@ -28,11 +28,11 @@ const GameAssets = require('./GameAssets');
 
 class Blackjack {
     // ChatGPT usage: No
-    static newGame(gameData){
+    static async newGame(gameData){
         let gameDataLocal = JSON.parse(JSON.stringify(gameData))
         
         gameDataLocal.gameItems.globalItems = {
-            pokar: GameAssets.getPokar(),
+            pokar: await GameAssets.getPokar(),
             dealerHand: [],
         };
         // for each player, setup their hand
@@ -42,7 +42,7 @@ class Blackjack {
                 playerState: 0, // 0 = still in game, 1 = done their turns
             }
         }
-        return gameDataLocal;
+        return await gameDataLocal;
     }
 
 
@@ -128,13 +128,12 @@ class Blackjack {
     static async playTurn(gameData, username, action) {
         let gameDataLocal = JSON.parse(JSON.stringify(gameData))
         // check if more card should be given
-        console.log("PLAY TURN : " + JSON.stringify(gameData));
         
         let playerHand = [];
         let dealerHand = [];
         let handValue = [];
         
-        // if first round, deal cards
+        // if first formal round, deal cards
         if (gameDataLocal.currentTurn === 0) {
             gameDataLocal.currentTurn = 1;
 
@@ -155,8 +154,6 @@ class Blackjack {
                 //Wrong player somehow made the request
                 return gameDataLocal;
             }
-
-            console.log("NEW ACTION: " + action);
             if (action === "hit") {
                 playerHand = gameDataLocal.gameItems.playerItems[username].playerHand;
                 playerHand.push(await this._getRandomCard(gameDataLocal));
@@ -164,7 +161,6 @@ class Blackjack {
 
                 if (handValue[username] >= 21) {
                     //Their turn is over
-                    console.log("PLAYER BUSTED OR HIT 21")
                     gameDataLocal.gameItems.playerItems[username].playerState = 1;
                     gameDataLocal.currentTurn = gameDataLocal.currentTurn + 1;
                 }
@@ -174,20 +170,18 @@ class Blackjack {
                 gameDataLocal.currentTurn = gameDataLocal.currentTurn + 1;
             } else {
                 //bad action
+                console.log("undefined action");
                 return gameDataLocal;
             }
         }
 
         // get next player, and determine if game is over
-        console.log("GET NEXT PLAYER: " + gameDataLocal.currentPlayerIndex)
         gameDataLocal = this._getNextPlayer(gameDataLocal);     
-        console.log("GOT NEXT PLAYER: " + gameDataLocal.currentPlayerIndex)
    
 
         // if user all made action, dealer will play\
         if (gameDataLocal.currentPlayerIndex === -1){
             // dealer will play
-            console.log("DEALER's TURN")
             handValue = this._getHandValue(gameDataLocal);
             while (handValue.dealerScore < 17) {
                 gameDataLocal.gameItems.globalItems["dealerHand"].push(await this._getRandomCard(gameDataLocal));
@@ -209,8 +203,6 @@ class Blackjack {
         if(gameData.currentPlayerIndex !== -1){
             return 0;
         }
-        console.log("Calculating Winnings")
-        console.log(JSON.stringify(gameData))
 
         let gameDataLocal = JSON.parse(JSON.stringify(gameData))
         let handValue = this._getHandValue(gameDataLocal);
@@ -228,7 +220,6 @@ class Blackjack {
             let betValue = playerBets; //integer
             
             //Calculate bet result
-            console.log("Calculating bets for player :  " + playerIdValue);
             winningAmount += this._didBetWin(handValue, betValue, playerIdValue);
             
             gameResult[playerIdValue] = winningAmount;
@@ -238,10 +229,10 @@ class Blackjack {
 
 
     /**
-     * determine if a bet won
-     * @param {*} betType: the type of bet placed
+     * determine if a bet won and winning amount
      * @param {*} handValue: the value of the player and banker hand
-     * @param {*} betValue: the amount of money placed on the bet
+     * @param {*} betValue: the bet placed by the player
+     * @param {*} username: the username of the player
      * @returns {int} winningAmount: the amount of money the player wins
      */
     // ChatGPT usage: No
@@ -252,30 +243,21 @@ class Blackjack {
         // If the player has higher score than dealer, they win
         // If the player has lower score than the dealer, but the dealer busted, they win.
         // Regular wins pay 1:1 (1x on top of bet payback)
-
-
-        console.log("Hand value: " + JSON.stringify(handValue));
-        console.log("Bet value: " + betValue);
-        console.log("PLAYER HAND: " + JSON.stringify(handValue[username]))
-        console.log("DEALER HAND: " + JSON.stringify(handValue.dealerScore))
+        // both blow player still pay full
+        // tie return bet
 
         let winningAmount = -betValue;
         
-        if (handValue[username] > 21) {
-            console.log("Player busted");
-        } 
-        else {
+        if (handValue[username] <= 21) {
             if ((handValue[username] > handValue.dealerScore) || handValue.dealerScore > 21) {
-                console.log("Player Has the Better Hand");
                 if (handValue[username] === 21) {
                     winningAmount += betValue * 2.5;
                 } else {
                     winningAmount += betValue * 2;
                 }
-            }  
-            else {
-                console.log("Dealer Has the Better Hand");
-            }
+            } else if (handValue[username] === handValue.dealerScore) {
+                winningAmount += betValue;
+            } 
         }
         return winningAmount;
     }

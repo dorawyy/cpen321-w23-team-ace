@@ -76,7 +76,7 @@ class Roulette{
         or 0 on error
     */
     // ChatGPT usage: No
-    static calculateWinning(gameData){
+    static async calculateWinning(gameData){
         // check game is over
         if(gameData.currentPlayerIndex !== -1){
             return 0;
@@ -100,9 +100,7 @@ class Roulette{
             for (let j = 0; j < currentBetOptionsInFE.length; j++) {
                 let betType = currentBetOptionsInFE[j];
                 let betValue = playerBets[currentBetOptionsInFE[j]];
-                console.log("PLAYER SCORE: " + winningAmount);
-                winningAmount += this._didBetWin(betType, rouletteNumber, landColour, betValue);
-                console.log("PLAYER SCORE: " + winningAmount);
+                winningAmount += await this._didBetWin(betType, rouletteNumber, landColour, betValue);
             }
             gameResult[playerIdValue] = winningAmount;
         }
@@ -120,7 +118,6 @@ class Roulette{
     // ChatGPT usage: No
     static _didBetWin(betType, rouletteNumber, landColour, betValue){
         let winningAmount = -betValue;
-        console.log("ROULETTE BET TYPE: " + betType + " ROULETTE NUMBER: " + rouletteNumber + " BET VALUE: " + betValue + " LAND COLOUR: " + landColour);
 
         if(betType === 'red' || betType === 'black'){
             if(landColour == betType){
@@ -152,9 +149,12 @@ class Roulette{
             if (rouletteNumber === 0) {
                 winningAmount += betValue * 36; 
             }
+        }else if(betType === rouletteNumber.toString()){
+            winningAmount += betValue * 36; //Single number bet pays 35:1
+        }else {
+            console.log("Unknown bet type")
         }
        
-        console.log("WINNING AMOUNT : " +  winningAmount);
         return winningAmount;
     }
 

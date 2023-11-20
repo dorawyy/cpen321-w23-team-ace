@@ -1,6 +1,6 @@
 const keys = require('../data/keys.json'); 
 const APIKEY = keys.random_org_key; 
-const fetch = require('node-fetch');
+//const fetch = require('node-fetch');
 
 class gameAssets {
     /** return a 0-36 roulette table's location mapped to colour
@@ -74,6 +74,7 @@ class gameAssets {
             ]
         } else {
             pokarSet = [    // 52 cards
+                'AH', 'AD', 'AC', 'AS',
                 '2H', '2D', '2C', '2S',
                 '3H', '3D', '3C', '3S',
                 '4H', '4D', '4C', '4S',
@@ -86,7 +87,7 @@ class gameAssets {
                 'JH', 'JD', 'JC', 'JS',
                 'QH', 'QD', 'QC', 'QS',
                 'KH', 'KD', 'KC', 'KS',
-                'AH', 'AD', 'AC', 'AS',
+                
             ]
         }
         return pokarSet;
@@ -155,7 +156,6 @@ class gameAssets {
         };
 
         const headers = {'Content-Type':'application/json'}
-
         for (let i = 0; i < 2; i++) {
             try {
                 let response = await fetch('https://api.random.org/json-rpc/1/invoke', {
@@ -163,18 +163,13 @@ class gameAssets {
                     body: JSON.stringify(body),
                     headers
                 });
-                //console.log('Response status:', response.status, response.statusText);
                 let json = await response.json();
-                //console.log(json);
     
                 // Check if the api returned the random numbers
                 if (json && json.result && json.result.random && json.result.random.data) {
                     randomNums = json.result.random.data;
-                    //console.log("RANDOM NUMS!");
-                    //console.log(randomNums);
                     break;
                 } else {
-                    console.log(json);
                     throw new Error('No valid random numbers returned');
                 }
             } catch (error) {
@@ -188,7 +183,6 @@ class gameAssets {
                 randomNums.push(Math.floor(Math.random() * (max - min + 1)) + min);
             }
         }
-    
         return randomNums;
     }
 }

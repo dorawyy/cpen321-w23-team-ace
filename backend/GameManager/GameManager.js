@@ -125,6 +125,8 @@ class GameManager extends EventEmitter {
         let gameType = gameData.gameType;
         let gameDataLocal = JSON.parse(JSON.stringify(gameData));
         if (gameType == 'BlackJack') {
+            // first call (in start game) to BJ in intended not to respond anything, 
+            //      this complies with FE logic
             gameDataLocal = await Blackjack.playTurn(gameData, username, action);
         }
         else if (gameType == 'Baccarat') {
