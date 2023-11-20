@@ -83,7 +83,6 @@ class GameLobby {
         for (let lobby of lobbies) {
             for (let userName in lobby.players) {
                 if (lobby.players[userName].socketId === socket.id) {
-                    // Emit a message to the lobby that the player has left
                     this.io.to(lobby.roomName).emit('playerLeft', userName, lobby.roomName);
 
                     delete lobby.players[userName];
@@ -94,7 +93,7 @@ class GameLobby {
                     this.io.to(lobby.roomName).emit('playerCount', result);
                     console.log("Remove Player successfully");
 
-                    return; // Exit once the player is found and removed
+                    return;
                 }
             }
         }
