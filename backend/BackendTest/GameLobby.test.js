@@ -42,7 +42,11 @@ describe('GameLobby', () => {
     jest.clearAllMocks();
   });
 
+  // Interface socket event 'createLobby'
   describe('init', () => {
+    // Input: roomName, gameType, bet = 0, socket
+    // Expected behavior: Lobby 'room123' is created
+    // Expected output: Emit 'lobbyCreated'
     it('should create a new lobby correctly', async () => {
       gameLobbyStoreMock.getLobby.mockResolvedValue(null);
       gameLobbyStoreMock.insertLobby.mockResolvedValue(true);
@@ -54,6 +58,9 @@ describe('GameLobby', () => {
       expect(socketMock.emit).toHaveBeenCalledWith('lobbyCreated', expect.any(String));
     });
 
+    // Input: roomName (already exist), gameType, bet = 0, socket
+    // Expected behavior: No duplicate lobby creation
+    // Expected output: Emit 'roomAlreadyExist'
     it('should emit "roomAlreadyExist" if the lobby already exists', async () => {
         const mockLobby = {
           roomName: 'room123',
@@ -66,10 +73,14 @@ describe('GameLobby', () => {
         await gameLobby.init('room123', 'Roulette', 4, socketMock);
     
         expect(socketMock.emit).toHaveBeenCalledWith('roomAlreadyExist', "Room already exist");
-      });
+    });
   });
 
+  // Interface socket event 'joinLobby'
   describe('addPlayer', () => {
+    // Input: roomName, userName, bet, socket
+    // Expected behavior: Player 'user1' is added to 'room123'
+    // Expected output: Player added and lobby updated
     it('should add a player to the lobby correctly', async () => {
       gameLobbyStoreMock.getLobby.mockResolvedValue({ players: {}, maxPlayers: 4 });
 
@@ -81,6 +92,9 @@ describe('GameLobby', () => {
       expect(gameLobbyStoreMock.updateLobby).toHaveBeenCalledWith('room123', expect.any(Object));
     });
 
+    // Input: roomName (that is full), userName, bet, socket
+    // Expected behavior: Player 'user5' not added due to full lobby
+    // Expected output: Emit 'PlayerExceedMax'
     it('should emit "PlayerExceedMax" if the lobby is full', async () => {
         const mockLobby = {
           players: { 'user1': {}, 'user2': {}, 'user3': {}, 'user4': {} },
@@ -91,8 +105,11 @@ describe('GameLobby', () => {
         await gameLobby.addPlayer('room123', 'user5', 100, socketMock);
     
         expect(socketMock.emit).toHaveBeenCalledWith('PlayerExceedMax', "PlayerExceedMax");
-      });
+    });
 
+    // Input: roomName (not exist), userName, bet, socket
+    // Expected behavior: Cannot add player to non-existent lobby
+    // Expected output: Emit 'roomDoesNot'
     it('should emit "roomDoesNot" if the lobby does not exist', async () => {
     gameLobbyStoreMock.getLobby.mockResolvedValue(null);
 
@@ -102,7 +119,11 @@ describe('GameLobby', () => {
     });
   });
 
+  // Interface socket event 'leaveLobby'
   describe('removePlayer', () => {
+    // Input: socket (with associated lobby)
+    // Expected behavior: Player associated with socketMock is removed from the lobby
+    // Expected output: Lobby is updated, and 'playerLeft' event is emitted
     it('should remove a player from the lobby correctly', async () => {
       gameLobbyStoreMock.getAllLobby.mockResolvedValue([
         { roomName: 'room123', players: { 'user1': { socketId: 'socket123' } } }
@@ -115,6 +136,9 @@ describe('GameLobby', () => {
       expect(gameLobbyStoreMock.updateLobby).toHaveBeenCalledWith('room123', expect.any(Object));
     });
 
+    // Input: socket (with no associated lobby)
+    // Expected behavior: No player is removed
+    // Expected output: No lobby update or 'playerLeft' event
     it('should not remove a player if their socket ID is not found in any lobby', async () => {
         gameLobbyStoreMock.getAllLobby.mockResolvedValue([
           { roomName: 'room123', players: { 'user1': { socketId: 'socket456' } } },
@@ -128,7 +152,11 @@ describe('GameLobby', () => {
     });
   });
 
+  // Interface socket event 'setReady'
   describe('setPlayerReady', () => {
+    // Input: roomName, userName
+    // Expected behavior: Player 'user1' in lobby 'room123' is marked as ready
+    // Expected output: Lobby state updated, 'playerReady' event emitted
     it('should set a player ready in the lobby correctly', async () => {
       gameLobbyStoreMock.getLobby.mockResolvedValue({
         players: { 'user1': { ready: false } }
@@ -140,6 +168,9 @@ describe('GameLobby', () => {
       expect(gameLobbyStoreMock.setPlayerReady).toHaveBeenCalledWith('room123', 'user1');
     });
 
+    // Input: roomName
+    // Expected behavior: Game starts in lobby 'room123'
+    // Expected output: Lobby state updated, game started
     it('should start the game when all players are ready', async () => {
         const mockLobbyBeforeReady = {
             roomName: 'room123',
@@ -176,8 +207,10 @@ describe('GameLobby', () => {
     });
     });
   
-
   describe('startGame', () => {
+    // Input: roomName
+    // Expected behavior: Game starts in lobby 'room123'
+    // Expected output: Emit 'gameStarted' and update lobby state
     it('should start a game correctly', async () => {
       gameLobbyStoreMock.getLobby.mockResolvedValue({
         gameType: 'Roulette',
@@ -195,6 +228,9 @@ describe('GameLobby', () => {
       expect(gameLobbyStoreMock.updateLobby).toHaveBeenCalledWith('room123', expect.any(Object));
     });
 
+    // Input: roomName
+    // Expected behavior: Game does not start
+    // Expected output: No 'gameStarted' event emitted
     it('should not start the game if gameManager is not initialized', async () => {
         const mockLobby = {
           roomName: 'room123',
@@ -215,7 +251,11 @@ describe('GameLobby', () => {
       });
     });
 
+  // Interface socket event 'setBet'
   describe('setPlayerBet', () => {
+    // Input: roomName, userName, bet
+    // Expected behavior: Player 'user1' bet is set to 100 in lobby 'room123'
+    // Expected output: Lobby state updated, 'setBet' event emitted
     it('should set a player bet correctly', async () => {
       await gameLobby.setPlayerBet('room123', 'user1', 100);
 
@@ -224,7 +264,11 @@ describe('GameLobby', () => {
     });
   });
 
+  // Interface socket event 'sendChatMessage'
   describe('sendChatMessage', () => {
+    // Input: roomName, userName, message
+    // Expected behavior: Message 'Hello World' from 'user1' is sent in lobby 'room123'
+    // Expected output: 'receiveChatMessage' event emitted with the message
     it('should send a chat message correctly', async () => {
       await gameLobby.sendChatMessage('room123', 'user1', 'Hello World');
   
@@ -237,6 +281,9 @@ describe('GameLobby', () => {
   });
 
   describe('deleteLobby', () => {
+    // Input: roomName
+    // Expected behavior: Lobby 'room123' is deleted
+    // Expected output: Lobby is removed from the store
     it('should delete a lobby correctly', async () => {
       await gameLobby.deleteLobby('room123');
 
@@ -245,6 +292,9 @@ describe('GameLobby', () => {
   });
 
   describe('getLobby', () => {
+    // Input: roomName
+    // Expected behavior: Details of lobby 'room123' are retrieved
+    // Expected output: Lobby data is returned
     it('should retrieve a lobby correctly', async () => {
       gameLobbyStoreMock.getLobby.mockResolvedValue({
         roomName: 'room123',
@@ -261,7 +311,11 @@ describe('GameLobby', () => {
     });
   });
 
+  // Interface socket event 'getAllLobby'
   describe('getAllLobby', () => {
+    // Input: None
+    // Expected behavior: All lobbies are retrieved
+    // Expected output: Array of all lobbies is returned
     it('should retrieve all lobbies correctly', async () => {
       gameLobbyStoreMock.getAllLobby.mockResolvedValue([
         {
@@ -287,7 +341,11 @@ describe('GameLobby', () => {
     });
   });
 
+  // Interface socket event 'getPlayerCount'
   describe('getPlayerCount', () => {
+    // Input: roomName
+    // Expected behavior: Player count in lobby 'room123' is retrieved
+    // Expected output: Player count is returned
     it('should retrieve player count correctly', async () => {
       gameLobbyStoreMock.getPlayerCount.mockResolvedValue(5); // Mocked player count
 

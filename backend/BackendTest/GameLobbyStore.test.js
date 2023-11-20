@@ -44,6 +44,9 @@ describe('GameLobbyStore', () => {
   });
 
   describe('init', () => {
+    // Input: none
+    // Expected behavior: Database connection is established and collection is set
+    // Expected output: 'connect' and 'collection' methods are called
     it('should initialize the database connection and collection', async () => {
       expect(mockClient.connect).toHaveBeenCalled();
       expect(mockDB.collection).toHaveBeenCalledWith('lobbies');
@@ -51,6 +54,9 @@ describe('GameLobbyStore', () => {
   });
 
   describe('insertLobby', () => {
+    // Input: roomName, gameType, maxPlayer
+    // Expected behavior: A new lobby is added to the database
+    // Expected output: 'insertOne' method is called with correct lobby data
     it('should insert a new lobby into the collection', async () => {
       await gameLobbyStore.insertLobby('room123', 'Roulette', 4);
       expect(mockCollection.insertOne).toHaveBeenCalledWith({
@@ -64,6 +70,9 @@ describe('GameLobbyStore', () => {
   });
 
   describe('updateLobby', () => {
+    // Input: roomName, gameStarted
+    // Expected behavior: Specified lobby is updated with new data
+    // Expected output: 'updateOne' method is called with correct update data
     it('should update a lobby in the collection', async () => {
       const updateData = { gameStarted: true };
       await gameLobbyStore.updateLobby('room123', updateData);
@@ -75,6 +84,9 @@ describe('GameLobbyStore', () => {
   });
 
   describe('setPlayerReady', () => {
+    // Input: roomName, userName
+    // Expected behavior: Player 'user1' in 'room123' is marked as ready
+    // Expected output: 'updateOne' method is called to set the player as ready
     it('should set a player ready in a lobby', async () => {
       await gameLobbyStore.setPlayerReady('room123', 'user1');
       expect(mockCollection.updateOne).toHaveBeenCalledWith(
@@ -85,6 +97,9 @@ describe('GameLobbyStore', () => {
   });
 
   describe('getLobby', () => {
+    // Input: roomName
+    // Expected behavior: Lobby 'room123' is fetched from the database
+    // Expected output: 'findOne' method is called with the correct room name
     it('should retrieve a lobby', async () => {
       await gameLobbyStore.getLobby('room123');
       expect(mockCollection.findOne).toHaveBeenCalledWith({ roomName: 'room123' });
@@ -92,6 +107,9 @@ describe('GameLobbyStore', () => {
   });
 
   describe('getAllLobby', () => {
+    // Input: none
+    // Expected behavior: All lobbies are fetched from the database
+    // Expected output: 'find' and 'toArray' methods are called
     it('should retrieve all lobbies', async () => {
       await gameLobbyStore.getAllLobby();
       expect(mockCollection.find).toHaveBeenCalled();
@@ -100,6 +118,9 @@ describe('GameLobbyStore', () => {
   });
 
   describe('deleteLobby', () => {
+    // Input: roomName
+    // Expected behavior: Lobby 'room123' is deleted from the database
+    // Expected output: 'deleteOne' method is called with the correct room name
     it('should delete a lobby', async () => {
       await gameLobbyStore.deleteLobby('room123');
       expect(mockCollection.deleteOne).toHaveBeenCalledWith({ roomName: 'room123' });
@@ -107,6 +128,9 @@ describe('GameLobbyStore', () => {
   });
 
   describe('setPlayerBet', () => {
+    // Input: roomName, userName, bet
+    // Expected behavior: Player 'user1's bet in lobby 'room123' is set to 100
+    // Expected output: 'updateOne' method is called to set the player's bet
     it('should set a player bet in a lobby', async () => {
       await gameLobbyStore.setPlayerBet('room123', 'user1', 100);
       expect(mockCollection.updateOne).toHaveBeenCalledWith(
@@ -117,6 +141,9 @@ describe('GameLobbyStore', () => {
   });
 
   describe('getPlayerCount', () => {
+    // Input: roomName
+    // Expected behavior: Player count in lobby 'room123' is retrieved
+    // Expected output: 'findOne' method is called and player count is returned
     it('should retrieve the player count for a lobby', async () => {
       mockCollection.findOne.mockResolvedValue({
         players: { 'user1': { ready: true }, 'user2': { ready: false } }
@@ -128,6 +155,9 @@ describe('GameLobbyStore', () => {
   });
 
   describe('close', () => {
+    // Input: none
+    // Expected behavior: Database connection is closed
+    // Expected output: 'close' method is called
     it('should close the database connection', async () => {
       await gameLobbyStore.close();
       expect(mockClient.close).toHaveBeenCalled();
