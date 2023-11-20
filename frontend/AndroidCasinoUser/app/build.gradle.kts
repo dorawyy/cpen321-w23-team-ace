@@ -48,8 +48,7 @@ dependencies {
     implementation("com.google.android.material:material:1.9.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    androidTestImplementation("androidx.test.ext:junit:1.2.0-alpha01")
     implementation("com.google.android.gms:play-services-maps:18.1.0")
     implementation("com.google.android.gms:play-services-auth:20.7.0")
     implementation ("com.google.api-client:google-api-client-android:2.2.0")
@@ -62,5 +61,12 @@ dependencies {
     implementation ("com.google.http-client:google-http-client-android:1.39.2")
     implementation ("com.google.code.gson:gson:2.10.1")
     implementation ("com.google.http-client:google-http-client-jackson2:1.39.2")
+
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
+    androidTestImplementation("androidx.test.uiautomator:uiautomator:2.2.0")
+    androidTestImplementation("androidx.test:runner:1.4.0")
+    androidTestImplementation("androidx.test:rules:1.6.0-alpha01")
+
+    androidTestImplementation("androidx.test.espresso:espresso-contrib:3.4.0")
 
 }
