@@ -49,7 +49,7 @@ const userStore = new UserStore(MONGO_CONNECTION_STRING, USERDB_NAME);
 const userAccount = new UserAccount(io, userStore);
 
 const gameLobbyStore = new GameLobbyStore(MONGO_CONNECTION_STRING, LOBBYDB_NAME);
-const gameLobbies = {};
+// const gameLobbies = {};
 
 // ChatGPT usage: No
 (async () => {
@@ -61,6 +61,8 @@ const gameManager = new GameManager(io);
 (async () => {
     await gameManager.connect();
 })();
+
+const gameLobby = new GameLobby(gameManager, gameLobbyStore, io);
 
 // ChatGPT usage: Partial
 io.on('connection', (socket) => {
@@ -132,64 +134,70 @@ io.on('connection', (socket) => {
 
     // ChatGPT usage: Partial
     socket.on('createLobby', async (roomName, gameType, maxPlayers, userName) => {
-        console.log("Lobby created");
-        if(!gameLobbies[roomName]) {
-            const lobby = new GameLobby(roomName, gameType, maxPlayers, gameManager, gameLobbyStore, io);
-            await lobby.init(roomName, gameType, maxPlayers);
-            gameLobbies[roomName] = lobby;
-            socket.emit('lobbyCreated', "Lobby Successfully Created");
-        }
-        else {
-            socket.emit('roomAlreadyExist', "Room already exist");
-        }
-
+        // console.log("Lobby created");
+        // if(!gameLobbies[roomName]) {
+        //     const lobby = new GameLobby(roomName, gameType, maxPlayers, gameManager, gameLobbyStore, io);
+        //     await lobby.init(roomName, gameType, maxPlayers);
+        //     gameLobbies[roomName] = lobby;
+        //     socket.emit('lobbyCreated', "Lobby Successfully Created");
+        // }
+        // else {
+        //     socket.emit('roomAlreadyExist', "Room already exist");
+        // }
+        await gameLobby.init(roomName, gameType, maxPlayers, socket);
     });
 
     // ChatGPT usage: Partial
     socket.on('joinLobby', async (roomName, userName) => {
-        console.log("User joined");
-        if(gameLobbies[roomName]) {
-            // Set bet = 0 initially
-            await gameLobbies[roomName].addPlayer(userName, 0, socket);
-        }
-        else {
-            socket.emit('roomDoesNot', "Room does not exist");
-        }
+        // console.log("User joined");
+        // if(gameLobbies[roomName]) {
+        //     // Set bet = 0 initially
+        //     await gameLobbies[roomName].addPlayer(userName, 0, socket);
+        // }
+        // else {
+        //     socket.emit('roomDoesNot', "Room does not exist");
+        // }
+        await gameLobby.addPlayer(roomName, userName, 0, socket);
     });
 
     // ChatGPT usage: Partial
     socket.on('sendChatMessage', async (roomName, userName, message) =>{
-        console.log("Send chat Live");
-            const chatMessage = {
-                user: userName,
-                text: message,
-            };
+        // console.log("Send chat Live");
+        //     const chatMessage = {
+        //         user: userName,
+        //         text: message,
+        //     };
 
-        io.to(roomName).emit('receiveChatMessage', chatMessage);
+        // io.to(roomName).emit('receiveChatMessage', chatMessage);
+        await gameLobby.sendChatMessage(roomName, userName, message);
     })
 
     // ChatGPT usage: No
     socket.on('getAllLobby', async () => {
-        var myLobbies = await gameLobbyStore.getAllLobby();
-        socket.emit('AllLobby', myLobbies);
+        // var myLobbies = await gameLobbyStore.getAllLobby();
+        // socket.emit('AllLobby', myLobbies);
+        await gameLobby.getAllLobby(socket);
     });
 
     // ChatGPT usage: No
     socket.on('setBet', async(roomName, userName, bet) => {
-        await gameLobbies[roomName].setPlayerBet(roomName, userName, bet);
+        // await gameLobbies[roomName].setPlayerBet(roomName, userName, bet);
+        await gameLobby.setPlayerBet(roomName, userName, bet);
     })
 
     // ChatGPT usage: No
     socket.on('setReady', async(roomName, userName) => {
-        console.log("User ready");
-        await gameLobbies[roomName].setPlayerReady(userName);
+        // console.log("User ready");
+        // await gameLobbies[roomName].setPlayerReady(userName);
+        await gameLobby.setPlayerReady(roomName, userName);
     })
 
 
     // ChatGPT usage: No
     socket.on('getPlayerCount', async(roomName) => {
-        var result = await gameLobbies[roomName].getPlayerCount(roomName);
-        io.to(roomName).emit('playerCount', result);
+        // var result = await gameLobbies[roomName].getPlayerCount(roomName);
+        // io.to(roomName).emit('playerCount', result);
+        await gameLobby.getPlayerCount(roomName);
     })
 
     // socket.on('playerLeft', async(userName, roomName) => {
@@ -198,16 +206,17 @@ io.on('connection', (socket) => {
     // })
 
     // ChatGPT usage: Partial
-    socket.on('leaveLobby', () => {
-        console.log("User left lobby");
-        for(let roomName in gameLobbies) {
-            for(let userName in gameLobbies[roomName].players) {
-                if(gameLobbies[roomName].players[userName].socketId === socket.id) {
-                    gameLobbies[roomName].removePlayer(userName, socket);
-                    break;
-                }
-            }
-        }
+    socket.on('leaveLobby', async () => {
+        // console.log("User left lobby");
+        // for(let roomName in gameLobbies) {
+        //     for(let userName in gameLobbies[roomName].players) {
+        //         if(gameLobbies[roomName].players[userName].socketId === socket.id) {
+        //             gameLobbies[roomName].removePlayer(userName, socket);
+        //             break;
+        //         }
+        //     }
+        // }
+        await gameLobby.removePlayer(socket);
     });
 
     // ChatGPT usage: partial
@@ -216,16 +225,17 @@ io.on('connection', (socket) => {
     })
 
     // ChatGPT usage: Partial
-    socket.on('disconnect', () => {
+    socket.on('disconnect', async () => {
         console.log("User disconnected");
-        for(let roomName in gameLobbies) {
-            for(let userName in gameLobbies[roomName].players) {
-                if(gameLobbies[roomName].players[userName].socketId === socket.id) {
-                    gameLobbies[roomName].removePlayer(userName, socket);
-                    break;
-                }
-            }
-        }
+        // for(let roomName in gameLobbies) {
+        //     for(let userName in gameLobbies[roomName].players) {
+        //         if(gameLobbies[roomName].players[userName].socketId === socket.id) {
+        //             gameLobbies[roomName].removePlayer(userName, socket);
+        //             break;
+        //         }
+        //     }
+        // }
+        await gameLobby.removePlayer(socket);
     });
 
 });
@@ -248,4 +258,3 @@ if (SERVER_TYPE === 'http') {
     // throw exception
     console.log('server type not supported');
 }
-
