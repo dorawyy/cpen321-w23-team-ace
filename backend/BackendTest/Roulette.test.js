@@ -15,6 +15,7 @@ jest.mock('mongodb', () => {
   return { MongoClient: jest.fn(() => mClient) };
 });
 
+//mock random.org
 let callCount = 0;
 let returnVal = [1*4];
 global.fetch = jest.fn().mockImplementation( () =>{
@@ -34,6 +35,7 @@ global.fetch = jest.fn().mockImplementation( () =>{
 
 let gameData;
 
+// chatGPT usage: No
 describe('Roulette', () => {
   beforeAll(() => {
   });
@@ -42,6 +44,7 @@ describe('Roulette', () => {
   });
 
   beforeEach(async ()=> {
+    // mock db
     gameData = {
       lobbyId: 'abc123',
       gameType: 'Roulette',
@@ -63,10 +66,18 @@ describe('Roulette', () => {
     global.fetch.mockClear();
   });
 
+  // Input: none
+  // Expected behavior: newGame correctly initializes the game
+  // Expected output: the gameItem needed is added to the gameData
+  // chatGPT usage: No
   it('newGame', async () => {
     expect(gameData.gameItems.globalItems.rouletteTable).toStrictEqual(GameAssets.getRoulette());
   });
 
+  // Input: none
+  // Expected behavior: playTurn correctly plays a turn
+  // Expected output: the gameData is updated correctly
+  // chatGPT usage: No
   it('one game', async () => {
     callCount = 0;
     returnVal = [1*4, 1*4, 1*4, 1*4, 1*4, 1*4];
@@ -76,6 +87,10 @@ describe('Roulette', () => {
     expect(gameDataLocal.currentPlayerIndex).toBe(-1);
   });
 
+  // Input: none
+  // Expected behavior: playTurn can play with different bets
+  // Expected output: the gameData is updated correctly
+  // chatGPT usage: No
   it('calculate correct double lose', async () => {
     callCount = 0;
     returnVal = [1];
@@ -89,6 +104,10 @@ describe('Roulette', () => {
     expect(gameResult.playera).toBe(-200);
   });
 
+  // Input: none
+  // Expected behavior: playTurn can play with different bets, and win
+  // Expected output: the gameData is updated correctly
+  // chatGPT usage: No
   it('calculate correct double win', async () => {
     callCount = 0;
     returnVal = [1];
@@ -102,6 +121,10 @@ describe('Roulette', () => {
     expect(gameResult.playera).toBe(200);
   });
 
+  // Input: none
+  // Expected behavior: playTurn can play with different bets types and win/lose
+  // Expected output: No error or exception, other tested in other cases
+  // chatGPT usage: No
   it('calculate all possible win', async () => {
     callCount = 0;
     returnVal = [36];
@@ -129,7 +152,10 @@ describe('Roulette', () => {
     
   });
 
-
+  // Input: none
+  // Expected behavior: One cannot calculate winning before gameover
+  // Expected output: no value returned (0) for calcualte winningf
+  // chatGPT usage: No
   it('Calculate winning before gameover', async () => {
     
     callCount = 0;
@@ -138,6 +164,11 @@ describe('Roulette', () => {
     let gameDataLocal = await Roulette.calculateWinning(gameData)
     expect(gameDataLocal).toBe(0);
   });
+
+  // Input: none
+  // Expected behavior: Unknown bet type is handled
+  // Expected output: -100 for the bet (deduced in full)
+  // chatGPT usage: No
   it('Unknown bet type', async () => {
     
     callCount = 0;

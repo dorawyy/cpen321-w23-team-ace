@@ -1,6 +1,7 @@
 const { mock } = require('node:test');
 const Blackjack = require('../GameManager/Blackjack');
 const GameAssets = require('../GameManager/GameAssets');
+
 jest.mock('mongodb', () => {
   const mClient = {
     connect: jest.fn().mockImplementation(() => Promise.resolve()), // Mock promise that resolves to undefined
@@ -17,6 +18,7 @@ jest.mock('mongodb', () => {
 
 let callCount = 0;
 let returnVal = [1*4];
+//mock random.org
 global.fetch = jest.fn().mockImplementation( () =>{
   return Promise.resolve({
     json: () => {
@@ -63,10 +65,14 @@ describe('Blackjack', () => {
     global.fetch.mockClear();
   });
 
+  /* ensure that the game is initialized properly */
+  //chatGPT usage: No
   it('newGame', async () => {
     expect(gameData.gameItems.globalItems.pokar).toStrictEqual(GameAssets.getPokar());
   });
 
+  /* return a random card */
+  //chatGPT usage: No
   it('random card', async () => {
     callCount = 0;
     returnVal = [1*4];
@@ -76,6 +82,8 @@ describe('Blackjack', () => {
 
   });
 
+  /*make sure one round of the game is played properly */
+  //chatGPT usage: No
   it('one round', async () => {
     callCount = 0;
     returnVal = [1*4, 1*4, 1*4, 1*4, 1*4, 1*4];
@@ -86,6 +94,8 @@ describe('Blackjack', () => {
     expect(gameDataLocal.gameItems.playerItems.playera.playerHand[0]).toContain("A");
   });
 
+  /*make sure >=21 of the game is played properly */
+  //chatGPT usage: No
   it('Repeat hit until blow', async () => {
     callCount = 0;
     returnVal = [10*4, 5*4, 3*4, 3*4, 3*4, 3*10, 3*10, 3*10, 3*10];
@@ -101,6 +111,8 @@ describe('Blackjack', () => {
     expect(gameDataLocal.gameItems.playerItems.playera.playerHand[0]).toContain("10");
   });
 
+  /*make sure stand of the game is handled properly */
+  //chatGPT usage: No
   it('stand win', async () => {
     callCount = 0;
     returnVal = [1*4, 1*4, 1*4, 1*4, 1*4, 1*4, 10*4, 10*4, 10*4];
@@ -115,6 +127,8 @@ describe('Blackjack', () => {
     expect(gameResult.playera).toBe(100);
   });
 
+  /*make sure stand of the game is handled properly */
+  //chatGPT usage: No
   it('stand tie', async () => {
     callCount = 0;
     returnVal = [1*4, 10*4, 1*4, 10*4, 10*4, 10*4, 10*4, 10*4];
@@ -129,6 +143,8 @@ describe('Blackjack', () => {
     expect(gameResult.playera).toBe(0);
   });
 
+  /*make sure hit then stand of the game is handled properly */
+  //chatGPT usage: No
   it('hit stand lose', async () => {
     callCount = 0;
     returnVal = [9*4, 9*4, 1*4, 1*4, 10*4, 10*4, 10*4, 10*4, 10*4];
@@ -144,6 +160,7 @@ describe('Blackjack', () => {
     expect(gameResult.playera).toBe(-100);
   });
 
+  /*make sure hit then stand of the game is handled properly */
   it('hit stand lose to blow', async () => {
     callCount = 0;
     returnVal = [10*4, 10*4, 10*4, 10*4, 10*4, 10*4, 10*4, 10*4, 10*4];
@@ -159,6 +176,7 @@ describe('Blackjack', () => {
     expect(gameResult.playera).toBe(-100);
   });
 
+  /*make sure hit then stand of the game is handled properly */
   it('hit stand bj win', async () => {
     callCount = 0;
     returnVal = [10*4, 10*4, 1*4, 1*4, 9*4, 9*4, 10*4, 10*4, 10*4];
@@ -174,7 +192,8 @@ describe('Blackjack', () => {
     expect(gameResult.playera).toBe(150);
   });
 
-
+  /*make sure one cannot calculate winning before gameover*/
+  //chatGPT usage: No
   it('Calculate winning before gameover', async () => {
     
     callCount = 0;
@@ -184,6 +203,8 @@ describe('Blackjack', () => {
     expect(gameDataLocal).toBe(0);
   });
 
+  /*cannot have undefined actions*/
+  //chatGPT usage: No
   it('undefined action', async () => {
     
     callCount = 0;

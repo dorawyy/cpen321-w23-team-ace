@@ -75,10 +75,14 @@ describe('Baccarat', () => {
     global.fetch.mockClear();
   });
 
+  /* a test to ensure that the game is created properly */
+  // chatGPT usage: No
   it('newGame', async () => {
     expect(gameData.gameItems.globalItems.pokar).toStrictEqual(GameAssets.getPokar());
   });
 
+  /* a test to ensure that a random card is generated*/
+  // chatGPT usage: No
   it('random card', async () => {
     callCount = 0;
     returnVal = [1*4];
@@ -88,6 +92,8 @@ describe('Baccarat', () => {
 
   });
 
+  /* test to ensure that the player is dealt a card , score is 1v1*/
+  // chatGPT usage: No
   it('full game 1, 1', async () => {
   
     callCount = 0;
@@ -103,6 +109,8 @@ describe('Baccarat', () => {
     expect(typeof gameResult["playera"]).toBe("number");
   });
 
+  /* full game test where score is 6 v 3*/
+  // chatGPT usage: No
   it('full game 6, 3', async () => {
     callCount = 0;
     returnVal = [4*4, 3*4, 2*4, 12*4, 2*4, 2*4];
@@ -117,6 +125,9 @@ describe('Baccarat', () => {
     expect(typeof gameResult["playera"]).toBe("number");
     fetch.mockClear();
   });
+
+  /* full game test where score is 6 v 4*/
+  // chatGPT usage: No
   it('full game 6, 4', async () => {
     
     callCount = 0;
@@ -131,6 +142,9 @@ describe('Baccarat', () => {
     expect(typeof gameResult).toBe("object");
     expect(typeof gameResult["playera"]).toBe("number");
   });
+
+  /* full game test where score is 6 v 5*/
+  // chatGPT usage: No
   it('full game 6, 5', async () => {
     
     callCount = 0;
@@ -146,6 +160,9 @@ describe('Baccarat', () => {
     expect(typeof gameResult).toBe("object");
     expect(typeof gameResult["playera"]).toBe("number");
   });
+
+  /* full game test where score is 6 v 6*/
+  // chatGPT usage: No
   it('full game 6, 6', async () => {
     
     callCount = 0;
@@ -161,6 +178,9 @@ describe('Baccarat', () => {
     expect(typeof gameResult).toBe("object");
     expect(typeof gameResult["playera"]).toBe("number");
   })
+
+  /* full game test where score is 9 v 9*/
+  // chatGPT usage: No
   it('full game 9, 9', async () => {
     
     callCount = 0;
@@ -177,6 +197,8 @@ describe('Baccarat', () => {
     expect(typeof gameResult["playera"]).toBe("number");
   });
 
+  /* full game test where score is 9 v 4*/
+  // chatGPT usage: No
   it('full game 9, 4', async () => {
     
     callCount = 0;
@@ -193,6 +215,8 @@ describe('Baccarat', () => {
     expect(typeof gameResult["playera"]).toBe("number");
   });
 
+  /* a test to ensure unknown bet type is handled*/
+  // chatGPT usage: No
   it('unknown bet type', async () => {
     
     callCount = 0;
@@ -209,7 +233,8 @@ describe('Baccarat', () => {
     expect(typeof gameResult["playera"]).toBe("number");
   });
 
-
+  /* test to one cannot issue a bet before the game is over*/
+  // chatGPT usage: No
   it('Calculate winning before gameover', async () => {
     
     callCount = 0;

@@ -12,6 +12,7 @@ const ioMock = {
   })
 };
 
+// attempt to mock GameLobbyStore
 jest.mock('../GameLobbyStore', () => {
   return jest.fn().mockImplementation(() => {
     return {
@@ -27,6 +28,7 @@ jest.mock('../GameLobbyStore', () => {
   });
 });
 
+// chatGPT usage: No
 describe('GameLobby', () => {
   let gameLobby;
   let gameLobbyStoreMock;
@@ -42,7 +44,7 @@ describe('GameLobby', () => {
     jest.clearAllMocks();
   });
 
-  // Interface socket event 'createLobby'
+  
   describe('init', () => {
     // Input: roomName, gameType, bet = 0, socket
     // Expected behavior: Lobby 'room123' is created

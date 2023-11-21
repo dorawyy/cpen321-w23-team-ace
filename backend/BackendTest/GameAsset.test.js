@@ -76,6 +76,8 @@ describe('GameAsset', () => {
     global.fetch.mockClear();
   });
 
+  /*make sure a card set with pokar is covered*/
+  // chatGPT usage: No
   it('jokar pokar', async () => {
     let pokar = gameAssets.getPokar(true);
     expect(pokar[52]).toContain("bigJoker");
@@ -86,6 +88,8 @@ describe('GameAsset', () => {
     expect(value).toBe(100);
   });
 
+  /*make sure special value card can be interpretaed*/
+  // chatGPT usage: No
   it('special pokar', async () => {
     let value = gameAssets.getPokarFaceValue("AH");
     expect(value).toBe(1);
@@ -97,6 +101,8 @@ describe('GameAsset', () => {
     expect(value).toBe(13);
   });
 
+  /* attempt to get random number*/
+  // chatGPT usage: No
   it('get random number', async () => {
     callCount = 0;
     returnVal = [1];
@@ -104,6 +110,8 @@ describe('GameAsset', () => {
     expect(value).toStrictEqual([1]);
   });
 
+  /* attempt to get random number with negative count*/
+  // chatGPT usage: No
   it('get random number but negative count', async () => {
     callCount = 0;
     returnVal = [1];
@@ -111,6 +119,8 @@ describe('GameAsset', () => {
     expect(value).toStrictEqual([1]);
   });
 
+  /* attempt to get random number with invalid response*/
+  // chatGPT usage: No
   it('get random number no valid response', async () => {
     callCount = 0;
     returnVal = ["k"];
