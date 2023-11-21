@@ -14,10 +14,6 @@ function mongoShield(variable, types = ['string', 'object']) {
     }
     //handle object type
     if (typeof variable === 'object') {
-        // ok if null
-        if (variable=== null) {
-            return true;
-        }
         // turn to string
         variableString = JSON.stringify(variable);
         
