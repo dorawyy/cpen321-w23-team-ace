@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -25,6 +26,8 @@ import com.google.api.services.gmail.GmailScopes;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import javax.crypto.SecretKey;
+
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
 
@@ -37,10 +40,19 @@ public class MainActivity extends ThemedActivity {
 
     private String loginuserid;
 
+    private SecretKey encryptionKey;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ThemeManager.getInstance(this).applyCurrentTheme(this);
         setContentView(R.layout.activity_main);
+
+        try {
+            encryptionKey = EncryptionUtils.generateKey();
+        } catch (Exception e) {
+            Log.e(TAG, "Error generating encryption key", e);
+        }
+
         //connect the socket
         SocketHandler.setSocket();
         SocketHandler.establishConnection();
@@ -139,13 +151,26 @@ public class MainActivity extends ThemedActivity {
             Log.d(TAG, "Pref Name: " + account.getDisplayName());
             Log.d(TAG, "Userid: " + account.getId());
             //String username = account.getDisplayName();
-            loginuserid = account.getId();
-            // Send token to your back-end
+            //loginuserid = account.getId();
 
-            Log.d(TAG, "Socket status: " + mSocket.connected());
+            try {
+                byte[] encryptedUserId = EncryptionUtils.encrypt(account.getId(), encryptionKey);
+                loginuserid = Base64.encodeToString(encryptedUserId, Base64.DEFAULT);
+
+                Log.d(TAG, "Raw User ID: "+ account.getId() +"\n"+"Encrypted User ID: " + loginuserid );
+
+                Log.d(TAG, "Socket status: " + mSocket.connected());
+                Log.d(TAG, "Socket is connected " + mSocket);
+                mSocket.emit("retrieveAccount", loginuserid);
+
+            } catch (Exception e) {
+                Log.e(TAG, "Encryption error", e);
+            }
+
+            /*Log.d(TAG, "Socket status: " + mSocket.connected());
             //if (mSocket != null && mSocket.connected()) {
             Log.d(TAG, "Socket is connected " + mSocket);
-            mSocket.emit("retrieveAccount", loginuserid);
+            mSocket.emit("retrieveAccount", loginuserid);*/
 
             //}else{
                // Log.d(TAG, "Socket is not connected");
