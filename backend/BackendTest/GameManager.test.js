@@ -395,4 +395,28 @@ describe('GameManager', () => {
     gameManager._calculateWinning(gameDataTemp);
     expect(toParameters.length).toBe(1); // call from gameOver
   });
+
+  // Test malicious gameData
+  it('should throw an error if malicious gameData is used', async () => {
+    let gameStore = gameManager.gameStore;
+    expect (await gameStore.newGame('$ne')).toBe(0); // Inserting a potential malicious object
+  });
+
+  // Test malicious lobbyName in getGame 
+  it('should throw an error if malicious lobbyName is used in getGame', async () => {
+    let gameStore = gameManager.gameStore;
+    expect (await gameStore.getGame({$ne: null})).toBe(0); 
+  });
+
+  // Test malicious gameData in updateGame 
+  it('should throw an error if malicious gameData is used in updateGame', async () => {
+    let gameStore = gameManager.gameStore;
+    expect (await gameStore.updateGame('$ne')).toBe(0); // Inserting a potential malicious object
+  });
+
+  // Test malicious lobbyName in deleteGame 
+  it('should throw an error if malicious lobbyName is used in deleteGame', async () => {
+    let gameStore = gameManager.gameStore;
+    expect (await gameStore.deleteGame({$ne: null})).toBe(0); 
+  });
 });

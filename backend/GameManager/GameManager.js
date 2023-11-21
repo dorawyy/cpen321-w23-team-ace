@@ -4,6 +4,7 @@ const Blackjack = require('./Blackjack');
 const Roulette = require('./Roulette');
 const EventEmitter = require('events');
 const { MongoClient } = require('mongodb');
+const mongoShield = require('./../mongoShield');
 
 /*
 playerList structure: 
@@ -274,14 +275,13 @@ class GameManager extends EventEmitter {
 
 // Basic outline for GameStore:
 class GameStore {
-    // ChatGPT usage: No
     constructor() {
         this.client = new MongoClient("mongodb://127.0.0.1:27017");
     }
 
+    /* connect to the database*/
     // ChatGPT usage: No
     async connect() {
-        // trying to adding a comment to suppress the block error
         try {
             await this.client.connect()
             this.db = this.client.db('casinoApp');
@@ -295,28 +295,38 @@ class GameStore {
 
     /* create a new game by creating a new gameData object
     *  @param {dictionary} gameData
-    *  @return {dictionary} gameData
     */
-   // ChatGPT usage: No
+    // ChatGPT usage: No
     async newGame(gameData) {
+        if (!mongoShield(gameData, 'object')) {
+            console.log('Invalid mongodb parameter');
+            return 0;
+        }
         return await this.games.insertOne(gameData);
     }
 
-    /* using a lobbyName, set the gameData object
-    *   @param (string) lobbyName
-    *   @return {dictionary} gameData
+    /* get a game by lobbyName
+    *  @param (string) lobbyName
+    *  @return {dictionary} gameData
     */
-   // ChatGPT usage: No
+    // ChatGPT usage: No
     async getGame(lobbyName) {
+        if (!mongoShield(lobbyName, 'string')) {
+            console.log('Invalid mongodb parameter');
+            return 0;
+        }
         return await this.games.findOne({ lobbyId: lobbyName });
     }
 
-    /* save/update the gameData object, replacing the existing information
-    *   @param {dictionary} gameData
-    *   @return {dictionary} gameData
+    /* update a game by lobbyName
+    *  @param {dictionary} gameData
     */
-   // ChatGPT usage: No
+    // ChatGPT usage: No
     async updateGame(gameData) {
+        if (!mongoShield(gameData, 'object')) {
+            console.log('Invalid mongodb parameter');
+            return 0;
+        }
         delete gameData._id;
         return await this.games.updateOne(
             { lobbyId: gameData.lobbyId }, 
@@ -324,8 +334,14 @@ class GameStore {
         );
     }
 
-    // ChatGPT usage: No
+    /* delete a game by lobbyName
+    *  @param (string) lobbyName
+    */
     async deleteGame(lobbyName) {
+        if (!mongoShield(lobbyName, 'string')) {
+            console.log('Invalid mongodb parameter');
+            return 0;
+        }
         return await this.games.deleteOne({ lobbyId: lobbyName });
     }
 }
