@@ -7,6 +7,7 @@ class GameLobby {
         this.gameManager = gameManager;  
         this.gameLobbyStore = gameLobbyStore;
         this.io = io;
+        this.timers = {};
         // this.gameStarted = false;
         // this.players = {};
         // this.counter = 0;  
@@ -42,6 +43,7 @@ class GameLobby {
                 this.io.to(roomName).emit('newPlayer', userName);
                 socket.join(roomName);
                 await this.gameLobbyStore.updateLobby(roomName, { players: lobby.players });
+
             } else {
                 socket.emit('PlayerExceedMax', "PlayerExceedMax");
             }
@@ -85,6 +87,13 @@ class GameLobby {
                 if (lobby.players[userName].socketId === socket.id) {
                     this.io.to(lobby.roomName).emit('playerLeft', userName, lobby.roomName);
 
+                    if(lobby.players[userName].ready) {
+                        if (this.timers[lobby.roomName]) {
+                            clearTimeout(this.timers[lobby.roomName]);
+                            delete this.timers[lobby.roomName];
+                        }
+                    }
+
                     delete lobby.players[userName];
                     socket.leave(lobby.roomName)
                     await this.gameLobbyStore.updateLobby(lobby.roomName, { players: lobby.players });
@@ -124,6 +133,12 @@ class GameLobby {
 
         const lobby = await this.gameLobbyStore.getLobby(roomName);
 
+        if (!this.timers[roomName]) {
+            this.timers[roomName] = setTimeout(() => {
+            this.startGame(roomName)
+            }, 6000); // 60 seconds
+        }
+
         if (Object.values(lobby.players).every(player => player.ready)) {
             this.startGame(roomName);
         }
@@ -150,6 +165,7 @@ class GameLobby {
         await this.gameLobbyStore.setPlayerBet(roomName, userName, bet);
     }
 
+    // ChatGPT usage: Partial
     async sendChatMessage(roomName, userName, message) {
         console.log("Send chat Live");
             const chatMessage = {
@@ -164,6 +180,11 @@ class GameLobby {
     async startGame(roomName) {
         const lobby = await this.gameLobbyStore.getLobby(roomName);
         if (this.gameManager) {
+            if (this.timers[lobby.roomName]) {
+                clearTimeout(this.timers[lobby.roomName]);
+                delete this.timers[lobby.roomName];
+            }
+            
             lobby.gameStarted = true;
     
             this.io.to(roomName).emit('gameStarted');
