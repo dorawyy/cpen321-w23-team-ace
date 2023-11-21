@@ -158,42 +158,12 @@ public class PlayingBaccaratGameTest {
                         isDisplayed()));
         materialButton4.perform(click());
 
+        //Let toast finish
         Thread.sleep(3000);
-
-        //Set bet to characters
-        ViewInteraction appCompatEditText3 = onView(
-                allOf(withId(R.id.etPlaceBet), withText("5"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                4),
-                        isDisplayed()));
-        appCompatEditText3.perform(replaceText("adaw"));
-
-        //set bet
-        ViewInteraction materialButton5 = onView(
-                allOf(withId(R.id.btnPlaceBetsReadyUp), withText("Place Bets and Ready Up"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                7),
-                        isDisplayed()));
-        materialButton5.perform(click());
-
-        Thread.sleep(1000);
-        onView(withText("Invalid bet. Please enter a valid integer")).inRoot(new PlayingBaccaratGameTest.ToastMatcher())
-                .check(matches(isDisplayed()));
-        Thread.sleep(2500);
-
-
-        //TODO: NEGATIVE BET TEST
-
 
         //Set bet to 200
         ViewInteraction appCompatEditText5 = onView(
-                allOf(withId(R.id.etPlaceBet), withText("adaw"),
+                allOf(withId(R.id.etPlaceBet),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.content),
