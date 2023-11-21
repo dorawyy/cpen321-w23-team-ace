@@ -1,29 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="72" failures="0" errors="0" time="4.827">
-  <testsuite name="UserStore" errors="0" failures="0" skipped="0" timestamp="2023-11-20T08:02:58" time="0.867" tests="10">
-    <testcase classname="UserStore connect should throw an error if database connection fails" name="UserStore connect should throw an error if database connection fails" time="0.035">
+<testsuites name="jest tests" tests="73" failures="0" errors="0" time="5.281">
+  <testsuite name="UserStore" errors="0" failures="0" skipped="0" timestamp="2023-11-21T04:20:21" time="1.346" tests="10">
+    <testcase classname="UserStore connect should throw an error if database connection fails" name="UserStore connect should throw an error if database connection fails" time="0.045">
     </testcase>
-    <testcase classname="UserStore connect should connect to the database" name="UserStore connect should connect to the database" time="0.019">
+    <testcase classname="UserStore connect should connect to the database" name="UserStore connect should connect to the database" time="0.022">
     </testcase>
-    <testcase classname="getUser should retrieve a user by userId" name="getUser should retrieve a user by userId" time="0.002">
+    <testcase classname="getUser should retrieve a user by userId" name="getUser should retrieve a user by userId" time="0.003">
     </testcase>
-    <testcase classname="getUserbyname should retrieve a user by username" name="getUserbyname should retrieve a user by username" time="0.002">
+    <testcase classname="getUserbyname should retrieve a user by username" name="getUserbyname should retrieve a user by username" time="0.003">
     </testcase>
     <testcase classname="addUser should add a new user" name="addUser should add a new user" time="0.003">
     </testcase>
-    <testcase classname="addUser should not overwirte an existing user" name="addUser should not overwirte an existing user" time="0.001">
+    <testcase classname="addUser should not overwirte an existing user" name="addUser should not overwirte an existing user" time="0.002">
     </testcase>
-    <testcase classname="updateUser should update a user" name="updateUser should update a user" time="0.002">
+    <testcase classname="updateUser should update a user" name="updateUser should update a user" time="0.001">
     </testcase>
     <testcase classname="deleteUser should delete a user" name="deleteUser should delete a user" time="0.001">
     </testcase>
-    <testcase classname="deleteAllUsers should delete all users" name="deleteAllUsers should delete all users" time="0.002">
+    <testcase classname="deleteAllUsers should delete all users" name="deleteAllUsers should delete all users" time="0.001">
     </testcase>
-    <testcase classname="close should close the database connection" name="close should close the database connection" time="0.001">
+    <testcase classname="close should close the database connection" name="close should close the database connection" time="0.002">
     </testcase>
   </testsuite>
-  <testsuite name="retrieveAccount" errors="0" failures="0" skipped="0" timestamp="2023-11-20T08:02:58" time="0.88" tests="27">
-    <testcase classname="retrieveAccount should emit user details when retrieving an account" name="retrieveAccount should emit user details when retrieving an account" time="0.024">
+  <testsuite name="GameLobbyStore" errors="0" failures="0" skipped="0" timestamp="2023-11-21T04:20:21" time="1.347" tests="10">
+    <testcase classname="GameLobbyStore init should initialize the database connection and collection" name="GameLobbyStore init should initialize the database connection and collection" time="0.048">
+    </testcase>
+    <testcase classname="GameLobbyStore insertLobby should insert a new lobby into the collection" name="GameLobbyStore insertLobby should insert a new lobby into the collection" time="0.004">
+    </testcase>
+    <testcase classname="GameLobbyStore updateLobby should update a lobby in the collection" name="GameLobbyStore updateLobby should update a lobby in the collection" time="0.003">
+    </testcase>
+    <testcase classname="GameLobbyStore setPlayerReady should set a player ready in a lobby" name="GameLobbyStore setPlayerReady should set a player ready in a lobby" time="0.002">
+    </testcase>
+    <testcase classname="GameLobbyStore getLobby should retrieve a lobby" name="GameLobbyStore getLobby should retrieve a lobby" time="0.001">
+    </testcase>
+    <testcase classname="GameLobbyStore getAllLobby should retrieve all lobbies" name="GameLobbyStore getAllLobby should retrieve all lobbies" time="0.002">
+    </testcase>
+    <testcase classname="GameLobbyStore deleteLobby should delete a lobby" name="GameLobbyStore deleteLobby should delete a lobby" time="0.001">
+    </testcase>
+    <testcase classname="GameLobbyStore setPlayerBet should set a player bet in a lobby" name="GameLobbyStore setPlayerBet should set a player bet in a lobby" time="0.002">
+    </testcase>
+    <testcase classname="GameLobbyStore getPlayerCount should retrieve the player count for a lobby" name="GameLobbyStore getPlayerCount should retrieve the player count for a lobby" time="0.002">
+    </testcase>
+    <testcase classname="GameLobbyStore close should close the database connection" name="GameLobbyStore close should close the database connection" time="0.002">
+    </testcase>
+  </testsuite>
+  <testsuite name="Roulette" errors="0" failures="0" skipped="0" timestamp="2023-11-21T04:20:21" time="1.44" tests="1">
+    <testcase classname="Roulette random" name="Roulette random" time="0.038">
+    </testcase>
+  </testsuite>
+  <testsuite name="retrieveAccount" errors="0" failures="0" skipped="0" timestamp="2023-11-21T04:20:21" time="1.786" tests="28">
+    <testcase classname="retrieveAccount should emit user details when retrieving an account" name="retrieveAccount should emit user details when retrieving an account" time="0.01">
     </testcase>
     <testcase classname="retrieveAccount should handle the case when the user is not found in retrieveAccount" name="retrieveAccount should handle the case when the user is not found in retrieveAccount" time="0">
     </testcase>
@@ -35,15 +61,15 @@
     </testcase>
     <testcase classname="updateAccount should handle failure in account update" name="updateAccount should handle failure in account update" time="0.001">
     </testcase>
-    <testcase classname="updateName should update username" name="updateName should update username" time="0.038">
+    <testcase classname="updateName should update username" name="updateName should update username" time="0.008">
     </testcase>
-    <testcase classname="updateName should handle user not found in updateName" name="updateName should handle user not found in updateName" time="0.001">
+    <testcase classname="updateName should handle user not found in updateName" name="updateName should handle user not found in updateName" time="0">
     </testcase>
-    <testcase classname="updateAdminStatus should update admin status" name="updateAdminStatus should update admin status" time="0.002">
+    <testcase classname="updateAdminStatus should update admin status" name="updateAdminStatus should update admin status" time="0.001">
     </testcase>
     <testcase classname="updateAdminStatus should handle user not found in updateAdminStatus" name="updateAdminStatus should handle user not found in updateAdminStatus" time="0.001">
     </testcase>
-    <testcase classname="updateLastRedemptionDate should update last redemption date" name="updateLastRedemptionDate should update last redemption date" time="0.003">
+    <testcase classname="updateLastRedemptionDate should update last redemption date" name="updateLastRedemptionDate should update last redemption date" time="0.002">
     </testcase>
     <testcase classname="updateLastRedemptionDate should handle user not found in updateLastRedemptionDate" name="updateLastRedemptionDate should handle user not found in updateLastRedemptionDate" time="0">
     </testcase>
@@ -53,11 +79,11 @@
     </testcase>
     <testcase classname="deleteAllUsers should delete all users successfully" name="deleteAllUsers should delete all users successfully" time="0.001">
     </testcase>
-    <testcase classname="deleteAllUsers should handle failure in deleteAllUsers" name="deleteAllUsers should handle failure in deleteAllUsers" time="0.001">
+    <testcase classname="deleteAllUsers should handle failure in deleteAllUsers" name="deleteAllUsers should handle failure in deleteAllUsers" time="0">
     </testcase>
     <testcase classname="checkuserinDB should find user in database" name="checkuserinDB should find user in database" time="0.001">
     </testcase>
-    <testcase classname="checkuserinDB should handle user not found in checkUserisInDB" name="checkuserinDB should handle user not found in checkUserisInDB" time="0.001">
+    <testcase classname="checkuserinDB should handle user not found in checkUserisInDB" name="checkuserinDB should handle user not found in checkUserisInDB" time="0">
     </testcase>
     <testcase classname="deposit should handle successful deposit" name="deposit should handle successful deposit" time="0.001">
     </testcase>
@@ -65,91 +91,59 @@
     </testcase>
     <testcase classname="depositbyname should handle successful deposit by name" name="depositbyname should handle successful deposit by name" time="0.001">
     </testcase>
-    <testcase classname="depositbyname should handle deposit by name with user not found" name="depositbyname should handle deposit by name with user not found" time="0.008">
+    <testcase classname="depositbyname should handle deposit by name with user not found" name="depositbyname should handle deposit by name with user not found" time="0">
+    </testcase>
+    <testcase classname="depositbyname should not withdraw more than the current balance" name="depositbyname should not withdraw more than the current balance" time="0.001">
     </testcase>
     <testcase classname="withdraw should handle successful withdrawal" name="withdraw should handle successful withdrawal" time="0.001">
     </testcase>
     <testcase classname="withdraw should handle withdrawal with user not found" name="withdraw should handle withdrawal with user not found" time="0">
     </testcase>
-    <testcase classname="withdraw should handle insufficient funds in withdrawal" name="withdraw should handle insufficient funds in withdrawal" time="0.001">
+    <testcase classname="withdraw should handle insufficient funds in withdrawal" name="withdraw should handle insufficient funds in withdrawal" time="0">
     </testcase>
     <testcase classname="chatBanned should update chat banned status" name="chatBanned should update chat banned status" time="0.001">
     </testcase>
     <testcase classname="chatBanned should handle user not found in updateChatBanned" name="chatBanned should handle user not found in updateChatBanned" time="0">
     </testcase>
   </testsuite>
-  <testsuite name="GameLobbyStore" errors="0" failures="0" skipped="0" timestamp="2023-11-20T08:02:58" time="1.299" tests="10">
-    <testcase classname="GameLobbyStore init should initialize the database connection and collection" name="GameLobbyStore init should initialize the database connection and collection" time="0.021">
+  <testsuite name="Baccarat" errors="0" failures="0" skipped="0" timestamp="2023-11-21T04:20:21" time="2.074" tests="2">
+    <testcase classname="Baccarat newGame" name="Baccarat newGame" time="0.04">
     </testcase>
-    <testcase classname="GameLobbyStore insertLobby should insert a new lobby into the collection" name="GameLobbyStore insertLobby should insert a new lobby into the collection" time="0.002">
-    </testcase>
-    <testcase classname="GameLobbyStore updateLobby should update a lobby in the collection" name="GameLobbyStore updateLobby should update a lobby in the collection" time="0.002">
-    </testcase>
-    <testcase classname="GameLobbyStore setPlayerReady should set a player ready in a lobby" name="GameLobbyStore setPlayerReady should set a player ready in a lobby" time="0.002">
-    </testcase>
-    <testcase classname="GameLobbyStore getLobby should retrieve a lobby" name="GameLobbyStore getLobby should retrieve a lobby" time="0.001">
-    </testcase>
-    <testcase classname="GameLobbyStore getAllLobby should retrieve all lobbies" name="GameLobbyStore getAllLobby should retrieve all lobbies" time="0.002">
-    </testcase>
-    <testcase classname="GameLobbyStore deleteLobby should delete a lobby" name="GameLobbyStore deleteLobby should delete a lobby" time="0.004">
-    </testcase>
-    <testcase classname="GameLobbyStore setPlayerBet should set a player bet in a lobby" name="GameLobbyStore setPlayerBet should set a player bet in a lobby" time="0.002">
-    </testcase>
-    <testcase classname="GameLobbyStore getPlayerCount should retrieve the player count for a lobby" name="GameLobbyStore getPlayerCount should retrieve the player count for a lobby" time="0.002">
-    </testcase>
-    <testcase classname="GameLobbyStore close should close the database connection" name="GameLobbyStore close should close the database connection" time="0.001">
+    <testcase classname="Baccarat random" name="Baccarat random" time="0.652">
     </testcase>
   </testsuite>
-  <testsuite name="Roulette" errors="0" failures="0" skipped="0" timestamp="2023-11-20T08:02:59" time="0.352" tests="1">
-    <testcase classname="Roulette random" name="Roulette random" time="0.004">
+  <testsuite name="Blackjack" errors="0" failures="0" skipped="0" timestamp="2023-11-21T04:20:21" time="2.462" tests="2">
+    <testcase classname="Blackjack newGame" name="Blackjack newGame" time="0.015">
+    </testcase>
+    <testcase classname="Blackjack random" name="Blackjack random" time="1.059">
     </testcase>
   </testsuite>
-  <testsuite name="Baccarat" errors="0" failures="0" skipped="0" timestamp="2023-11-20T08:02:58" time="1.501" tests="2">
-    <testcase classname="Baccarat newGame" name="Baccarat newGame" time="0.033">
+  <testsuite name="GameLobby" errors="0" failures="0" skipped="0" timestamp="2023-11-21T04:20:21" time="4.353" tests="17">
+    <testcase classname="GameLobby init should create a new lobby correctly" name="GameLobby init should create a new lobby correctly" time="0.054">
     </testcase>
-    <testcase classname="Baccarat random" name="Baccarat random" time="0.565">
+    <testcase classname="GameLobby init should emit &quot;roomAlreadyExist&quot; if the lobby already exists" name="GameLobby init should emit &quot;roomAlreadyExist&quot; if the lobby already exists" time="0.002">
     </testcase>
-  </testsuite>
-  <testsuite name="Blackjack" errors="0" failures="0" skipped="0" timestamp="2023-11-20T08:02:58" time="1.492" tests="2">
-    <testcase classname="Blackjack newGame" name="Blackjack newGame" time="0.022">
-    </testcase>
-    <testcase classname="Blackjack random" name="Blackjack random" time="0.575">
-    </testcase>
-  </testsuite>
-  <testsuite name="GameManager" errors="0" failures="0" skipped="0" timestamp="2023-11-20T08:02:58" time="3.727" tests="3">
-    <testcase classname="GameManager should initialize the data structure correctly" name="GameManager should initialize the data structure correctly" time="0.026">
-    </testcase>
-    <testcase classname="GameManager should create a new game correctly" name="GameManager should create a new game correctly" time="1.017">
-    </testcase>
-    <testcase classname="GameManager should be able to game over" name="GameManager should be able to game over" time="1.301">
-    </testcase>
-  </testsuite>
-  <testsuite name="GameLobby" errors="0" failures="0" skipped="0" timestamp="2023-11-20T08:02:58" time="4.413" tests="17">
-    <testcase classname="GameLobby init should create a new lobby correctly" name="GameLobby init should create a new lobby correctly" time="0.015">
-    </testcase>
-    <testcase classname="GameLobby init should emit &quot;roomAlreadyExist&quot; if the lobby already exists" name="GameLobby init should emit &quot;roomAlreadyExist&quot; if the lobby already exists" time="0.001">
-    </testcase>
-    <testcase classname="GameLobby addPlayer should add a player to the lobby correctly" name="GameLobby addPlayer should add a player to the lobby correctly" time="0.002">
+    <testcase classname="GameLobby addPlayer should add a player to the lobby correctly" name="GameLobby addPlayer should add a player to the lobby correctly" time="0.004">
     </testcase>
     <testcase classname="GameLobby addPlayer should emit &quot;PlayerExceedMax&quot; if the lobby is full" name="GameLobby addPlayer should emit &quot;PlayerExceedMax&quot; if the lobby is full" time="0.002">
     </testcase>
-    <testcase classname="GameLobby addPlayer should emit &quot;roomDoesNot&quot; if the lobby does not exist" name="GameLobby addPlayer should emit &quot;roomDoesNot&quot; if the lobby does not exist" time="0.001">
+    <testcase classname="GameLobby addPlayer should emit &quot;roomDoesNot&quot; if the lobby does not exist" name="GameLobby addPlayer should emit &quot;roomDoesNot&quot; if the lobby does not exist" time="0.002">
     </testcase>
-    <testcase classname="GameLobby removePlayer should remove a player from the lobby correctly" name="GameLobby removePlayer should remove a player from the lobby correctly" time="0.002">
+    <testcase classname="GameLobby removePlayer should remove a player from the lobby correctly" name="GameLobby removePlayer should remove a player from the lobby correctly" time="0.003">
     </testcase>
     <testcase classname="GameLobby removePlayer should not remove a player if their socket ID is not found in any lobby" name="GameLobby removePlayer should not remove a player if their socket ID is not found in any lobby" time="0.002">
     </testcase>
-    <testcase classname="GameLobby setPlayerReady should set a player ready in the lobby correctly" name="GameLobby setPlayerReady should set a player ready in the lobby correctly" time="0.001">
+    <testcase classname="GameLobby setPlayerReady should set a player ready in the lobby correctly" name="GameLobby setPlayerReady should set a player ready in the lobby correctly" time="0.002">
     </testcase>
-    <testcase classname="GameLobby setPlayerReady should start the game when all players are ready" name="GameLobby setPlayerReady should start the game when all players are ready" time="0.002">
+    <testcase classname="GameLobby setPlayerReady should start the game when all players are ready" name="GameLobby setPlayerReady should start the game when all players are ready" time="0.004">
     </testcase>
-    <testcase classname="GameLobby startGame should start a game correctly" name="GameLobby startGame should start a game correctly" time="3.014">
+    <testcase classname="GameLobby startGame should start a game correctly" name="GameLobby startGame should start a game correctly" time="3.005">
     </testcase>
-    <testcase classname="GameLobby startGame should not start the game if gameManager is not initialized" name="GameLobby startGame should not start the game if gameManager is not initialized" time="0">
+    <testcase classname="GameLobby startGame should not start the game if gameManager is not initialized" name="GameLobby startGame should not start the game if gameManager is not initialized" time="0.001">
     </testcase>
     <testcase classname="GameLobby setPlayerBet should set a player bet correctly" name="GameLobby setPlayerBet should set a player bet correctly" time="0.001">
     </testcase>
-    <testcase classname="GameLobby sendChatMessage should send a chat message correctly" name="GameLobby sendChatMessage should send a chat message correctly" time="0.002">
+    <testcase classname="GameLobby sendChatMessage should send a chat message correctly" name="GameLobby sendChatMessage should send a chat message correctly" time="0.001">
     </testcase>
     <testcase classname="GameLobby deleteLobby should delete a lobby correctly" name="GameLobby deleteLobby should delete a lobby correctly" time="0">
     </testcase>
@@ -158,6 +152,14 @@
     <testcase classname="GameLobby getAllLobby should retrieve all lobbies correctly" name="GameLobby getAllLobby should retrieve all lobbies correctly" time="0.001">
     </testcase>
     <testcase classname="GameLobby getPlayerCount should retrieve player count correctly" name="GameLobby getPlayerCount should retrieve player count correctly" time="0">
+    </testcase>
+  </testsuite>
+  <testsuite name="GameManager" errors="0" failures="0" skipped="0" timestamp="2023-11-21T04:20:21" time="4.591" tests="3">
+    <testcase classname="GameManager should initialize the data structure correctly" name="GameManager should initialize the data structure correctly" time="0.024">
+    </testcase>
+    <testcase classname="GameManager should create a new game correctly" name="GameManager should create a new game correctly" time="1.019">
+    </testcase>
+    <testcase classname="GameManager should be able to game over" name="GameManager should be able to game over" time="1.79">
     </testcase>
   </testsuite>
 </testsuites>

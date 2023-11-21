@@ -121,8 +121,9 @@ class UserAccount {
         //     socket.emit('balanceUpdate', null);
         //     return;
         // }
+        let balanceAsInteger = Math.round(updatedUser.balance);
         
-        socket.emit('balanceUpdate', updatedUser.balance);
+        socket.emit('balanceUpdate', balanceAsInteger);
     }
 
     // ChatGPT usage: No
@@ -132,7 +133,10 @@ class UserAccount {
             socket.emit('balanceUpdate', null);
             return;
         }
-        
+        if (amount < 0 && -amount > user.balance){
+            socket.emit('balanceUpdate', "Amount withdrawed is more than the current balance, cannot process this withdrawal");
+            return
+        }
         user.balance += amount;
         const updatedUser = await this.userStore.updateUser(user.userId, user);
         
@@ -140,8 +144,10 @@ class UserAccount {
         //     socket.emit('balanceUpdate', null);
         //     return;
         // }
+
+        let balanceAsInteger = Math.round(updatedUser.balance);
         
-        socket.emit('balanceUpdate', updatedUser.balance);
+        socket.emit('balanceUpdate', balanceAsInteger);
     }
 
     // ChatGPT usage: No
@@ -158,9 +164,9 @@ class UserAccount {
         }
         user.balance -= amount;
         const updatedUser = await this.userStore.updateUser(userId, user);
+        let balanceAsInteger = Math.round(updatedUser.balance);
         
-        
-        socket.emit('balanceUpdate', updatedUser.balance);
+        socket.emit('balanceUpdate', balanceAsInteger);
     }
 
     // ChatGPT usage: Yes

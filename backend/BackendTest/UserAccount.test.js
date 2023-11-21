@@ -432,6 +432,25 @@ describe('depositbyname', () => {
         expect(ioMock.emit).toHaveBeenCalledWith('balanceUpdate', null);
       });
 
+      // Input : username in DB and the amount to withdraw
+      // expected behavior : user balance updated
+      // expected output : return the updated balance
+      
+      it('should not withdraw more than the current balance', async () => {
+        const username = '123';
+        const amount = -150; // Attempting to withdraw more than the balance
+        const mockUser = { username, balance: 100 };
+        userStoreMock.getUserbyname.mockResolvedValueOnce(mockUser);
+      
+        await userAccount.depositbyname(ioMock, username, amount);
+        
+        expect(userStoreMock.updateUser).not.toHaveBeenCalled();
+
+        // Check if an error message is emitted indicating withdrawal failure
+        expect(ioMock.emit).toHaveBeenCalledWith('balanceUpdate', "Amount withdrawed is more than the current balance, cannot process this withdrawal");
+      });
+
+
 });
 
 

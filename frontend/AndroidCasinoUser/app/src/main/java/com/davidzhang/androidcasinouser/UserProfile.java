@@ -119,7 +119,7 @@ public class UserProfile extends ThemedActivity {
             public void call(Object... args) {
                 Log.d(TAG, "received new balance details");
                 if (args[0] != null) {
-                    double newbalance = (double) args[0];
+                    Integer newbalance = (Integer) args[0];
 
                     runOnUiThread(new Runnable() {
                         @Override
