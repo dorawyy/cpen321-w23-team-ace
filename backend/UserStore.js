@@ -21,11 +21,7 @@ class UserStore {
             console.error("Connection to MongoDB failed: ", error);
             throw error
         }
-        // Create unique index for userId
-        //await this.usersCollection.createIndex({ "userId": 1 }, { unique: true });
-    
-        // Create unique index for username (or name, depending on your schema)
-        //await this.usersCollection.createIndex({ "username": 1 }, { unique: true });
+        
     }
     
     // ChatGPT usage: Yes

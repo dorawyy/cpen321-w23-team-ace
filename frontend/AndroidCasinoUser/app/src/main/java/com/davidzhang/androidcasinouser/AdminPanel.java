@@ -126,8 +126,8 @@ public class AdminPanel extends ThemedActivity {
             @Override
             public void call(Object... args) {
                 Log.d(TAG, "received new balance details");
-                if (args[0] != null) {
-                    double newbalance = (double) args[0];
+                if (args[0] != null && args[0] instanceof Integer) {
+                    Integer newbalance = (Integer) args[0];
 
                     runOnUiThread(new Runnable() {
                         @Override
@@ -136,7 +136,16 @@ public class AdminPanel extends ThemedActivity {
                             Toast.makeText(AdminPanel.this, "Updated Balance for " + editUserNameEditText.getText().toString() + " is "+ newbalance, Toast.LENGTH_LONG).show();
                         }
                     });
-                } else {
+                } else if (args[0] != null && args[0] instanceof String) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            Toast.makeText(AdminPanel.this, args[0].toString(), Toast.LENGTH_LONG).show();
+
+                        }
+                    });
+                }else{
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {

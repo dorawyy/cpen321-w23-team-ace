@@ -37,7 +37,9 @@
         android:id="@+id/etPlaceBet"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Place Bets" />
+        android:hint="Place Bets"
+        android:inputType="number"
+        />
 
     <!-- Interface from the picture -->
     <LinearLayout

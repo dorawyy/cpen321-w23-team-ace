@@ -40,11 +40,11 @@ class UserAccount {
         user.username = name;
         console.log(user);
         const updatedUser = await this.userStore.updateUser(userId, user);
-        console.log(updatedUser)
-        if (!updatedUser) {
-            socket.emit('userError', "Update username failed.");
-            return;
-        }
+        //console.log(updatedUser)
+        //if (!updatedUser) {
+          //  socket.emit('userError', "Update username failed.");
+           // return;
+        //}
         
         socket.emit('accountUpdated', updatedUser);
     }
@@ -60,10 +60,10 @@ class UserAccount {
         user.isAdmin = isAdmin;
         const updatedUser = await this.userStore.updateUser(user.userId, user);
         
-        if (!updatedUser) {
-            socket.emit('userError', "Assign Admin Status failed.");
-            return;
-        }
+        //if (!updatedUser) {
+            //socket.emit('userError', "Assign Admin Status failed.");
+            //return;
+        //}
         
         socket.emit('accountUpdated', updatedUser);
     }
@@ -79,10 +79,10 @@ class UserAccount {
         user.isChatBanned = isChatBanned;
         const updatedUser = await this.userStore.updateUser(user.userId, user);
         
-        if (!updatedUser) {
-            socket.emit('userError', "Assign ChatBanned Status failed.");
-            return;
-        }
+        // if (!updatedUser) {
+        //     socket.emit('userError', "Assign ChatBanned Status failed.");
+        //     return;
+        // }
         
         socket.emit('accountUpdated', updatedUser);
     }
@@ -91,17 +91,17 @@ class UserAccount {
     async updateLastRedemptionDate(socket, userId, date){
         const user = await this.userStore.getUser(userId);
         if (!user) {
-            socket.emit('userError', "User not found.");
+            socket.emit('accountUpdated', "Failed to update the RedemptionDate for User");
             return;
         }
         
         user.lastRedemptionDate = date;
         const updatedUser = await this.userStore.updateUser(userId, user);
         
-        if (!updatedUser) {
-            socket.emit('userError', "Update lastRedemptionDate failed.");
-            return;
-        }
+        // if (!updatedUser) {
+        //     socket.emit('accountUpdated', "Failed to update the RedemptionDate for User");
+        //     return;
+        // }
         
         socket.emit('accountUpdated', updatedUser);
     }
@@ -117,12 +117,13 @@ class UserAccount {
         user.balance += amount;
         const updatedUser = await this.userStore.updateUser(userId, user);
         
-        if (!updatedUser) {
-            socket.emit('balanceUpdate', null);
-            return;
-        }
+        // if (!updatedUser) {
+        //     socket.emit('balanceUpdate', null);
+        //     return;
+        // }
+        let balanceAsInteger = Math.round(updatedUser.balance);
         
-        socket.emit('balanceUpdate', updatedUser.balance);
+        socket.emit('balanceUpdate', balanceAsInteger);
     }
 
     // ChatGPT usage: No
@@ -132,16 +133,21 @@ class UserAccount {
             socket.emit('balanceUpdate', null);
             return;
         }
-        
+        if (amount < 0 && -amount > user.balance){
+            socket.emit('balanceUpdate', "Amount withdrawed is more than the current balance, cannot process this withdrawal");
+            return
+        }
         user.balance += amount;
         const updatedUser = await this.userStore.updateUser(user.userId, user);
         
-        if (!updatedUser) {
-            socket.emit('balanceUpdate', null);
-            return;
-        }
+        // if (!updatedUser) {
+        //     socket.emit('balanceUpdate', null);
+        //     return;
+        // }
+
+        let balanceAsInteger = Math.round(updatedUser.balance);
         
-        socket.emit('balanceUpdate', updatedUser.balance);
+        socket.emit('balanceUpdate', balanceAsInteger);
     }
 
     // ChatGPT usage: No
@@ -152,15 +158,15 @@ class UserAccount {
             return;
         }
         
-        user.balance -= amount;
-        const updatedUser = await this.userStore.updateUser(userId, user);
-        
-        if (!updatedUser) {
-            socket.emit('userError', "Withdraw failed.");
+        if (user.balance < amount){
+            socket.emit('userError', "Insufficient funds");
             return;
         }
+        user.balance -= amount;
+        const updatedUser = await this.userStore.updateUser(userId, user);
+        let balanceAsInteger = Math.round(updatedUser.balance);
         
-        socket.emit('balanceUpdate', updatedUser.balance);
+        socket.emit('balanceUpdate', balanceAsInteger);
     }
 
     // ChatGPT usage: Yes
