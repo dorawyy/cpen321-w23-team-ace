@@ -152,6 +152,51 @@ describe('GameLobby', () => {
         expect(gameLobbyStoreMock.updateLobby).not.toHaveBeenCalled();
         expect(socketMock.leave).not.toHaveBeenCalled();
     });
+
+    // Input: socket (with no associated lobby)
+    // Expected behavior: Clear the timer
+    // Expected output: Timer is cancelled and removed from the timers array
+    it('should clear the timer if a ready player leaves', async () => {
+      gameLobbyStoreMock.getAllLobby.mockResolvedValue([
+          { 
+              roomName: 'room123', 
+              players: { 'user1': { ready: true, socketId: 'socket123' } },
+              gameStarted: false
+          }
+      ]);
+
+      jest.useFakeTimers();
+      gameLobby.timers['room123'] = setTimeout(() => {}, 6000);
+
+      await gameLobby.removePlayer({ id: 'socket123', leave: jest.fn() });
+
+      expect(jest.getTimerCount()).toBe(0);
+
+      jest.useRealTimers();
+    });
+
+    // Input: socket (with no associated lobby)
+    // Expected behavior: No timer is cleared
+    // Expected output: The timer is not in the timer array and should not be cleared
+    it('should not clear a timer if no timer is set when a player leaves', async () => {
+      gameLobbyStoreMock.getAllLobby.mockResolvedValue([
+          { 
+              roomName: 'room123', 
+              players: { 'user1': { ready: true, socketId: 'socket123' } },
+              gameStarted: false
+          }
+      ]);
+
+      jest.useFakeTimers();
+      gameLobby.timers['room123'] = undefined;
+
+      await gameLobby.removePlayer({ id: 'socket123', leave: jest.fn() });
+
+      expect(jest.getTimerCount()).toBe(0);
+
+      jest.useRealTimers();
+    });
+
   });
 
   // Interface socket event 'setReady'
@@ -207,7 +252,27 @@ describe('GameLobby', () => {
         expect(ioMock.to().emit).toHaveBeenCalledWith('playerReady', 'user3');
         expect(ioMock.to().emit).toHaveBeenCalledWith('playerCount', undefined);         
     });
+
+    // Input: roomName, players, maxPlayers
+    // Expected behavior: Set a timer when one player is ready
+    // Expected output: A timer is set up and added to the timer array
+    it('should set a timer when a player is set as ready', async () => {
+        const mockLobby = {
+            roomName: 'room123',
+            players: { 'user1': { ready: false }, 'user2': { ready: false } },
+            maxPlayers: 2
+        };
+        gameLobbyStoreMock.getLobby.mockResolvedValue(mockLobby);
+
+        jest.useFakeTimers();
+        await gameLobby.setPlayerReady('room123', 'user1');
+
+        expect(jest.getTimerCount()).toBeGreaterThan(0);
+
+        jest.runOnlyPendingTimers();
+        jest.useRealTimers();
     });
+  });
   
   describe('startGame', () => {
     // Input: roomName

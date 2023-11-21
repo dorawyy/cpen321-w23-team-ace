@@ -3,25 +3,23 @@ package com.davidzhang.androidcasinouser;
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
+
 import java.nio.charset.StandardCharsets;
 
 public class EncryptionUtils {
 
     private static final String ALGORITHM = "AES/ECB/PKCS5Padding";
-    private static SecretKey encryptionKey = null;
+    private static final byte[] FIXED_KEY = {
+            // 16 bytes for AES-128. Example key (in hexadecimal format):
+            (byte) 0x01, (byte) 0x23, (byte) 0x45, (byte) 0x67,
+            (byte) 0x89, (byte) 0xab, (byte) 0xcd, (byte) 0xef,
+            (byte) 0x01, (byte) 0x23, (byte) 0x45, (byte) 0x67,
+            (byte) 0x89, (byte) 0xab, (byte) 0xcd, (byte) 0xef
+    };
 
-    // Generates or retrieves the existing AES key
     public static SecretKey generateKey() {
-        if (encryptionKey == null) {
-            try {
-                KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
-                keyGenerator.init(128); // AES key size
-                encryptionKey = keyGenerator.generateKey();
-            } catch (Exception e) {
-                throw new RuntimeException("Error generating key", e);
-            }
-        }
-        return encryptionKey;
+        return new SecretKeySpec(FIXED_KEY, "AES");
     }
 
     public static byte[] encrypt(String input, SecretKey key) throws Exception {
