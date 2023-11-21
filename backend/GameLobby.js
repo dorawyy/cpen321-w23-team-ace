@@ -136,7 +136,7 @@ class GameLobby {
         if (!this.timers[roomName]) {
             this.timers[roomName] = setTimeout(() => {
             this.startGame(roomName)
-            }, 6000); // 60 seconds
+            }, 60000); // 60 seconds
         }
 
         if (Object.values(lobby.players).every(player => player.ready)) {
