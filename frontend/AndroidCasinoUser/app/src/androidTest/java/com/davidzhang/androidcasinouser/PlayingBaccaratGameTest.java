@@ -44,6 +44,7 @@ import org.junit.runner.RunWith;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
+//ChatGPT usage: Partial
 public class PlayingBaccaratGameTest {
 
     private UiDevice device;
@@ -56,7 +57,9 @@ public class PlayingBaccaratGameTest {
         device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
     }
 
+    //This test should be run after the creating game rooms test, as it uses that lobby.
     @Test
+    //ChatGPT usage: Partial
     public void playingBaccaratGameTest() throws InterruptedException, UiObjectNotFoundException {
         //Sign in
         ViewInteraction id = onView(
@@ -168,8 +171,6 @@ public class PlayingBaccaratGameTest {
                         isDisplayed()));
         appCompatEditText3.perform(replaceText("adaw"));
 
-
-        Log.d("TEST", "P1");
         //set bet
         ViewInteraction materialButton5 = onView(
                 allOf(withId(R.id.btnPlaceBetsReadyUp), withText("Place Bets and Ready Up"),
@@ -181,15 +182,15 @@ public class PlayingBaccaratGameTest {
                         isDisplayed()));
         materialButton5.perform(click());
 
-        Log.d("TEST", "P2");
         Thread.sleep(1000);
         onView(withText("Invalid bet. Please enter a valid integer")).inRoot(new PlayingBaccaratGameTest.ToastMatcher())
                 .check(matches(isDisplayed()));
         Thread.sleep(2500);
-        Log.d("TEST", "P3");
+
+
         //TODO: NEGATIVE BET TEST
 
-        Log.d("TEST", "P4");
+
         //Set bet to 200
         ViewInteraction appCompatEditText5 = onView(
                 allOf(withId(R.id.etPlaceBet), withText("adaw"),
@@ -201,7 +202,6 @@ public class PlayingBaccaratGameTest {
                         isDisplayed()));
         appCompatEditText5.perform(replaceText("200"));
 
-        Log.d("TEST", "P5");
 
         //Set bet
         ViewInteraction materialButton6 = onView(

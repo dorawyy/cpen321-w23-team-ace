@@ -49,6 +49,7 @@ import org.junit.runner.RunWith;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
+//ChatGPT usage: Partial
 public class DailyPointTest {
 
     private UiDevice device;
@@ -66,6 +67,7 @@ public class DailyPointTest {
 
     //This test will sign in and create a new user then proceed to test the daily points redemption use case.
     @Test
+    //ChatGPT usage: Partial
     public void dailyPointTest() throws UiObjectNotFoundException, InterruptedException {
 
         //Check Sign In Button Exists
@@ -169,12 +171,10 @@ public class DailyPointTest {
                         isDisplayed()));
         materialButton3.perform(click());
 
+        Thread.sleep(1000);
+
         //Check the balance is now 150
-        ViewInteraction textView2 = onView(
-                allOf(withId(R.id.balanceTextView), withText("Balance: 150.0"),
-                        withParent(withParent(withId(android.R.id.content))),
-                        isDisplayed()));
-        textView2.check(matches(withText("Balance: 150.0")));
+        onView(withId(R.id.balanceTextView)).check(matches(withText("Balance: 150")));
 
         //Click the redeem button
         ViewInteraction materialButton4 = onView(
@@ -193,11 +193,8 @@ public class DailyPointTest {
         Thread.sleep(2500);
 
         //Check the balance is still 150
-        ViewInteraction textView3 = onView(
-                allOf(withId(R.id.balanceTextView), withText("Balance: 150.0"),
-                        withParent(withParent(withId(android.R.id.content))),
-                        isDisplayed()));
-        textView3.check(matches(withText("Balance: 150.0")));
+        onView(withId(R.id.balanceTextView)).check(matches(withText("Balance: 150")));
+
     }
 
     private static Matcher<View> childAtPosition(

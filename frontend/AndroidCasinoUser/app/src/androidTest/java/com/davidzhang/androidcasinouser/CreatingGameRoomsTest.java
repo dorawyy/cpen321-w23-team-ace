@@ -48,6 +48,8 @@ import org.junit.runner.RunWith;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
+
+//ChatGPT usage: Partial
 public class CreatingGameRoomsTest {
 
     private UiDevice device;
@@ -63,6 +65,7 @@ public class CreatingGameRoomsTest {
 
     //This should be run after the DailyPointTest so that the account exists that we want to use.
     @Test
+    //ChatGPT usage: Partial
     public void creatingGameRoomsTest() throws InterruptedException, UiObjectNotFoundException {
         //Click Sign in Button
         ViewInteraction id = onView(
@@ -156,7 +159,6 @@ public class CreatingGameRoomsTest {
                 .check(matches(isDisplayed()));
         Thread.sleep(2500);
 
-        Log.d("TEST", "SETTING NAME 14");
         //Set room name to Test Lobby
         ViewInteraction appCompatEditText = onView(
                 allOf(withId(R.id.roomNameEditText),
@@ -187,7 +189,55 @@ public class CreatingGameRoomsTest {
                 .check(matches(isDisplayed()));
         Thread.sleep(2500);
 
-        Log.d("TEST", "NUM TO 0");
+        //Set room name to back to nothing
+        onView(
+                allOf(withId(R.id.roomNameEditText),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                0),
+                        isDisplayed())).perform(replaceText(""), closeSoftKeyboard());
+
+        //Set max players to 5
+        onView(
+                allOf(withId(R.id.maxPlayersEditText),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                2),
+                        isDisplayed())).perform(replaceText("5"), closeSoftKeyboard());
+
+        //Try to create the lobby
+        onView(
+                allOf(withId(R.id.createLobbyButton), withText("Create Lobby"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                3),
+                        isDisplayed())).perform(click());
+
+        //Check the create lobby button still exists
+        onView(withId(R.id.createLobbyButton)).check(matches(isDisplayed()));
+
+        Thread.sleep(1000);
+        onView(withText("Please enter valid info!")).inRoot(new CreatingGameRoomsTest.ToastMatcher())
+                .check(matches(isDisplayed()));
+        Thread.sleep(2500);
+
+        //Set room name to Test Lobby
+        onView(
+                allOf(withId(R.id.roomNameEditText),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                0),
+                        isDisplayed())).perform(replaceText("Test Lobby"), closeSoftKeyboard());
+
+
         //Set max players to 0
         ViewInteraction appCompatEditText2 = onView(
                 allOf(withId(R.id.maxPlayersEditText),
