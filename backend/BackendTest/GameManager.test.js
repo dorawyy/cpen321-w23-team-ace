@@ -22,7 +22,7 @@ jest.mock('mongodb', () => {
       }),
       findOne: jest.fn(() => Promise.resolve(mockGameData)),
       updateOne:  (...args) => new Promise((resolve, reject) => {
-        mockGameData = args[0];
+        mockGameData = args[1].$set;
         resolve({ insertedId: 'id123' });
       }),
       deleteOne: jest.fn().mockResolvedValue({ deletedCount: 1 }),
@@ -154,12 +154,14 @@ describe('GameManager', () => {
     // then call your method
     await gameManager.startGame('abc123', 'BlackJack', ["playera", "playerb"], {"playera": 100, "playerb": 100});
     // Now you can console.log toParameters and emitParameters.
+    let localMockData = mockGameData;
     expect(toParameters.length).toBe(1);
     expect(toParameters[0][0]).toEqual(expect.stringContaining('abc123'));
     expect(emitParameters[0][0]).toEqual(expect.stringContaining('playerTurn'));
     expect(JSON.stringify(emitParameters[0][1])).toEqual(expect.stringContaining('abc123'));
     //stand
     await gameManager.playTurn('abc123', "playera", "stand");
+    localMockData = mockGameData;
     expect(toParameters.length).toBe(2);
     expect(toParameters[1][0]).toEqual(expect.stringContaining('abc123'));
     expect(emitParameters[1][0]).toEqual(expect.stringContaining('playerTurn'));
@@ -214,13 +216,44 @@ describe('GameManager', () => {
         };
       }),
     };
-  
+    await gameManager.startGame('abc123', 'Roulette', ["playera", "playerb"], {
+      "playera": {"red": 100, "black": 0, "odd": 0, "even": 0, "green": 0}, 
+      "playerb": {"red": 0, "black": 100, "odd": 0, "even": 0, "green": 0}
+    });
     // then call your method
     await gameManager.playTurn('abc123', {"usera":[1]});
     // Now you can console.log toParameters and emitParameters.
-    expect(toParameters.length).toBe(1);
     expect(toParameters[0][0]).toEqual(expect.stringContaining('abc123'));
     expect(emitParameters[0][0]).toEqual(expect.stringContaining('gameOver'));
+    expect(JSON.stringify(emitParameters[0][1])).toEqual(expect.stringContaining('abc123'));
+  });
+
+  it('playturn, but not with blackjack', async () => {
+    let toParameters = [];
+    let emitParameters = [];
+    gameManager.io = {
+      to: jest.fn((...args) => {
+        toParameters.push(args);
+        return {
+          emit: jest.fn((...args) => {
+            emitParameters.push(args);
+            return 0;
+          }),
+        };
+      }),
+    };
+    await gameManager.startGame('abc123', 'Roulette', ["playera", "playerb"], {
+      "playera": {"red": 100, "black": 0, "odd": 0, "even": 0, "green": 0}, 
+      "playerb": {"red": 0, "black": 100, "odd": 0, "even": 0, "green": 0}
+    });
+    mockGameData.currentPlayerIndex = 1;
+    mockGameData.gameType = "Not BlackJack";
+    // then call your method
+    await gameManager.playTurn('abc123', {"usera":[1]});
+    // Now you can console.log toParameters and emitParameters.
+    expect(toParameters[0][0]).toEqual(expect.stringContaining('abc123'));
+    expect(emitParameters[0][0]).toEqual(expect.stringContaining('gameOver'));
+    expect(emitParameters[1][0]).toEqual(expect.stringContaining('playerTurn'));
     expect(JSON.stringify(emitParameters[0][1])).toEqual(expect.stringContaining('abc123'));
   });
 
@@ -280,13 +313,59 @@ describe('GameManager', () => {
         };
       }),
     };
-    
+  });
+
+  it('get action result type undefined', async () => {
+    let toParameters = [];
+    let emitParameters = [];
+    gameManager.io = {
+      to: jest.fn((...args) => {
+        toParameters.push(args);
+        return {
+          emit: jest.fn((...args) => {
+            emitParameters.push(args);
+            return 0;
+          }),
+        };
+      }),
+    };
+  
     // then call your method
     await gameManager.startGame('abc123', 'vall', ["playera", "playerb"], {
       "playera": {"red": 100, "black": 0, "odd": 0, "even": 0, "green": 0}, 
       "playerb": {"red": 0, "black": 100, "odd": 0, "even": 0, "green": 0}
     });
+    // make local copy
+    gameDataTemp = JSON.parse(JSON.stringify(mockGameData)); 
+    gameDataTemp.gameType = "unknown";
+    gameManager._getActionResult(gameDataTemp, "?", "Cry");
     expect(toParameters.length).toBe(0);
   });
 
+  it('get calculation type undefined', async () => {
+    let toParameters = [];
+    let emitParameters = [];
+    gameManager.io = {
+      to: jest.fn((...args) => {
+        toParameters.push(args);
+        return {
+          emit: jest.fn((...args) => {
+            emitParameters.push(args);
+            return 0;
+          }),
+        };
+      }),
+    };
+  
+    // then call your method
+    await gameManager.startGame('abc123', 'Roulette', ["playera", "playerb"], {
+      "playera": {"red": 100, "black": 0, "odd": 0, "even": 0, "green": 0}, 
+      "playerb": {"red": 0, "black": 100, "odd": 0, "even": 0, "green": 0}
+    });
+    // make local copy
+    gameDataTemp = JSON.parse(JSON.stringify(mockGameData)); 
+    gameDataTemp.gameType = "unknown";
+    gameManager._calculateWinning(gameDataTemp);
+    expect(toParameters.length).toBe(1); // call from gameOver
+  });
 });
