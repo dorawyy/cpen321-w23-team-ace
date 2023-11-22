@@ -50,7 +50,7 @@ beforeEach(async () => {
     let mockDB;
     let mockCollection;
     let userStore;
-    let gameLobbyStore
+    let gameLobbyStore;
 
     mockClient = new MongoClient();
     mockDB = mockClient.db();
