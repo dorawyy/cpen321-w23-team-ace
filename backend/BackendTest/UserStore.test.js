@@ -2,6 +2,7 @@
 const { MongoClient } = require('mongodb');
 const UserStore = require('../UserStore'); // Update with the correct path
 
+// ChatGPT usage: Partial
 jest.mock('mongodb', () => {
     const collectionMock = {
       findOne: jest.fn(),
@@ -24,6 +25,7 @@ jest.mock('mongodb', () => {
     return { MongoClient: jest.fn(() => mClient) };
   });
 
+// ChatGPT usage: No
 describe('UserStore', () => {
   let userStore;
   const connectionString = 'mongodb://127.0.0.1:27017';
@@ -62,7 +64,7 @@ describe('UserStore', () => {
 
 
 
-
+// ChatGPT usage: No
 describe('getUser', () => {
     let userStore;
     const connectionString = 'mongodb://127.0.0.1:27017';
@@ -85,6 +87,7 @@ describe('getUser', () => {
   });
 });
 
+// ChatGPT usage: No
 describe('getUserbyname', () => {
 
     let userStore;
@@ -107,6 +110,8 @@ describe('getUserbyname', () => {
     });
 });
 
+
+// ChatGPT usage: No
 describe('addUser', () => {
 
     let userStore;
@@ -144,6 +149,8 @@ describe('addUser', () => {
     })
 });
 
+
+// ChatGPT usage: No
 describe('updateUser', () => {
     let userStore;
     const connectionString = 'mongodb://127.0.0.1:27017';
@@ -186,6 +193,8 @@ describe('updateUser', () => {
     });
   });
 
+
+  // ChatGPT usage: No
   describe('deleteAllUsers', () => {
     let userStore;
     const connectionString = 'mongodb://127.0.0.1:27017';
@@ -205,6 +214,8 @@ describe('updateUser', () => {
     });
   });
 
+
+  // ChatGPT usage: No
   describe('close', () => {
     let userStore;
     const connectionString = 'mongodb://127.0.0.1:27017';
