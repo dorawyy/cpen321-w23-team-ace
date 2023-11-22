@@ -4,6 +4,30 @@ const { mock } = require('node:test');
 const { app } = require('../server'); // assuming that your server file is named server.js
 let io, serverSocket, clientSocket;
 
+jest.mock('mongodb', () => {
+    const collectionMock = {
+      findOne: jest.fn(),
+      insertOne: jest.fn(),
+      updateOne: jest.fn(),
+      deleteOne: jest.fn(),
+      deleteMany: jest.fn(),
+      find: jest.fn().mockReturnThis(),
+      toArray: jest.fn(),
+    };
+  
+    const dbMock = {
+      collection: jest.fn().mockReturnValue(collectionMock)
+    };
+  
+    const mClientMock = {
+      connect: jest.fn().mockResolvedValue(),
+      db: jest.fn().mockReturnValue(dbMock),
+      close: jest.fn()
+    };
+  
+    return { MongoClient: jest.fn(() => mClientMock) };
+});
+
 beforeAll((done) => {
     const httpServer = require('http').createServer(app);
     io = new Server(httpServer);
