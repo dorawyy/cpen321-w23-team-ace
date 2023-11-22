@@ -7,29 +7,29 @@ const { mock } = require('node:test');
 const { app } = require('../server'); // assuming that your server file is named server.js
 let io, serverSocket, clientSocket;
 
-jest.mock('mongodb', () => {
-    const collectionMock = {
-      findOne: jest.fn(),
-      insertOne: jest.fn(),
-      updateOne: jest.fn(),
-      deleteOne: jest.fn(),
-      deleteMany: jest.fn(),
-      find: jest.fn().mockReturnThis(),
-      toArray: jest.fn(),
-    };
+// jest.mock('mongodb', () => {
+//     const collectionMock = {
+//       findOne: jest.fn(),
+//       insertOne: jest.fn(),
+//       updateOne: jest.fn(),
+//       deleteOne: jest.fn(),
+//       deleteMany: jest.fn(),
+//       find: jest.fn().mockReturnThis(),
+//       toArray: jest.fn(),
+//     };
   
-    const dbMock = {
-      collection: jest.fn().mockReturnValue(collectionMock)
-    };
+//     const dbMock = {
+//       collection: jest.fn().mockReturnValue(collectionMock)
+//     };
   
-    const mClientMock = {
-      connect: jest.fn().mockResolvedValue(),
-      db: jest.fn().mockReturnValue(dbMock),
-      close: jest.fn()
-    };
+//     const mClientMock = {
+//       connect: jest.fn().mockResolvedValue(),
+//       db: jest.fn().mockReturnValue(dbMock),
+//       close: jest.fn()
+//     };
   
-    return { MongoClient: jest.fn(() => mClientMock) };
-});
+//     return { MongoClient: jest.fn(() => mClientMock) };
+// });
 
 beforeAll((done) => {
     const httpServer = require('http').createServer(app);
@@ -44,21 +44,21 @@ beforeAll((done) => {
     });
 });
 
-beforeEach(async () => {
+// beforeEach(async () => {
     
-    let mockClient;
-    let mockDB;
-    let mockCollection;
-    let userStore;
-    let gameLobbyStore;
+//     let mockClient;
+//     let mockDB;
+//     let mockCollection;
+//     let userStore;
+//     let gameLobbyStore;
 
-    mockClient = new MongoClient();
-    mockDB = mockClient.db();
-    mockCollection = mockDB.collection();
+//     mockClient = new MongoClient();
+//     mockDB = mockClient.db();
+//     mockCollection = mockDB.collection();
 
-    userStore = new UserStore("mongodb://localhost:27017", "testDB");
-    gameLobbyStore = new GameLobbyStore("mongodb://localhost:27017", "testDB");
-  });
+//     userStore = new UserStore("mongodb://localhost:27017", "testDB");
+//     gameLobbyStore = new GameLobbyStore("mongodb://localhost:27017", "testDB");
+//   });
 
   
 
@@ -67,9 +67,9 @@ afterAll(() => {
     clientSocket.close();
 });
 
-afterEach(() => {
-    jest.clearAllMocks();
-  });
+// afterEach(() => {
+//     jest.clearAllMocks();
+//   });
 
 describe('retrieveAccount', () => {
     // ChatGPT usage: No
