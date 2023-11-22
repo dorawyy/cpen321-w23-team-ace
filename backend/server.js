@@ -22,11 +22,11 @@ const SERVER_PORT = 443;
 
 // io and access management based on https or http
 var io;
-if (SERVER_TYPE === 'http') {
+// if (SERVER_TYPE === 'http') {
     io = socketIo(server);
-} else if (SERVER_TYPE === 'https') {
-    io = socketIo(https_server);
-}
+// } //else if (SERVER_TYPE === 'https') {
+    //io = socketIo(https_server);
+//}
 app.use(cors());
 
 const UserStore = require('./UserStore');
@@ -225,36 +225,37 @@ io.on('connection', (socket) => {
     })
 
     // ChatGPT usage: Partial
-    socket.on('disconnect', async () => {
-        console.log("User disconnected");
-        // for(let roomName in gameLobbies) {
-        //     for(let userName in gameLobbies[roomName].players) {
-        //         if(gameLobbies[roomName].players[userName].socketId === socket.id) {
-        //             gameLobbies[roomName].removePlayer(userName, socket);
-        //             break;
-        //         }
-        //     }
-        // }
-        await gameLobby.removePlayer(socket);
-    });
+    // socket.on('disconnect', async () => {
+    //     // console.log("User disconnected");
+    //     // for(let roomName in gameLobbies) {
+    //     //     for(let userName in gameLobbies[roomName].players) {
+    //     //         if(gameLobbies[roomName].players[userName].socketId === socket.id) {
+    //     //             gameLobbies[roomName].removePlayer(userName, socket);
+    //     //             break;
+    //     //         }
+    //     //     }
+    //     // }
+    //     await gameLobby.removePlayer(socket);
+    // });
 
 });
 
 // ChatGPT usage: No
-app.get('/test', (req, res) => {
-    res.send('Greetings from ACE');
-});
+// app.get('/test', (req, res) => {
+//     res.send('Greetings from ACE');
+// });
 
 // ChatGPT usage: No
-if (SERVER_TYPE === 'http') {
+// if (SERVER_TYPE === 'http') {
     server.listen(SERVER_PORT, () => {
         console.log('listen to port: ' + SERVER_PORT + ': http');
-    })
-} else if (SERVER_TYPE === 'https') {
-    https_server.listen(SERVER_PORT, () => {
-        console.log('listen to port: ' + SERVER_PORT + ': https');
-    })
-} else {
-    // throw exception
-    console.log('server type not supported');
-}
+    // 
+})
+// } else if (SERVER_TYPE === 'https') {
+//     https_server.listen(SERVER_PORT, () => {
+//         console.log('listen to port: ' + SERVER_PORT + ': https');
+//     })
+// } else {
+//     // throw exception
+//     console.log('server type not supported');
+// }

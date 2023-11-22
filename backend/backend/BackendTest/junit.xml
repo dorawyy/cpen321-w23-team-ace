@@ -1,275 +1,595 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="123" failures="1" errors="0" time="5.928">
-  <testsuite name="Blackjack" errors="0" failures="0" skipped="0" timestamp="2023-11-22T04:11:33" time="1.551" tests="11">
-    <testcase classname="Blackjack newGame" name="Blackjack newGame" time="0.02">
+<testsuites name="jest tests" tests="143" failures="21" errors="0" time="4.287">
+  <testsuite name="GameAsset" errors="0" failures="0" skipped="0" timestamp="2023-11-22T04:56:14" time="0.82" tests="5">
+    <testcase classname="GameAsset jokar pokar" name="GameAsset jokar pokar" time="0.014">
     </testcase>
-    <testcase classname="Blackjack random card" name="Blackjack random card" time="0.003">
+    <testcase classname="GameAsset special pokar" name="GameAsset special pokar" time="0.001">
     </testcase>
-    <testcase classname="Blackjack one round" name="Blackjack one round" time="0.002">
+    <testcase classname="GameAsset get random number" name="GameAsset get random number" time="0.002">
     </testcase>
-    <testcase classname="Blackjack Repeat hit until blow" name="Blackjack Repeat hit until blow" time="0.004">
+    <testcase classname="GameAsset get random number but negative count" name="GameAsset get random number but negative count" time="0.001">
     </testcase>
-    <testcase classname="Blackjack stand win" name="Blackjack stand win" time="0.003">
-    </testcase>
-    <testcase classname="Blackjack stand tie" name="Blackjack stand tie" time="0.003">
-    </testcase>
-    <testcase classname="Blackjack hit stand lose" name="Blackjack hit stand lose" time="0.003">
-    </testcase>
-    <testcase classname="Blackjack hit stand lose to blow" name="Blackjack hit stand lose to blow" time="0.002">
-    </testcase>
-    <testcase classname="Blackjack hit stand bj win" name="Blackjack hit stand bj win" time="0.006">
-    </testcase>
-    <testcase classname="Blackjack Calculate winning before gameover" name="Blackjack Calculate winning before gameover" time="0.002">
-    </testcase>
-    <testcase classname="Blackjack undefined action" name="Blackjack undefined action" time="0.04">
+    <testcase classname="GameAsset get random number no valid response" name="GameAsset get random number no valid response" time="0.044">
     </testcase>
   </testsuite>
-  <testsuite name="GameLobbyStore" errors="0" failures="0" skipped="0" timestamp="2023-11-22T04:11:33" time="1.576" tests="10">
-    <testcase classname="GameLobbyStore init should initialize the database connection and collection" name="GameLobbyStore init should initialize the database connection and collection" time="0.044">
+  <testsuite name="Roulette" errors="0" failures="0" skipped="0" timestamp="2023-11-22T04:56:14" time="0.818" tests="7">
+    <testcase classname="Roulette newGame" name="Roulette newGame" time="0.01">
     </testcase>
-    <testcase classname="GameLobbyStore insertLobby should insert a new lobby into the collection" name="GameLobbyStore insertLobby should insert a new lobby into the collection" time="0.003">
+    <testcase classname="Roulette one game" name="Roulette one game" time="0.002">
     </testcase>
-    <testcase classname="GameLobbyStore updateLobby should update a lobby in the collection" name="GameLobbyStore updateLobby should update a lobby in the collection" time="0.003">
+    <testcase classname="Roulette calculate correct double lose" name="Roulette calculate correct double lose" time="0.001">
+    </testcase>
+    <testcase classname="Roulette calculate correct double win" name="Roulette calculate correct double win" time="0.001">
+    </testcase>
+    <testcase classname="Roulette calculate all possible win" name="Roulette calculate all possible win" time="0.033">
+    </testcase>
+    <testcase classname="Roulette Calculate winning before gameover" name="Roulette Calculate winning before gameover" time="0.001">
+    </testcase>
+    <testcase classname="Roulette Unknown bet type" name="Roulette Unknown bet type" time="0.032">
+    </testcase>
+  </testsuite>
+  <testsuite name="Baccarat" errors="0" failures="0" skipped="0" timestamp="2023-11-22T04:56:14" time="0.864" tests="11">
+    <testcase classname="Baccarat newGame" name="Baccarat newGame" time="0.015">
+    </testcase>
+    <testcase classname="Baccarat random card" name="Baccarat random card" time="0.006">
+    </testcase>
+    <testcase classname="Baccarat full game 1, 1" name="Baccarat full game 1, 1" time="0.003">
+    </testcase>
+    <testcase classname="Baccarat full game 6, 3" name="Baccarat full game 6, 3" time="0.004">
+    </testcase>
+    <testcase classname="Baccarat full game 6, 4" name="Baccarat full game 6, 4" time="0.003">
+    </testcase>
+    <testcase classname="Baccarat full game 6, 5" name="Baccarat full game 6, 5" time="0.001">
+    </testcase>
+    <testcase classname="Baccarat full game 6, 6" name="Baccarat full game 6, 6" time="0.003">
+    </testcase>
+    <testcase classname="Baccarat full game 9, 9" name="Baccarat full game 9, 9" time="0.002">
+    </testcase>
+    <testcase classname="Baccarat full game 9, 4" name="Baccarat full game 9, 4" time="0.001">
+    </testcase>
+    <testcase classname="Baccarat unknown bet type" name="Baccarat unknown bet type" time="0.049">
+    </testcase>
+    <testcase classname="Baccarat Calculate winning before gameover" name="Baccarat Calculate winning before gameover" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="GameLobbyStore" errors="0" failures="0" skipped="0" timestamp="2023-11-22T04:56:15" time="0.223" tests="10">
+    <testcase classname="GameLobbyStore init should initialize the database connection and collection" name="GameLobbyStore init should initialize the database connection and collection" time="0.008">
+    </testcase>
+    <testcase classname="GameLobbyStore insertLobby should insert a new lobby into the collection" name="GameLobbyStore insertLobby should insert a new lobby into the collection" time="0.002">
+    </testcase>
+    <testcase classname="GameLobbyStore updateLobby should update a lobby in the collection" name="GameLobbyStore updateLobby should update a lobby in the collection" time="0.004">
     </testcase>
     <testcase classname="GameLobbyStore setPlayerReady should set a player ready in a lobby" name="GameLobbyStore setPlayerReady should set a player ready in a lobby" time="0.002">
     </testcase>
-    <testcase classname="GameLobbyStore getLobby should retrieve a lobby" name="GameLobbyStore getLobby should retrieve a lobby" time="0.002">
+    <testcase classname="GameLobbyStore getLobby should retrieve a lobby" name="GameLobbyStore getLobby should retrieve a lobby" time="0.003">
     </testcase>
     <testcase classname="GameLobbyStore getAllLobby should retrieve all lobbies" name="GameLobbyStore getAllLobby should retrieve all lobbies" time="0.001">
     </testcase>
     <testcase classname="GameLobbyStore deleteLobby should delete a lobby" name="GameLobbyStore deleteLobby should delete a lobby" time="0.001">
     </testcase>
-    <testcase classname="GameLobbyStore setPlayerBet should set a player bet in a lobby" name="GameLobbyStore setPlayerBet should set a player bet in a lobby" time="0.002">
+    <testcase classname="GameLobbyStore setPlayerBet should set a player bet in a lobby" name="GameLobbyStore setPlayerBet should set a player bet in a lobby" time="0.005">
     </testcase>
-    <testcase classname="GameLobbyStore getPlayerCount should retrieve the player count for a lobby" name="GameLobbyStore getPlayerCount should retrieve the player count for a lobby" time="0.009">
+    <testcase classname="GameLobbyStore getPlayerCount should retrieve the player count for a lobby" name="GameLobbyStore getPlayerCount should retrieve the player count for a lobby" time="0.007">
     </testcase>
     <testcase classname="GameLobbyStore close should close the database connection" name="GameLobbyStore close should close the database connection" time="0.001">
     </testcase>
   </testsuite>
-  <testsuite name="GameAsset" errors="0" failures="0" skipped="0" timestamp="2023-11-22T04:11:33" time="1.663" tests="5">
-    <testcase classname="GameAsset jokar pokar" name="GameAsset jokar pokar" time="0.019">
+  <testsuite name="Blackjack" errors="0" failures="0" skipped="0" timestamp="2023-11-22T04:56:15" time="0.257" tests="11">
+    <testcase classname="Blackjack newGame" name="Blackjack newGame" time="0.018">
     </testcase>
-    <testcase classname="GameAsset special pokar" name="GameAsset special pokar" time="0.003">
+    <testcase classname="Blackjack random card" name="Blackjack random card" time="0.002">
     </testcase>
-    <testcase classname="GameAsset get random number" name="GameAsset get random number" time="0.006">
+    <testcase classname="Blackjack one round" name="Blackjack one round" time="0.002">
     </testcase>
-    <testcase classname="GameAsset get random number but negative count" name="GameAsset get random number but negative count" time="0.001">
+    <testcase classname="Blackjack Repeat hit until blow" name="Blackjack Repeat hit until blow" time="0.002">
     </testcase>
-    <testcase classname="GameAsset get random number no valid response" name="GameAsset get random number no valid response" time="0.064">
+    <testcase classname="Blackjack stand win" name="Blackjack stand win" time="0.006">
+    </testcase>
+    <testcase classname="Blackjack stand tie" name="Blackjack stand tie" time="0.001">
+    </testcase>
+    <testcase classname="Blackjack hit stand lose" name="Blackjack hit stand lose" time="0.003">
+    </testcase>
+    <testcase classname="Blackjack hit stand lose to blow" name="Blackjack hit stand lose to blow" time="0.003">
+    </testcase>
+    <testcase classname="Blackjack hit stand bj win" name="Blackjack hit stand bj win" time="0.002">
+    </testcase>
+    <testcase classname="Blackjack Calculate winning before gameover" name="Blackjack Calculate winning before gameover" time="0.001">
+    </testcase>
+    <testcase classname="Blackjack undefined action" name="Blackjack undefined action" time="0.009">
     </testcase>
   </testsuite>
-  <testsuite name="Encryption with same length" errors="0" failures="0" skipped="0" timestamp="2023-11-22T04:11:33" time="1.53" tests="3">
-    <testcase classname="Encryption with same length encrypted user ID should have consistent length" name="Encryption with same length encrypted user ID should have consistent length" time="0.048">
+  <testsuite name="GameManager" errors="0" failures="0" skipped="0" timestamp="2023-11-22T04:56:14" time="1.257" tests="17">
+    <testcase classname="GameManager should initialize the data structure correctly" name="GameManager should initialize the data structure correctly" time="0.041">
     </testcase>
-    <testcase classname="Encryption id should be different from the raw id Encryption should differ from true id" name="Encryption id should be different from the raw id Encryption should differ from true id" time="0.002">
+    <testcase classname="GameManager should handle db failing errors" name="GameManager should handle db failing errors" time="0.049">
     </testcase>
-    <testcase classname="Encryption and decryption functionality Decrypted user ID should match the original user ID" name="Encryption and decryption functionality Decrypted user ID should match the original user ID" time="0.001">
+    <testcase classname="GameManager should create a new game correctly" name="GameManager should create a new game correctly" time="0.004">
+    </testcase>
+    <testcase classname="GameManager play baccarat" name="GameManager play baccarat" time="0.031">
+    </testcase>
+    <testcase classname="GameManager play BlackJack" name="GameManager play BlackJack" time="0.009">
+    </testcase>
+    <testcase classname="GameManager play roulette" name="GameManager play roulette" time="0.003">
+    </testcase>
+    <testcase classname="GameManager should be able to game over" name="GameManager should be able to game over" time="0.003">
+    </testcase>
+    <testcase classname="GameManager playturn, but not with blackjack" name="GameManager playturn, but not with blackjack" time="0.003">
+    </testcase>
+    <testcase classname="GameManager Cannot calculate winning before gameover" name="GameManager Cannot calculate winning before gameover" time="0.002">
+    </testcase>
+    <testcase classname="GameManager _resetTimer should clear old and start a new timer" name="GameManager _resetTimer should clear old and start a new timer" time="0.002">
+    </testcase>
+    <testcase classname="GameManager _resetTimer should call playTurn after 15 seconds" name="GameManager _resetTimer should call playTurn after 15 seconds" time="0.002">
+    </testcase>
+    <testcase classname="GameManager get action result type undefined" name="GameManager get action result type undefined" time="0.003">
+    </testcase>
+    <testcase classname="GameManager get calculation type undefined" name="GameManager get calculation type undefined" time="0.002">
+    </testcase>
+    <testcase classname="GameManager should throw an error if malicious gameData is used" name="GameManager should throw an error if malicious gameData is used" time="0.001">
+    </testcase>
+    <testcase classname="GameManager should throw an error if malicious lobbyName is used in getGame" name="GameManager should throw an error if malicious lobbyName is used in getGame" time="0.002">
+    </testcase>
+    <testcase classname="GameManager should throw an error if malicious gameData is used in updateGame" name="GameManager should throw an error if malicious gameData is used in updateGame" time="0.002">
+    </testcase>
+    <testcase classname="GameManager should throw an error if malicious lobbyName is used in deleteGame" name="GameManager should throw an error if malicious lobbyName is used in deleteGame" time="0.001">
     </testcase>
   </testsuite>
-  <testsuite name="UserStore" errors="0" failures="0" skipped="0" timestamp="2023-11-22T04:11:33" time="1.631" tests="10">
-    <testcase classname="UserStore connect should throw an error if database connection fails" name="UserStore connect should throw an error if database connection fails" time="0.05">
+  <testsuite name="UserStore" errors="0" failures="0" skipped="0" timestamp="2023-11-22T04:56:14" time="1.273" tests="10">
+    <testcase classname="UserStore connect should throw an error if database connection fails" name="UserStore connect should throw an error if database connection fails" time="0.032">
     </testcase>
-    <testcase classname="UserStore connect should connect to the database" name="UserStore connect should connect to the database" time="0.025">
+    <testcase classname="UserStore connect should connect to the database" name="UserStore connect should connect to the database" time="0.008">
     </testcase>
-    <testcase classname="getUser should retrieve a user by userId" name="getUser should retrieve a user by userId" time="0.003">
+    <testcase classname="getUser should retrieve a user by userId" name="getUser should retrieve a user by userId" time="0.002">
     </testcase>
-    <testcase classname="getUserbyname should retrieve a user by username" name="getUserbyname should retrieve a user by username" time="0.002">
+    <testcase classname="getUserbyname should retrieve a user by username" name="getUserbyname should retrieve a user by username" time="0.001">
     </testcase>
-    <testcase classname="addUser should add a new user" name="addUser should add a new user" time="0.004">
+    <testcase classname="addUser should add a new user" name="addUser should add a new user" time="0.003">
     </testcase>
-    <testcase classname="addUser should not overwirte an existing user" name="addUser should not overwirte an existing user" time="0.002">
+    <testcase classname="addUser should not overwirte an existing user" name="addUser should not overwirte an existing user" time="0.001">
     </testcase>
-    <testcase classname="updateUser should update a user" name="updateUser should update a user" time="0.006">
+    <testcase classname="updateUser should update a user" name="updateUser should update a user" time="0.001">
     </testcase>
     <testcase classname="deleteUser should delete a user" name="deleteUser should delete a user" time="0.001">
     </testcase>
-    <testcase classname="deleteAllUsers should delete all users" name="deleteAllUsers should delete all users" time="0.002">
+    <testcase classname="deleteAllUsers should delete all users" name="deleteAllUsers should delete all users" time="0.001">
     </testcase>
-    <testcase classname="close should close the database connection" name="close should close the database connection" time="0.002">
+    <testcase classname="close should close the database connection" name="close should close the database connection" time="0.001">
     </testcase>
   </testsuite>
-  <testsuite name="retrieveAccount" errors="0" failures="0" skipped="0" timestamp="2023-11-22T04:11:33" time="1.719" tests="28">
-    <testcase classname="retrieveAccount should emit user details when retrieving an account" name="retrieveAccount should emit user details when retrieving an account" time="0.063">
+  <testsuite name="retrieveAccount" errors="0" failures="0" skipped="0" timestamp="2023-11-22T04:56:15" time="0.6" tests="28">
+    <testcase classname="retrieveAccount should emit user details when retrieving an account" name="retrieveAccount should emit user details when retrieving an account" time="0.004">
     </testcase>
     <testcase classname="retrieveAccount should handle the case when the user is not found in retrieveAccount" name="retrieveAccount should handle the case when the user is not found in retrieveAccount" time="0.001">
     </testcase>
-    <testcase classname="createAccount should create a new account" name="createAccount should create a new account" time="0.002">
+    <testcase classname="createAccount should create a new account" name="createAccount should create a new account" time="0">
     </testcase>
-    <testcase classname="createAccount should handle failure in account creation" name="createAccount should handle failure in account creation" time="0.001">
+    <testcase classname="createAccount should handle failure in account creation" name="createAccount should handle failure in account creation" time="0">
     </testcase>
-    <testcase classname="updateAccount should update an account" name="updateAccount should update an account" time="0.003">
+    <testcase classname="updateAccount should update an account" name="updateAccount should update an account" time="0">
     </testcase>
-    <testcase classname="updateAccount should handle failure in account update" name="updateAccount should handle failure in account update" time="0.001">
+    <testcase classname="updateAccount should handle failure in account update" name="updateAccount should handle failure in account update" time="0">
     </testcase>
-    <testcase classname="updateName should update username" name="updateName should update username" time="0.077">
+    <testcase classname="updateName should update username" name="updateName should update username" time="0.006">
     </testcase>
-    <testcase classname="updateName should handle user not found in updateName" name="updateName should handle user not found in updateName" time="0.001">
+    <testcase classname="updateName should handle user not found in updateName" name="updateName should handle user not found in updateName" time="0">
     </testcase>
-    <testcase classname="updateAdminStatus should update admin status" name="updateAdminStatus should update admin status" time="0.002">
+    <testcase classname="updateAdminStatus should update admin status" name="updateAdminStatus should update admin status" time="0.001">
     </testcase>
     <testcase classname="updateAdminStatus should handle user not found in updateAdminStatus" name="updateAdminStatus should handle user not found in updateAdminStatus" time="0.001">
     </testcase>
-    <testcase classname="updateLastRedemptionDate should update last redemption date" name="updateLastRedemptionDate should update last redemption date" time="0.004">
+    <testcase classname="updateLastRedemptionDate should update last redemption date" name="updateLastRedemptionDate should update last redemption date" time="0.001">
     </testcase>
     <testcase classname="updateLastRedemptionDate should handle user not found in updateLastRedemptionDate" name="updateLastRedemptionDate should handle user not found in updateLastRedemptionDate" time="0.001">
     </testcase>
-    <testcase classname="deleteUser should handle successful user deletion" name="deleteUser should handle successful user deletion" time="0.001">
+    <testcase classname="deleteUser should handle successful user deletion" name="deleteUser should handle successful user deletion" time="0">
     </testcase>
-    <testcase classname="deleteUser should handle user not found in deleteUser" name="deleteUser should handle user not found in deleteUser" time="0.001">
+    <testcase classname="deleteUser should handle user not found in deleteUser" name="deleteUser should handle user not found in deleteUser" time="0">
     </testcase>
     <testcase classname="deleteAllUsers should delete all users successfully" name="deleteAllUsers should delete all users successfully" time="0.001">
     </testcase>
     <testcase classname="deleteAllUsers should handle failure in deleteAllUsers" name="deleteAllUsers should handle failure in deleteAllUsers" time="0">
     </testcase>
-    <testcase classname="checkuserinDB should find user in database" name="checkuserinDB should find user in database" time="0.001">
+    <testcase classname="checkuserinDB should find user in database" name="checkuserinDB should find user in database" time="0">
     </testcase>
     <testcase classname="checkuserinDB should handle user not found in checkUserisInDB" name="checkuserinDB should handle user not found in checkUserisInDB" time="0.001">
     </testcase>
-    <testcase classname="deposit should handle successful deposit" name="deposit should handle successful deposit" time="0.002">
+    <testcase classname="deposit should handle successful deposit" name="deposit should handle successful deposit" time="0.001">
     </testcase>
-    <testcase classname="deposit should handle deposit with user not found" name="deposit should handle deposit with user not found" time="0.001">
+    <testcase classname="deposit should handle deposit with user not found" name="deposit should handle deposit with user not found" time="0">
     </testcase>
     <testcase classname="depositbyname should handle successful deposit by name" name="depositbyname should handle successful deposit by name" time="0.001">
     </testcase>
     <testcase classname="depositbyname should handle deposit by name with user not found" name="depositbyname should handle deposit by name with user not found" time="0.001">
     </testcase>
-    <testcase classname="depositbyname should not withdraw more than the current balance" name="depositbyname should not withdraw more than the current balance" time="0.001">
+    <testcase classname="depositbyname should not withdraw more than the current balance" name="depositbyname should not withdraw more than the current balance" time="0">
     </testcase>
-    <testcase classname="withdraw should handle successful withdrawal" name="withdraw should handle successful withdrawal" time="0.002">
+    <testcase classname="withdraw should handle successful withdrawal" name="withdraw should handle successful withdrawal" time="0.001">
     </testcase>
-    <testcase classname="withdraw should handle withdrawal with user not found" name="withdraw should handle withdrawal with user not found" time="0.001">
+    <testcase classname="withdraw should handle withdrawal with user not found" name="withdraw should handle withdrawal with user not found" time="0">
     </testcase>
-    <testcase classname="withdraw should handle insufficient funds in withdrawal" name="withdraw should handle insufficient funds in withdrawal" time="0.002">
+    <testcase classname="withdraw should handle insufficient funds in withdrawal" name="withdraw should handle insufficient funds in withdrawal" time="0">
     </testcase>
-    <testcase classname="updateChatBanned should update chat banned status" name="updateChatBanned should update chat banned status" time="0.005">
+    <testcase classname="updateChatBanned should update chat banned status" name="updateChatBanned should update chat banned status" time="0.001">
     </testcase>
     <testcase classname="updateChatBanned should handle user not found in updateChatBanned" name="updateChatBanned should handle user not found in updateChatBanned" time="0.001">
     </testcase>
   </testsuite>
-  <testsuite name="Baccarat" errors="0" failures="0" skipped="0" timestamp="2023-11-22T04:11:33" time="1.689" tests="11">
-    <testcase classname="Baccarat newGame" name="Baccarat newGame" time="0.022">
+  <testsuite name="Encryption with same length" errors="0" failures="0" skipped="0" timestamp="2023-11-22T04:56:15" time="0.502" tests="3">
+    <testcase classname="Encryption with same length encrypted user ID should have consistent length" name="Encryption with same length encrypted user ID should have consistent length" time="0.003">
     </testcase>
-    <testcase classname="Baccarat random card" name="Baccarat random card" time="0.003">
+    <testcase classname="Encryption id should be different from the raw id Encryption should differ from true id" name="Encryption id should be different from the raw id Encryption should differ from true id" time="0.001">
     </testcase>
-    <testcase classname="Baccarat full game 1, 1" name="Baccarat full game 1, 1" time="0.01">
-    </testcase>
-    <testcase classname="Baccarat full game 6, 3" name="Baccarat full game 6, 3" time="0.008">
-    </testcase>
-    <testcase classname="Baccarat full game 6, 4" name="Baccarat full game 6, 4" time="0.003">
-    </testcase>
-    <testcase classname="Baccarat full game 6, 5" name="Baccarat full game 6, 5" time="0.002">
-    </testcase>
-    <testcase classname="Baccarat full game 6, 6" name="Baccarat full game 6, 6" time="0.005">
-    </testcase>
-    <testcase classname="Baccarat full game 9, 9" name="Baccarat full game 9, 9" time="0.002">
-    </testcase>
-    <testcase classname="Baccarat full game 9, 4" name="Baccarat full game 9, 4" time="0.002">
-    </testcase>
-    <testcase classname="Baccarat unknown bet type" name="Baccarat unknown bet type" time="0.042">
-    </testcase>
-    <testcase classname="Baccarat Calculate winning before gameover" name="Baccarat Calculate winning before gameover" time="0.001">
+    <testcase classname="Encryption and decryption functionality Decrypted user ID should match the original user ID" name="Encryption and decryption functionality Decrypted user ID should match the original user ID" time="0.001">
     </testcase>
   </testsuite>
-  <testsuite name="Roulette" errors="0" failures="0" skipped="0" timestamp="2023-11-22T04:11:33" time="1.661" tests="7">
-    <testcase classname="Roulette newGame" name="Roulette newGame" time="0.033">
-    </testcase>
-    <testcase classname="Roulette one game" name="Roulette one game" time="0.008">
-    </testcase>
-    <testcase classname="Roulette calculate correct double lose" name="Roulette calculate correct double lose" time="0.004">
-    </testcase>
-    <testcase classname="Roulette calculate correct double win" name="Roulette calculate correct double win" time="0.003">
-    </testcase>
-    <testcase classname="Roulette calculate all possible win" name="Roulette calculate all possible win" time="0.076">
-    </testcase>
-    <testcase classname="Roulette Calculate winning before gameover" name="Roulette Calculate winning before gameover" time="0">
-    </testcase>
-    <testcase classname="Roulette Unknown bet type" name="Roulette Unknown bet type" time="0.055">
-    </testcase>
-  </testsuite>
-  <testsuite name="GameManager" errors="0" failures="0" skipped="0" timestamp="2023-11-22T04:11:33" time="2.044" tests="17">
-    <testcase classname="GameManager should initialize the data structure correctly" name="GameManager should initialize the data structure correctly" time="0.024">
-    </testcase>
-    <testcase classname="GameManager should handle db failing errors" name="GameManager should handle db failing errors" time="0.021">
-    </testcase>
-    <testcase classname="GameManager should create a new game correctly" name="GameManager should create a new game correctly" time="0.004">
-    </testcase>
-    <testcase classname="GameManager play baccarat" name="GameManager play baccarat" time="0.012">
-    </testcase>
-    <testcase classname="GameManager play BlackJack" name="GameManager play BlackJack" time="0.005">
-    </testcase>
-    <testcase classname="GameManager play roulette" name="GameManager play roulette" time="0.002">
-    </testcase>
-    <testcase classname="GameManager should be able to game over" name="GameManager should be able to game over" time="0.001">
-    </testcase>
-    <testcase classname="GameManager playturn, but not with blackjack" name="GameManager playturn, but not with blackjack" time="0.001">
-    </testcase>
-    <testcase classname="GameManager Cannot calculate winning before gameover" name="GameManager Cannot calculate winning before gameover" time="0">
-    </testcase>
-    <testcase classname="GameManager _resetTimer should clear old and start a new timer" name="GameManager _resetTimer should clear old and start a new timer" time="0.002">
-    </testcase>
-    <testcase classname="GameManager _resetTimer should call playTurn after 15 seconds" name="GameManager _resetTimer should call playTurn after 15 seconds" time="0">
-    </testcase>
-    <testcase classname="GameManager get action result type undefined" name="GameManager get action result type undefined" time="0.003">
-    </testcase>
-    <testcase classname="GameManager get calculation type undefined" name="GameManager get calculation type undefined" time="0.001">
-    </testcase>
-    <testcase classname="GameManager should throw an error if malicious gameData is used" name="GameManager should throw an error if malicious gameData is used" time="0.001">
-    </testcase>
-    <testcase classname="GameManager should throw an error if malicious lobbyName is used in getGame" name="GameManager should throw an error if malicious lobbyName is used in getGame" time="0.004">
-    </testcase>
-    <testcase classname="GameManager should throw an error if malicious gameData is used in updateGame" name="GameManager should throw an error if malicious gameData is used in updateGame" time="0.002">
-    </testcase>
-    <testcase classname="GameManager should throw an error if malicious lobbyName is used in deleteGame" name="GameManager should throw an error if malicious lobbyName is used in deleteGame" time="0.002">
-    </testcase>
-  </testsuite>
-  <testsuite name="retrieveAccount" errors="0" failures="1" skipped="0" timestamp="2023-11-22T04:11:33" time="2.768" tests="1">
-    <testcase classname="retrieveAccount should trigger when client emits retrieveAccount event" name="retrieveAccount should trigger when client emits retrieveAccount event" time="0.008">
+  <testsuite name="retrieveAccount" errors="0" failures="21" skipped="0" timestamp="2023-11-22T04:56:14" time="2.016" tests="21">
+    <testcase classname="retrieveAccount should trigger when client emits retrieveAccount event" name="retrieveAccount should trigger when client emits retrieveAccount event" time="0.007">
       <failure>Error: thrown: &quot;Exceeded timeout of 1 ms for a test while waiting for `done()` to be called.
 Add a timeout value to this test to increase the timeout, if this is a long-running test. See https://jestjs.io/docs/api#testname-fn-timeout.&quot;
-    at it (C:\Users\david\OneDrive\Documents\GitHub\AndroidGameRoomApp\backend\BackendTest\Server.test.js:27:5)
-    at _dispatchDescribe (C:\Users\david\OneDrive\Documents\GitHub\AndroidGameRoomApp\backend\node_modules\jest-circus\build\index.js:91:26)
-    at describe (C:\Users\david\OneDrive\Documents\GitHub\AndroidGameRoomApp\backend\node_modules\jest-circus\build\index.js:55:5)
-    at Object.describe (C:\Users\david\OneDrive\Documents\GitHub\AndroidGameRoomApp\backend\BackendTest\Server.test.js:26:1)
-    at Runtime._execModule (C:\Users\david\OneDrive\Documents\GitHub\AndroidGameRoomApp\backend\node_modules\jest-runtime\build\index.js:1439:24)
-    at Runtime._loadModule (C:\Users\david\OneDrive\Documents\GitHub\AndroidGameRoomApp\backend\node_modules\jest-runtime\build\index.js:1022:12)
-    at Runtime.requireModule (C:\Users\david\OneDrive\Documents\GitHub\AndroidGameRoomApp\backend\node_modules\jest-runtime\build\index.js:882:12)
-    at jestAdapter (C:\Users\david\OneDrive\Documents\GitHub\AndroidGameRoomApp\backend\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:77:13)
+    at it (D:\gitdesk\AndroidGameRoomApp\backend\BackendTest\Server.test.js:30:5)
+    at _dispatchDescribe (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-circus\build\index.js:91:26)
+    at describe (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-circus\build\index.js:55:5)
+    at Object.describe (D:\gitdesk\AndroidGameRoomApp\backend\BackendTest\Server.test.js:25:1)
+    at Runtime._execModule (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runtime\build\index.js:1439:24)
+    at Runtime._loadModule (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runtime\build\index.js:1022:12)
+    at Runtime.requireModule (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runtime\build\index.js:882:12)
+    at jestAdapter (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:77:13)
     at processTicksAndRejections (node:internal/process/task_queues:95:5)
-    at runTestInternal (C:\Users\david\OneDrive\Documents\GitHub\AndroidGameRoomApp\backend\node_modules\jest-runner\build\runTest.js:367:16)
-    at runTest (C:\Users\david\OneDrive\Documents\GitHub\AndroidGameRoomApp\backend\node_modules\jest-runner\build\runTest.js:444:34)
-    at Object.worker (C:\Users\david\OneDrive\Documents\GitHub\AndroidGameRoomApp\backend\node_modules\jest-runner\build\testWorker.js:106:12)</failure>
+    at runTestInternal (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runner\build\runTest.js:367:16)
+    at runTest (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runner\build\runTest.js:444:34)
+    at Object.worker (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runner\build\testWorker.js:106:12)</failure>
+    </testcase>
+    <testcase classname="updateAccount should trigger when client emits updateAccount event" name="updateAccount should trigger when client emits updateAccount event" time="0.007">
+      <failure>Error: thrown: &quot;Exceeded timeout of 1 ms for a test while waiting for `done()` to be called.
+Add a timeout value to this test to increase the timeout, if this is a long-running test. See https://jestjs.io/docs/api#testname-fn-timeout.&quot;
+    at it (D:\gitdesk\AndroidGameRoomApp\backend\BackendTest\Server.test.js:40:5)
+    at _dispatchDescribe (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-circus\build\index.js:91:26)
+    at describe (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-circus\build\index.js:55:5)
+    at Object.describe (D:\gitdesk\AndroidGameRoomApp\backend\BackendTest\Server.test.js:35:1)
+    at Runtime._execModule (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runtime\build\index.js:1439:24)
+    at Runtime._loadModule (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runtime\build\index.js:1022:12)
+    at Runtime.requireModule (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runtime\build\index.js:882:12)
+    at jestAdapter (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:77:13)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at runTestInternal (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runner\build\runTest.js:367:16)
+    at runTest (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runner\build\runTest.js:444:34)
+    at Object.worker (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runner\build\testWorker.js:106:12)</failure>
+    </testcase>
+    <testcase classname="createAccount should trigger when client emits createAccount event" name="createAccount should trigger when client emits createAccount event" time="0.001">
+      <failure>Error: thrown: &quot;Exceeded timeout of 1 ms for a test while waiting for `done()` to be called.
+Add a timeout value to this test to increase the timeout, if this is a long-running test. See https://jestjs.io/docs/api#testname-fn-timeout.&quot;
+    at it (D:\gitdesk\AndroidGameRoomApp\backend\BackendTest\Server.test.js:50:5)
+    at _dispatchDescribe (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-circus\build\index.js:91:26)
+    at describe (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-circus\build\index.js:55:5)
+    at Object.describe (D:\gitdesk\AndroidGameRoomApp\backend\BackendTest\Server.test.js:45:1)
+    at Runtime._execModule (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runtime\build\index.js:1439:24)
+    at Runtime._loadModule (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runtime\build\index.js:1022:12)
+    at Runtime.requireModule (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runtime\build\index.js:882:12)
+    at jestAdapter (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:77:13)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at runTestInternal (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runner\build\runTest.js:367:16)
+    at runTest (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runner\build\runTest.js:444:34)
+    at Object.worker (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runner\build\testWorker.js:106:12)</failure>
+    </testcase>
+    <testcase classname="updateName should trigger when client emits updateName event" name="updateName should trigger when client emits updateName event" time="0.005">
+      <failure>Error: thrown: &quot;Exceeded timeout of 1 ms for a test while waiting for `done()` to be called.
+Add a timeout value to this test to increase the timeout, if this is a long-running test. See https://jestjs.io/docs/api#testname-fn-timeout.&quot;
+    at it (D:\gitdesk\AndroidGameRoomApp\backend\BackendTest\Server.test.js:60:5)
+    at _dispatchDescribe (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-circus\build\index.js:91:26)
+    at describe (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-circus\build\index.js:55:5)
+    at Object.describe (D:\gitdesk\AndroidGameRoomApp\backend\BackendTest\Server.test.js:55:1)
+    at Runtime._execModule (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runtime\build\index.js:1439:24)
+    at Runtime._loadModule (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runtime\build\index.js:1022:12)
+    at Runtime.requireModule (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runtime\build\index.js:882:12)
+    at jestAdapter (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:77:13)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at runTestInternal (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runner\build\runTest.js:367:16)
+    at runTest (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runner\build\runTest.js:444:34)
+    at Object.worker (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runner\build\testWorker.js:106:12)</failure>
+    </testcase>
+    <testcase classname="updateAdminStatus should trigger when client emits updateAdminStatus event" name="updateAdminStatus should trigger when client emits updateAdminStatus event" time="0.001">
+      <failure>Error: thrown: &quot;Exceeded timeout of 1 ms for a test while waiting for `done()` to be called.
+Add a timeout value to this test to increase the timeout, if this is a long-running test. See https://jestjs.io/docs/api#testname-fn-timeout.&quot;
+    at it (D:\gitdesk\AndroidGameRoomApp\backend\BackendTest\Server.test.js:70:5)
+    at _dispatchDescribe (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-circus\build\index.js:91:26)
+    at describe (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-circus\build\index.js:55:5)
+    at Object.describe (D:\gitdesk\AndroidGameRoomApp\backend\BackendTest\Server.test.js:65:1)
+    at Runtime._execModule (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runtime\build\index.js:1439:24)
+    at Runtime._loadModule (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runtime\build\index.js:1022:12)
+    at Runtime.requireModule (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runtime\build\index.js:882:12)
+    at jestAdapter (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:77:13)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at runTestInternal (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runner\build\runTest.js:367:16)
+    at runTest (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runner\build\runTest.js:444:34)
+    at Object.worker (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runner\build\testWorker.js:106:12)</failure>
+    </testcase>
+    <testcase classname="deposit should trigger when client emits deposit event" name="deposit should trigger when client emits deposit event" time="0.002">
+      <failure>Error: thrown: &quot;Exceeded timeout of 1 ms for a test while waiting for `done()` to be called.
+Add a timeout value to this test to increase the timeout, if this is a long-running test. See https://jestjs.io/docs/api#testname-fn-timeout.&quot;
+    at it (D:\gitdesk\AndroidGameRoomApp\backend\BackendTest\Server.test.js:80:5)
+    at _dispatchDescribe (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-circus\build\index.js:91:26)
+    at describe (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-circus\build\index.js:55:5)
+    at Object.describe (D:\gitdesk\AndroidGameRoomApp\backend\BackendTest\Server.test.js:75:1)
+    at Runtime._execModule (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runtime\build\index.js:1439:24)
+    at Runtime._loadModule (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runtime\build\index.js:1022:12)
+    at Runtime.requireModule (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runtime\build\index.js:882:12)
+    at jestAdapter (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:77:13)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at runTestInternal (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runner\build\runTest.js:367:16)
+    at runTest (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runner\build\runTest.js:444:34)
+    at Object.worker (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runner\build\testWorker.js:106:12)</failure>
+    </testcase>
+    <testcase classname="depositbyname should trigger when client emits depositbyname event" name="depositbyname should trigger when client emits depositbyname event" time="0.003">
+      <failure>Error: thrown: &quot;Exceeded timeout of 1 ms for a test while waiting for `done()` to be called.
+Add a timeout value to this test to increase the timeout, if this is a long-running test. See https://jestjs.io/docs/api#testname-fn-timeout.&quot;
+    at it (D:\gitdesk\AndroidGameRoomApp\backend\BackendTest\Server.test.js:90:5)
+    at _dispatchDescribe (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-circus\build\index.js:91:26)
+    at describe (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-circus\build\index.js:55:5)
+    at Object.describe (D:\gitdesk\AndroidGameRoomApp\backend\BackendTest\Server.test.js:85:1)
+    at Runtime._execModule (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runtime\build\index.js:1439:24)
+    at Runtime._loadModule (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runtime\build\index.js:1022:12)
+    at Runtime.requireModule (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runtime\build\index.js:882:12)
+    at jestAdapter (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:77:13)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at runTestInternal (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runner\build\runTest.js:367:16)
+    at runTest (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runner\build\runTest.js:444:34)
+    at Object.worker (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runner\build\testWorker.js:106:12)</failure>
+    </testcase>
+    <testcase classname="withdraw should trigger when client emits withdraw event" name="withdraw should trigger when client emits withdraw event" time="0.001">
+      <failure>Error: thrown: &quot;Exceeded timeout of 1 ms for a test while waiting for `done()` to be called.
+Add a timeout value to this test to increase the timeout, if this is a long-running test. See https://jestjs.io/docs/api#testname-fn-timeout.&quot;
+    at it (D:\gitdesk\AndroidGameRoomApp\backend\BackendTest\Server.test.js:100:5)
+    at _dispatchDescribe (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-circus\build\index.js:91:26)
+    at describe (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-circus\build\index.js:55:5)
+    at Object.describe (D:\gitdesk\AndroidGameRoomApp\backend\BackendTest\Server.test.js:95:1)
+    at Runtime._execModule (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runtime\build\index.js:1439:24)
+    at Runtime._loadModule (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runtime\build\index.js:1022:12)
+    at Runtime.requireModule (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runtime\build\index.js:882:12)
+    at jestAdapter (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:77:13)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at runTestInternal (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runner\build\runTest.js:367:16)
+    at runTest (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runner\build\runTest.js:444:34)
+    at Object.worker (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runner\build\testWorker.js:106:12)</failure>
+    </testcase>
+    <testcase classname="updateChatBanned should trigger when client emits updateChatBanned event" name="updateChatBanned should trigger when client emits updateChatBanned event" time="0.008">
+      <failure>Error: thrown: &quot;Exceeded timeout of 1 ms for a test while waiting for `done()` to be called.
+Add a timeout value to this test to increase the timeout, if this is a long-running test. See https://jestjs.io/docs/api#testname-fn-timeout.&quot;
+    at it (D:\gitdesk\AndroidGameRoomApp\backend\BackendTest\Server.test.js:111:5)
+    at _dispatchDescribe (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-circus\build\index.js:91:26)
+    at describe (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-circus\build\index.js:55:5)
+    at Object.describe (D:\gitdesk\AndroidGameRoomApp\backend\BackendTest\Server.test.js:106:1)
+    at Runtime._execModule (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runtime\build\index.js:1439:24)
+    at Runtime._loadModule (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runtime\build\index.js:1022:12)
+    at Runtime.requireModule (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runtime\build\index.js:882:12)
+    at jestAdapter (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:77:13)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at runTestInternal (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runner\build\runTest.js:367:16)
+    at runTest (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runner\build\runTest.js:444:34)
+    at Object.worker (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runner\build\testWorker.js:106:12)</failure>
+    </testcase>
+    <testcase classname="updateLastRedemptionDate should trigger when client emits updateLastRedemptionDate event" name="updateLastRedemptionDate should trigger when client emits updateLastRedemptionDate event" time="0.007">
+      <failure>Error: thrown: &quot;Exceeded timeout of 1 ms for a test while waiting for `done()` to be called.
+Add a timeout value to this test to increase the timeout, if this is a long-running test. See https://jestjs.io/docs/api#testname-fn-timeout.&quot;
+    at it (D:\gitdesk\AndroidGameRoomApp\backend\BackendTest\Server.test.js:121:5)
+    at _dispatchDescribe (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-circus\build\index.js:91:26)
+    at describe (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-circus\build\index.js:55:5)
+    at Object.describe (D:\gitdesk\AndroidGameRoomApp\backend\BackendTest\Server.test.js:116:1)
+    at Runtime._execModule (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runtime\build\index.js:1439:24)
+    at Runtime._loadModule (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runtime\build\index.js:1022:12)
+    at Runtime.requireModule (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runtime\build\index.js:882:12)
+    at jestAdapter (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:77:13)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at runTestInternal (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runner\build\runTest.js:367:16)
+    at runTest (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runner\build\runTest.js:444:34)
+    at Object.worker (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runner\build\testWorker.js:106:12)</failure>
+    </testcase>
+    <testcase classname="deleteUser should trigger when client emits deleteUser event" name="deleteUser should trigger when client emits deleteUser event" time="0.003">
+      <failure>Error: thrown: &quot;Exceeded timeout of 1 ms for a test while waiting for `done()` to be called.
+Add a timeout value to this test to increase the timeout, if this is a long-running test. See https://jestjs.io/docs/api#testname-fn-timeout.&quot;
+    at it (D:\gitdesk\AndroidGameRoomApp\backend\BackendTest\Server.test.js:131:5)
+    at _dispatchDescribe (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-circus\build\index.js:91:26)
+    at describe (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-circus\build\index.js:55:5)
+    at Object.describe (D:\gitdesk\AndroidGameRoomApp\backend\BackendTest\Server.test.js:126:1)
+    at Runtime._execModule (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runtime\build\index.js:1439:24)
+    at Runtime._loadModule (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runtime\build\index.js:1022:12)
+    at Runtime.requireModule (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runtime\build\index.js:882:12)
+    at jestAdapter (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:77:13)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at runTestInternal (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runner\build\runTest.js:367:16)
+    at runTest (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runner\build\runTest.js:444:34)
+    at Object.worker (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runner\build\testWorker.js:106:12)</failure>
+    </testcase>
+    <testcase classname="deleteAllUsers should trigger when client emits deleteAllUsers event" name="deleteAllUsers should trigger when client emits deleteAllUsers event" time="0.003">
+      <failure>Error: thrown: &quot;Exceeded timeout of 1 ms for a test while waiting for `done()` to be called.
+Add a timeout value to this test to increase the timeout, if this is a long-running test. See https://jestjs.io/docs/api#testname-fn-timeout.&quot;
+    at it (D:\gitdesk\AndroidGameRoomApp\backend\BackendTest\Server.test.js:141:5)
+    at _dispatchDescribe (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-circus\build\index.js:91:26)
+    at describe (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-circus\build\index.js:55:5)
+    at Object.describe (D:\gitdesk\AndroidGameRoomApp\backend\BackendTest\Server.test.js:136:1)
+    at Runtime._execModule (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runtime\build\index.js:1439:24)
+    at Runtime._loadModule (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runtime\build\index.js:1022:12)
+    at Runtime.requireModule (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runtime\build\index.js:882:12)
+    at jestAdapter (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:77:13)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at runTestInternal (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runner\build\runTest.js:367:16)
+    at runTest (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runner\build\runTest.js:444:34)
+    at Object.worker (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runner\build\testWorker.js:106:12)</failure>
+    </testcase>
+    <testcase classname="createLobby should trigger when client emits createLobby event" name="createLobby should trigger when client emits createLobby event" time="0.006">
+      <failure>Error: thrown: &quot;Exceeded timeout of 1 ms for a test while waiting for `done()` to be called.
+Add a timeout value to this test to increase the timeout, if this is a long-running test. See https://jestjs.io/docs/api#testname-fn-timeout.&quot;
+    at it (D:\gitdesk\AndroidGameRoomApp\backend\BackendTest\Server.test.js:151:5)
+    at _dispatchDescribe (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-circus\build\index.js:91:26)
+    at describe (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-circus\build\index.js:55:5)
+    at Object.describe (D:\gitdesk\AndroidGameRoomApp\backend\BackendTest\Server.test.js:146:1)
+    at Runtime._execModule (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runtime\build\index.js:1439:24)
+    at Runtime._loadModule (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runtime\build\index.js:1022:12)
+    at Runtime.requireModule (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runtime\build\index.js:882:12)
+    at jestAdapter (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:77:13)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at runTestInternal (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runner\build\runTest.js:367:16)
+    at runTest (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runner\build\runTest.js:444:34)
+    at Object.worker (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runner\build\testWorker.js:106:12)</failure>
+    </testcase>
+    <testcase classname="joinLobby should trigger when client emits joinLobby event" name="joinLobby should trigger when client emits joinLobby event" time="0.004">
+      <failure>Error: thrown: &quot;Exceeded timeout of 1 ms for a test while waiting for `done()` to be called.
+Add a timeout value to this test to increase the timeout, if this is a long-running test. See https://jestjs.io/docs/api#testname-fn-timeout.&quot;
+    at it (D:\gitdesk\AndroidGameRoomApp\backend\BackendTest\Server.test.js:161:5)
+    at _dispatchDescribe (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-circus\build\index.js:91:26)
+    at describe (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-circus\build\index.js:55:5)
+    at Object.describe (D:\gitdesk\AndroidGameRoomApp\backend\BackendTest\Server.test.js:156:1)
+    at Runtime._execModule (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runtime\build\index.js:1439:24)
+    at Runtime._loadModule (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runtime\build\index.js:1022:12)
+    at Runtime.requireModule (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runtime\build\index.js:882:12)
+    at jestAdapter (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:77:13)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at runTestInternal (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runner\build\runTest.js:367:16)
+    at runTest (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runner\build\runTest.js:444:34)
+    at Object.worker (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runner\build\testWorker.js:106:12)</failure>
+    </testcase>
+    <testcase classname="sendChatMessage should trigger when client emits sendChatMessage event" name="sendChatMessage should trigger when client emits sendChatMessage event" time="0.002">
+      <failure>Error: thrown: &quot;Exceeded timeout of 1 ms for a test while waiting for `done()` to be called.
+Add a timeout value to this test to increase the timeout, if this is a long-running test. See https://jestjs.io/docs/api#testname-fn-timeout.&quot;
+    at it (D:\gitdesk\AndroidGameRoomApp\backend\BackendTest\Server.test.js:171:5)
+    at _dispatchDescribe (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-circus\build\index.js:91:26)
+    at describe (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-circus\build\index.js:55:5)
+    at Object.describe (D:\gitdesk\AndroidGameRoomApp\backend\BackendTest\Server.test.js:166:1)
+    at Runtime._execModule (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runtime\build\index.js:1439:24)
+    at Runtime._loadModule (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runtime\build\index.js:1022:12)
+    at Runtime.requireModule (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runtime\build\index.js:882:12)
+    at jestAdapter (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:77:13)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at runTestInternal (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runner\build\runTest.js:367:16)
+    at runTest (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runner\build\runTest.js:444:34)
+    at Object.worker (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runner\build\testWorker.js:106:12)</failure>
+    </testcase>
+    <testcase classname="getAllLobby should trigger when client emits getAllLobby event" name="getAllLobby should trigger when client emits getAllLobby event" time="0.002">
+      <failure>Error: thrown: &quot;Exceeded timeout of 1 ms for a test while waiting for `done()` to be called.
+Add a timeout value to this test to increase the timeout, if this is a long-running test. See https://jestjs.io/docs/api#testname-fn-timeout.&quot;
+    at it (D:\gitdesk\AndroidGameRoomApp\backend\BackendTest\Server.test.js:181:5)
+    at _dispatchDescribe (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-circus\build\index.js:91:26)
+    at describe (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-circus\build\index.js:55:5)
+    at Object.describe (D:\gitdesk\AndroidGameRoomApp\backend\BackendTest\Server.test.js:176:1)
+    at Runtime._execModule (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runtime\build\index.js:1439:24)
+    at Runtime._loadModule (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runtime\build\index.js:1022:12)
+    at Runtime.requireModule (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runtime\build\index.js:882:12)
+    at jestAdapter (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:77:13)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at runTestInternal (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runner\build\runTest.js:367:16)
+    at runTest (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runner\build\runTest.js:444:34)
+    at Object.worker (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runner\build\testWorker.js:106:12)</failure>
+    </testcase>
+    <testcase classname="setBet should trigger when client emits setBet event" name="setBet should trigger when client emits setBet event" time="0.002">
+      <failure>Error: thrown: &quot;Exceeded timeout of 1 ms for a test while waiting for `done()` to be called.
+Add a timeout value to this test to increase the timeout, if this is a long-running test. See https://jestjs.io/docs/api#testname-fn-timeout.&quot;
+    at it (D:\gitdesk\AndroidGameRoomApp\backend\BackendTest\Server.test.js:191:5)
+    at _dispatchDescribe (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-circus\build\index.js:91:26)
+    at describe (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-circus\build\index.js:55:5)
+    at Object.describe (D:\gitdesk\AndroidGameRoomApp\backend\BackendTest\Server.test.js:186:1)
+    at Runtime._execModule (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runtime\build\index.js:1439:24)
+    at Runtime._loadModule (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runtime\build\index.js:1022:12)
+    at Runtime.requireModule (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runtime\build\index.js:882:12)
+    at jestAdapter (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:77:13)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at runTestInternal (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runner\build\runTest.js:367:16)
+    at runTest (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runner\build\runTest.js:444:34)
+    at Object.worker (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runner\build\testWorker.js:106:12)</failure>
+    </testcase>
+    <testcase classname="setReady should trigger when client emits setReady event" name="setReady should trigger when client emits setReady event" time="0.002">
+      <failure>Error: thrown: &quot;Exceeded timeout of 1 ms for a test while waiting for `done()` to be called.
+Add a timeout value to this test to increase the timeout, if this is a long-running test. See https://jestjs.io/docs/api#testname-fn-timeout.&quot;
+    at it (D:\gitdesk\AndroidGameRoomApp\backend\BackendTest\Server.test.js:201:5)
+    at _dispatchDescribe (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-circus\build\index.js:91:26)
+    at describe (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-circus\build\index.js:55:5)
+    at Object.describe (D:\gitdesk\AndroidGameRoomApp\backend\BackendTest\Server.test.js:196:1)
+    at Runtime._execModule (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runtime\build\index.js:1439:24)
+    at Runtime._loadModule (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runtime\build\index.js:1022:12)
+    at Runtime.requireModule (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runtime\build\index.js:882:12)
+    at jestAdapter (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:77:13)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at runTestInternal (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runner\build\runTest.js:367:16)
+    at runTest (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runner\build\runTest.js:444:34)
+    at Object.worker (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runner\build\testWorker.js:106:12)</failure>
+    </testcase>
+    <testcase classname="getPlayerCount should trigger when client emits getPlayerCount event" name="getPlayerCount should trigger when client emits getPlayerCount event" time="0.001">
+      <failure>Error: thrown: &quot;Exceeded timeout of 1 ms for a test while waiting for `done()` to be called.
+Add a timeout value to this test to increase the timeout, if this is a long-running test. See https://jestjs.io/docs/api#testname-fn-timeout.&quot;
+    at it (D:\gitdesk\AndroidGameRoomApp\backend\BackendTest\Server.test.js:211:5)
+    at _dispatchDescribe (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-circus\build\index.js:91:26)
+    at describe (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-circus\build\index.js:55:5)
+    at Object.describe (D:\gitdesk\AndroidGameRoomApp\backend\BackendTest\Server.test.js:206:1)
+    at Runtime._execModule (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runtime\build\index.js:1439:24)
+    at Runtime._loadModule (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runtime\build\index.js:1022:12)
+    at Runtime.requireModule (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runtime\build\index.js:882:12)
+    at jestAdapter (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:77:13)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at runTestInternal (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runner\build\runTest.js:367:16)
+    at runTest (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runner\build\runTest.js:444:34)
+    at Object.worker (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runner\build\testWorker.js:106:12)</failure>
+    </testcase>
+    <testcase classname="leaveLobby should trigger when client emits leaveLobby event" name="leaveLobby should trigger when client emits leaveLobby event" time="0.001">
+      <failure>Error: thrown: &quot;Exceeded timeout of 1 ms for a test while waiting for `done()` to be called.
+Add a timeout value to this test to increase the timeout, if this is a long-running test. See https://jestjs.io/docs/api#testname-fn-timeout.&quot;
+    at it (D:\gitdesk\AndroidGameRoomApp\backend\BackendTest\Server.test.js:221:5)
+    at _dispatchDescribe (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-circus\build\index.js:91:26)
+    at describe (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-circus\build\index.js:55:5)
+    at Object.describe (D:\gitdesk\AndroidGameRoomApp\backend\BackendTest\Server.test.js:216:1)
+    at Runtime._execModule (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runtime\build\index.js:1439:24)
+    at Runtime._loadModule (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runtime\build\index.js:1022:12)
+    at Runtime.requireModule (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runtime\build\index.js:882:12)
+    at jestAdapter (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:77:13)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at runTestInternal (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runner\build\runTest.js:367:16)
+    at runTest (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runner\build\runTest.js:444:34)
+    at Object.worker (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runner\build\testWorker.js:106:12)</failure>
+    </testcase>
+    <testcase classname="playTurn should trigger when client emits playTurn event" name="playTurn should trigger when client emits playTurn event" time="0.004">
+      <failure>Error: thrown: &quot;Exceeded timeout of 1 ms for a test while waiting for `done()` to be called.
+Add a timeout value to this test to increase the timeout, if this is a long-running test. See https://jestjs.io/docs/api#testname-fn-timeout.&quot;
+    at it (D:\gitdesk\AndroidGameRoomApp\backend\BackendTest\Server.test.js:231:5)
+    at _dispatchDescribe (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-circus\build\index.js:91:26)
+    at describe (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-circus\build\index.js:55:5)
+    at Object.describe (D:\gitdesk\AndroidGameRoomApp\backend\BackendTest\Server.test.js:226:1)
+    at Runtime._execModule (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runtime\build\index.js:1439:24)
+    at Runtime._loadModule (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runtime\build\index.js:1022:12)
+    at Runtime.requireModule (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runtime\build\index.js:882:12)
+    at jestAdapter (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:77:13)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at runTestInternal (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runner\build\runTest.js:367:16)
+    at runTest (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runner\build\runTest.js:444:34)
+    at Object.worker (D:\gitdesk\AndroidGameRoomApp\backend\node_modules\jest-runner\build\testWorker.js:106:12)</failure>
     </testcase>
   </testsuite>
-  <testsuite name="GameLobby" errors="0" failures="0" skipped="0" timestamp="2023-11-22T04:11:33" time="4.661" tests="20">
-    <testcase classname="GameLobby init should create a new lobby correctly" name="GameLobby init should create a new lobby correctly" time="0.075">
+  <testsuite name="GameLobby" errors="0" failures="0" skipped="0" timestamp="2023-11-22T04:56:14" time="3.888" tests="20">
+    <testcase classname="GameLobby init should create a new lobby correctly" name="GameLobby init should create a new lobby correctly" time="0.046">
     </testcase>
-    <testcase classname="GameLobby init should emit &quot;roomAlreadyExist&quot; if the lobby already exists" name="GameLobby init should emit &quot;roomAlreadyExist&quot; if the lobby already exists" time="0.005">
+    <testcase classname="GameLobby init should emit &quot;roomAlreadyExist&quot; if the lobby already exists" name="GameLobby init should emit &quot;roomAlreadyExist&quot; if the lobby already exists" time="0.001">
     </testcase>
     <testcase classname="GameLobby addPlayer should add a player to the lobby correctly" name="GameLobby addPlayer should add a player to the lobby correctly" time="0.003">
     </testcase>
-    <testcase classname="GameLobby addPlayer should emit &quot;PlayerExceedMax&quot; if the lobby is full" name="GameLobby addPlayer should emit &quot;PlayerExceedMax&quot; if the lobby is full" time="0.003">
+    <testcase classname="GameLobby addPlayer should emit &quot;PlayerExceedMax&quot; if the lobby is full" name="GameLobby addPlayer should emit &quot;PlayerExceedMax&quot; if the lobby is full" time="0.002">
     </testcase>
-    <testcase classname="GameLobby addPlayer should emit &quot;roomDoesNot&quot; if the lobby does not exist" name="GameLobby addPlayer should emit &quot;roomDoesNot&quot; if the lobby does not exist" time="0.004">
+    <testcase classname="GameLobby addPlayer should emit &quot;roomDoesNot&quot; if the lobby does not exist" name="GameLobby addPlayer should emit &quot;roomDoesNot&quot; if the lobby does not exist" time="0.002">
     </testcase>
-    <testcase classname="GameLobby removePlayer should remove a player from the lobby correctly" name="GameLobby removePlayer should remove a player from the lobby correctly" time="0.003">
+    <testcase classname="GameLobby removePlayer should remove a player from the lobby correctly" name="GameLobby removePlayer should remove a player from the lobby correctly" time="0.004">
     </testcase>
     <testcase classname="GameLobby removePlayer should not remove a player if their socket ID is not found in any lobby" name="GameLobby removePlayer should not remove a player if their socket ID is not found in any lobby" time="0.002">
     </testcase>
-    <testcase classname="GameLobby removePlayer should clear the timer if a ready player leaves" name="GameLobby removePlayer should clear the timer if a ready player leaves" time="0.006">
+    <testcase classname="GameLobby removePlayer should clear the timer if a ready player leaves" name="GameLobby removePlayer should clear the timer if a ready player leaves" time="0.004">
     </testcase>
     <testcase classname="GameLobby removePlayer should not clear a timer if no timer is set when a player leaves" name="GameLobby removePlayer should not clear a timer if no timer is set when a player leaves" time="0.003">
     </testcase>
     <testcase classname="GameLobby setPlayerReady should set a player ready in the lobby correctly" name="GameLobby setPlayerReady should set a player ready in the lobby correctly" time="0.002">
     </testcase>
-    <testcase classname="GameLobby setPlayerReady should start the game when all players are ready" name="GameLobby setPlayerReady should start the game when all players are ready" time="0.004">
+    <testcase classname="GameLobby setPlayerReady should start the game when all players are ready" name="GameLobby setPlayerReady should start the game when all players are ready" time="0.003">
     </testcase>
-    <testcase classname="GameLobby setPlayerReady should set a timer when a player is set as ready" name="GameLobby setPlayerReady should set a timer when a player is set as ready" time="0.08">
+    <testcase classname="GameLobby setPlayerReady should set a timer when a player is set as ready" name="GameLobby setPlayerReady should set a timer when a player is set as ready" time="0.036">
     </testcase>
-    <testcase classname="GameLobby startGame should start a game correctly" name="GameLobby startGame should start a game correctly" time="3.003">
+    <testcase classname="GameLobby startGame should start a game correctly" name="GameLobby startGame should start a game correctly" time="3.008">
     </testcase>
-    <testcase classname="GameLobby startGame should not start the game if gameManager is not initialized" name="GameLobby startGame should not start the game if gameManager is not initialized" time="0.002">
+    <testcase classname="GameLobby startGame should not start the game if gameManager is not initialized" name="GameLobby startGame should not start the game if gameManager is not initialized" time="0">
     </testcase>
-    <testcase classname="GameLobby setPlayerBet should set a player bet correctly" name="GameLobby setPlayerBet should set a player bet correctly" time="0.001">
+    <testcase classname="GameLobby setPlayerBet should set a player bet correctly" name="GameLobby setPlayerBet should set a player bet correctly" time="0">
     </testcase>
     <testcase classname="GameLobby sendChatMessage should send a chat message correctly" name="GameLobby sendChatMessage should send a chat message correctly" time="0.001">
     </testcase>
@@ -279,7 +599,7 @@ Add a timeout value to this test to increase the timeout, if this is a long-runn
     </testcase>
     <testcase classname="GameLobby getAllLobby should retrieve all lobbies correctly" name="GameLobby getAllLobby should retrieve all lobbies correctly" time="0">
     </testcase>
-    <testcase classname="GameLobby getPlayerCount should retrieve player count correctly" name="GameLobby getPlayerCount should retrieve player count correctly" time="0">
+    <testcase classname="GameLobby getPlayerCount should retrieve player count correctly" name="GameLobby getPlayerCount should retrieve player count correctly" time="0.001">
     </testcase>
   </testsuite>
 </testsuites>

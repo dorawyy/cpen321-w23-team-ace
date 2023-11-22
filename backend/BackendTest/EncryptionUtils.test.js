@@ -1,7 +1,8 @@
-const EncryptionUtils = require('../EncryptionUtils'); 
+const EncryptionUtils = require('../EncryptionUtils'); // Adjust the path as needed
 
-// ChatGPT usage: No
+
 describe('Encryption with same length', () => {
+  //chatGPT usage: No
   test('encrypted user ID should have consistent length', () => {
     const userId = 'sampleUserId';
     const encryptionKey = EncryptionUtils.generateKey(); 
@@ -16,8 +17,8 @@ describe('Encryption with same length', () => {
   });
 });
 
-// ChatGPT usage: No
 describe('Encryption id should be different from the raw id', () => {
+    //chatGPT usage: No
     test('Encryption should differ from true id', () => {
         const userId = 'sampleUserId';
         const encryptionKey = EncryptionUtils.generateKey(); 
@@ -30,8 +31,8 @@ describe('Encryption id should be different from the raw id', () => {
       });
   });
 
-// ChatGPT usage: No
 describe('Encryption and decryption functionality', () => {
+    //chatGPT usage: No
     test('Decrypted user ID should match the original user ID', () => {
       const userId = 'sampleUserId';
       const encryptionKey = EncryptionUtils.generateKey(); // Method to generate key
