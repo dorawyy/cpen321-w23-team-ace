@@ -8,15 +8,15 @@ const cors = require('cors');
 // server configuration
 const app = express();
 app.use(express.static(__dirname));
-const options = {
-    key: fs.readFileSync('data/private.key'),
-    cert: fs.readFileSync('data/certificate.crt'),
-    ca: fs.readFileSync('data/ca_bundle.crt')
-};
+// const options = {
+//     key: fs.readFileSync('data/private.key'),
+//     cert: fs.readFileSync('data/certificate.crt'),
+//     ca: fs.readFileSync('data/ca_bundle.crt')
+// };
 
 // server types
 const server = http.createServer(app);
-const https_server = https.createServer(options, app);
+// const https_server = https.createServer(options, app);
 const SERVER_TYPE = 'http';
 const SERVER_PORT = 443;
 
