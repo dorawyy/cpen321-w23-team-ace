@@ -1,7 +1,10 @@
 const UserAccount = require('../UserAccount'); // Adjust the path as necessary
+// ChatGPT usage: Partial
 const ioMock = {
   emit: jest.fn()
 };
+
+// ChatGPT usage: Partial
 const userStoreMock = {
     getUser: jest.fn(),
     updateUser: jest.fn(),
@@ -10,7 +13,8 @@ const userStoreMock = {
     getUserbyname: jest.fn(),
     deleteAllUsers: jest.fn(),
 };
-// Interface  socket event 'retrieveAccount'
+// ChatGPT usage: No
+// Interface socket event 'retrieveAccount'
 describe('retrieveAccount', () => {
     let userAccount;
   
@@ -42,6 +46,8 @@ describe('retrieveAccount', () => {
         expect(ioMock.emit).toHaveBeenCalledWith('userAccountDetails', null);
       });
 });
+
+// ChatGPT usage: No
 // Interface  socket event 'createAccount'
 describe('createAccount', () => {
       let userAccount;
@@ -77,7 +83,7 @@ describe('createAccount', () => {
 
 });
 
-
+// ChatGPT usage: No
 // Interface  socket event 'updateAccount'
 describe('updateAccount', () => {
       let userAccount;
@@ -114,6 +120,7 @@ describe('updateAccount', () => {
       });
 });
 
+// ChatGPT usage: No
 //Interface  socket event 'updateName'
 describe('updateName', () => {
       let userAccount;
@@ -153,6 +160,7 @@ describe('updateName', () => {
       });
 });
 
+// ChatGPT usage: No
 // Interface  socket event 'updateAdminStatus'
 describe('updateAdminStatus', () => {
           let userAccount;
@@ -195,7 +203,7 @@ describe('updateAdminStatus', () => {
 });
 
 
-
+// ChatGPT usage: No
 // Interface  socket event 'updateLastRedemptionDate'
 describe('updateLastRedemptionDate', () => {
       let userAccount;
@@ -238,7 +246,7 @@ describe('updateLastRedemptionDate', () => {
 
 });
 
-
+// ChatGPT usage: No
 // Interface  socket event 'deleteUser'
 describe('deleteUser', () => {
           let userAccount;
@@ -275,7 +283,7 @@ describe('deleteUser', () => {
 
 });
 
-
+// ChatGPT usage: No
 // Interface  socket event 'deleteAllUsers'
 describe('deleteAllUsers', () => {
           let userAccount;
@@ -308,7 +316,7 @@ describe('deleteAllUsers', () => {
       });
 });
 
-
+// ChatGPT usage: No
 // Interface  socket event 'checkuserinDB'
 describe('checkuserinDB', () => {
           let userAccount;
@@ -346,7 +354,7 @@ describe('checkuserinDB', () => {
       });
 });
 
-
+// ChatGPT usage: No
 // Interface  socket event 'deposit'
 describe('deposit', () => {
           let userAccount;
@@ -390,6 +398,7 @@ describe('deposit', () => {
 
 });
 
+// ChatGPT usage: No
 // Interface  socket event 'depositbyname'
 describe('depositbyname', () => {
           let userAccount;
@@ -453,7 +462,7 @@ describe('depositbyname', () => {
 
 });
 
-
+// ChatGPT usage: No
 // Interface  socket event 'withdraw'
 describe('withdraw', () => {
           let userAccount;
@@ -515,8 +524,9 @@ describe('withdraw', () => {
 
 });
 
-// Interface  socket event 'chatBanned'
-describe('chatBanned', () => {
+// ChatGPT usage: No
+// Interface  socket event 'updateChatBanned'
+describe('updateChatBanned', () => {
           let userAccount;
     
           beforeEach(() => {
