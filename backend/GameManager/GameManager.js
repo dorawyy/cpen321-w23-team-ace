@@ -112,7 +112,10 @@ class GameManager extends EventEmitter {
         // Implement actual timeout
         this.timers[gameData.lobbyName] = setTimeout(() => {
             //Force them to stand
-            this.playTurn(gameDataLocal.lobbyId, gameDataLocal.playerList[gameDataLocal.currentPlayerIndex], "stand");
+            this.playTurn(
+                gameDataLocal.lobbyId, 
+                gameDataLocal.playerList[gameDataLocal.currentPlayerIndex], 
+                "stand");
         }, 15000); // 15 seconds
     }
 
