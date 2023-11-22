@@ -1,6 +1,7 @@
 const { assert } = require('console');
 const GameManager = require('../GameManager/GameManager');
 const exp = require('constants');
+const mongoShield = require('../mongoShield');
 
 jest.useFakeTimers()
 
@@ -418,5 +419,19 @@ describe('GameManager', () => {
   it('should throw an error if malicious lobbyName is used in deleteGame', async () => {
     let gameStore = gameManager.gameStore;
     expect (await gameStore.deleteGame({$ne: null})).toBe(0); 
+  });
+  // Test malicious lobbyName in deleteGame 
+  it('should throw an error if malicious lobbyName is used in deleteGame bad type', async () => {
+    let gameStore = gameManager.gameStore;
+    expect (await gameStore.deleteGame('$one')).toBe(0); 
+  });
+
+  // small mongo shield test
+  it('should return true if type test match', async () => {
+    expect(mongoShield("hi", ['string'])).toBe(true);
+  });
+
+  it('should handle default param', async () => {
+    expect(mongoShield("hi")).toBe(true);
   });
 });
