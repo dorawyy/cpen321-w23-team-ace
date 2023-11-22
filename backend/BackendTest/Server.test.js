@@ -1,4 +1,7 @@
 const { Server } = require("socket.io");
+const { MongoClient } = require('mongodb');
+const GameLobbyStore = require('../GameLobbyStore');
+const UserStore = require('../UserStore');
 const Client = require("socket.io-client");
 const { mock } = require('node:test');
 const { app } = require('../server'); // assuming that your server file is named server.js
@@ -41,10 +44,32 @@ beforeAll((done) => {
     });
 });
 
+beforeEach(async () => {
+    
+    let mockClient;
+    let mockDB;
+    let mockCollection;
+    let userStore;
+    let gameLobbyStore
+
+    mockClient = new MongoClient();
+    mockDB = mockClient.db();
+    mockCollection = mockDB.collection();
+
+    userStore = new UserStore("mongodb://localhost:27017", "testDB");
+    gameLobbyStore = new GameLobbyStore("mongodb://localhost:27017", "testDB");
+  });
+
+  
+
 afterAll(() => {
     io.close();
     clientSocket.close();
 });
+
+afterEach(() => {
+    jest.clearAllMocks();
+  });
 
 describe('retrieveAccount', () => {
     // ChatGPT usage: No
