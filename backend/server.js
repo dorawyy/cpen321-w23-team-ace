@@ -12,21 +12,21 @@ app.use(express.static(__dirname));
 const keysPath = path.join(__dirname, 'data', 'private.key');
 let options;
 
-if (fs.existsSync(keysPath)) {
-  // If the file exists, require the JSON file.
-  options = {
-    key: fs.readFileSync('data/private.key'),
-    cert: fs.readFileSync('data/certificate.crt'),
-    ca: fs.readFileSync('data/ca_bundle.crt')
-};
-} else {
-  // If the file does not exist, set keys to 0.
-  options = {
-    key: "",
-    cert: "",
-    ca: ""
-};
-}
+// if (fs.existsSync(keysPath)) {
+//   // If the file exists, require the JSON file.
+//   options = {
+//     key: fs.readFileSync('data/private.key'),
+//     cert: fs.readFileSync('data/certificate.crt'),
+//     ca: fs.readFileSync('data/ca_bundle.crt')
+// };
+// } else {
+//   // If the file does not exist, set keys to 0.
+//   options = {
+//     key: "",
+//     cert: "",
+//     ca: ""
+// };
+// }
 
 
 // server types
