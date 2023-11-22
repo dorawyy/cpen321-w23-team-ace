@@ -58,6 +58,8 @@ public class PlayingBaccaratGameTest {
     }
 
     //This test should be run after the creating game rooms test, as it uses that lobby.
+    //Note: We learned to test toast messages and copied the code for that from https://www.qaautomated.com/2016/01/how-to-test-toast-message-using-espresso.html
+    //Note: We learned to test recycler views and copied the code for that from https://spin.atomicobject.com/2016/04/15/espresso-testing-recyclerviews/
     @Test
     //ChatGPT usage: Partial
     public void playingBaccaratGameTest() throws InterruptedException, UiObjectNotFoundException {

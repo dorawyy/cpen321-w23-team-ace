@@ -66,6 +66,7 @@ public class DailyPointTest {
     }
 
     //This test will sign in and create a new user then proceed to test the daily points redemption use case.
+    //Note: We learned to test toast messages and copied the code for that from https://www.qaautomated.com/2016/01/how-to-test-toast-message-using-espresso.html
     @Test
     //ChatGPT usage: Partial
     public void dailyPointTest() throws UiObjectNotFoundException, InterruptedException {

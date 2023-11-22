@@ -64,6 +64,8 @@ public class CreatingGameRoomsTest {
     }
 
     //This should be run after the DailyPointTest so that the account exists that we want to use.
+    //Note: We learned to test toast messages and copied the code for that from https://www.qaautomated.com/2016/01/how-to-test-toast-message-using-espresso.html
+    //Note: We learned to test recycler views and copied the code for that from https://spin.atomicobject.com/2016/04/15/espresso-testing-recyclerviews/
     @Test
     //ChatGPT usage: Partial
     public void creatingGameRoomsTest() throws InterruptedException, UiObjectNotFoundException {
