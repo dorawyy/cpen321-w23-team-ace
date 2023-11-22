@@ -76,12 +76,18 @@ describe('Baccarat', () => {
   });
 
   /* a test to ensure that the game is created properly */
+  // input: gameData
+  // expected behavior: a game can be created without error
+  // expected output: all items required for the game is prepared
   // chatGPT usage: No
   it('newGame', async () => {
     expect(gameData.gameItems.globalItems.pokar).toStrictEqual(GameAssets.getPokar());
   });
 
   /* a test to ensure that a random card is generated*/
+  // input: gameData
+  // expected behavior: a random card is generated
+  // expected output: a card is generated
   // chatGPT usage: No
   it('random card', async () => {
     callCount = 0;
@@ -93,6 +99,9 @@ describe('Baccarat', () => {
   });
 
   /* test to ensure that the player is dealt a card , score is 1v1*/
+  // input: gameData
+  // expected behavior: a card is dealt to the player
+  // expected output: a card is dealt to the player
   // chatGPT usage: No
   it('full game 1, 1', async () => {
   
@@ -110,6 +119,9 @@ describe('Baccarat', () => {
   });
 
   /* full game test where score is 6 v 3*/
+  // input: gameData
+  // expected behavior: a full game can be played without error
+  // expected output: a game result is generated, and winning can be calculated
   // chatGPT usage: No
   it('full game 6, 3', async () => {
     callCount = 0;
@@ -127,6 +139,9 @@ describe('Baccarat', () => {
   });
 
   /* full game test where score is 6 v 4*/
+  // input: gameData
+  // expected behavior: a full game can be played without error
+  // expected output: a game result is generated, and winning can be calculated
   // chatGPT usage: No
   it('full game 6, 4', async () => {
     
@@ -144,6 +159,9 @@ describe('Baccarat', () => {
   });
 
   /* full game test where score is 6 v 5*/
+  // input: gameData
+  // expected behavior: a full game can be played without error
+  // expected output: a game result is generated, and winning can be calculated
   // chatGPT usage: No
   it('full game 6, 5', async () => {
     
@@ -162,6 +180,9 @@ describe('Baccarat', () => {
   });
 
   /* full game test where score is 6 v 6*/
+  // input: gameData
+  // expected behavior: a full game can be played without error
+  // expected output: a game result is generated, and winning can be calculated
   // chatGPT usage: No
   it('full game 6, 6', async () => {
     
@@ -180,6 +201,9 @@ describe('Baccarat', () => {
   })
 
   /* full game test where score is 9 v 9*/
+  // input: gameData
+  // expected behavior: a full game can be played without error
+  // expected output: a game result is generated, and winning can be calculated
   // chatGPT usage: No
   it('full game 9, 9', async () => {
     
@@ -198,6 +222,9 @@ describe('Baccarat', () => {
   });
 
   /* full game test where score is 9 v 4*/
+  // input: gameData
+  // expected behavior: a full game can be played without error
+  // expected output: a game result is generated, and winning can be calculated
   // chatGPT usage: No
   it('full game 9, 4', async () => {
     
@@ -216,6 +243,9 @@ describe('Baccarat', () => {
   });
 
   /* a test to ensure unknown bet type is handled*/
+  // input: gameData
+  // expected behavior: a full game can be played without error
+  // expected output: a game result is generated, and winning can be calculated
   // chatGPT usage: No
   it('unknown bet type', async () => {
     
@@ -234,6 +264,9 @@ describe('Baccarat', () => {
   });
 
   /* test to one cannot issue a bet before the game is over*/
+  // input: gameData
+  // expected behavior: one cannot get winning calcualtion before gameover
+  // expected output: fail to calculate winning
   // chatGPT usage: No
   it('Calculate winning before gameover', async () => {
     

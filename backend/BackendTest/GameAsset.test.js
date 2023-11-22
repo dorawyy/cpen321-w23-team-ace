@@ -77,6 +77,9 @@ describe('GameAsset', () => {
   });
 
   /*make sure a card set with pokar is covered*/
+  // input: pokar
+  //expected behavior: pokar set can include joker
+  // expected output: joker is in set and == value 100, 101
   // chatGPT usage: No
   it('jokar pokar', async () => {
     let pokar = gameAssets.getPokar(true);
@@ -89,6 +92,9 @@ describe('GameAsset', () => {
   });
 
   /*make sure special value card can be interpretaed*/
+  // input: card
+  // expected behavior: card value is interpreted correctly
+  // expected output: card value is correct
   // chatGPT usage: No
   it('special pokar', async () => {
     let value = gameAssets.getPokarFaceValue("AH");
@@ -102,6 +108,9 @@ describe('GameAsset', () => {
   });
 
   /* attempt to get random number*/
+  // input: min, max, count
+  // expected behavior: random number is generated
+  // expected output: random number is generated
   // chatGPT usage: No
   it('get random number', async () => {
     callCount = 0;
@@ -111,6 +120,9 @@ describe('GameAsset', () => {
   });
 
   /* attempt to get random number with negative count*/
+  // input: min, max, count 9<0)
+  // expected behavior: random number is generated
+  // expected output: random number is generated
   // chatGPT usage: No
   it('get random number but negative count', async () => {
     callCount = 0;
@@ -120,6 +132,9 @@ describe('GameAsset', () => {
   });
 
   /* attempt to get random number with invalid response*/
+  // input: min, max, count
+  // expected behavior: random number is generated when return mode to disallow value
+  // expected output: random number is generated
   // chatGPT usage: No
   it('get random number no valid response', async () => {
     callCount = 0;
