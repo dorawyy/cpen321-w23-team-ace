@@ -7,35 +7,10 @@ const { mock } = require('node:test');
 const { app } = require('../server'); // assuming that your server file is named server.js
 let io, serverSocket, clientSocket;
 
-// jest.mock('mongodb', () => {
-//     const collectionMock = {
-//       findOne: jest.fn(),
-//       insertOne: jest.fn(),
-//       updateOne: jest.fn(),
-//       deleteOne: jest.fn(),
-//       deleteMany: jest.fn(),
-//       find: jest.fn().mockReturnThis(),
-//       toArray: jest.fn(),
-//     };
-  
-//     const dbMock = {
-//       collection: jest.fn().mockReturnValue(collectionMock)
-//     };
-  
-//     const mClientMock = {
-//       connect: jest.fn().mockResolvedValue(),
-//       db: jest.fn().mockReturnValue(dbMock),
-//       close: jest.fn()
-//     };
-  
-//     return { MongoClient: jest.fn(() => mClientMock) };
-// });
-
 beforeAll((done) => {
     const httpServer = require('http').createServer(app);
     io = new Server(httpServer);
     httpServer.listen(() => {
-        const port = httpServer.address().port;
         clientSocket = new Client(`http://localhost:443`);
         io.on("connection", socket => {
             serverSocket = socket;
@@ -43,33 +18,11 @@ beforeAll((done) => {
         clientSocket.on("connect", done);
     });
 });
-
-// beforeEach(async () => {
-    
-//     let mockClient;
-//     let mockDB;
-//     let mockCollection;
-//     let userStore;
-//     let gameLobbyStore;
-
-//     mockClient = new MongoClient();
-//     mockDB = mockClient.db();
-//     mockCollection = mockDB.collection();
-
-//     userStore = new UserStore("mongodb://localhost:27017", "testDB");
-//     gameLobbyStore = new GameLobbyStore("mongodb://localhost:27017", "testDB");
-//   });
-
   
-
 afterAll(() => {
     io.close();
     clientSocket.close();
 });
-
-// afterEach(() => {
-//     jest.clearAllMocks();
-//   });
 
 describe('retrieveAccount', () => {
     // ChatGPT usage: No
