@@ -134,7 +134,10 @@ class GameLobby {
         const lobby = await this.gameLobbyStore.getLobby(roomName);
 
         if (!this.timers[roomName]) {
+            this.startCountdownLog(roomName);
+
             this.timers[roomName] = setTimeout(() => {
+            clearInterval(this.countdownInterval);
             this.startGame(roomName)
             }, 60000); // 60 seconds
         }
@@ -181,6 +184,8 @@ class GameLobby {
         const lobby = await this.gameLobbyStore.getLobby(roomName);
         if (this.gameManager) {
             if (this.timers[lobby.roomName]) {
+                console.log("Timer canceled")
+                clearInterval(this.countdownInterval);
                 clearTimeout(this.timers[lobby.roomName]);
                 delete this.timers[lobby.roomName];
             }
@@ -266,6 +271,15 @@ class GameLobby {
     // ChatGPT usage: No
     async _delay(duration) {
         return new Promise(resolve => setTimeout(resolve, duration));
+    }
+
+    // ChatGPT usage: No
+    startCountdownLog(roomName) {
+        let elapsed = 1;
+        this.countdownInterval = setInterval(() => {
+            console.log(`Elapsed time for room ${roomName}: ${elapsed} seconds`);
+            elapsed++;
+        }, 1000);
     }
 }
 

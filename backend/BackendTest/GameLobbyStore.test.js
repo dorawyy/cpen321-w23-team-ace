@@ -1,6 +1,7 @@
 const { MongoClient } = require('mongodb');
 const GameLobbyStore = require('../GameLobbyStore'); // Adjust the path as needed
 
+// ChatGPT usage: Partial
 jest.mock('mongodb', () => {
   const mCollection = {
     insertOne: jest.fn(),
@@ -30,6 +31,7 @@ describe('GameLobbyStore', () => {
   let mockDB;
   let mockCollection;
 
+  // ChatGPT usage: Partial
   beforeEach(async () => {
     mockClient = new MongoClient();
     mockDB = mockClient.db();
@@ -39,11 +41,13 @@ describe('GameLobbyStore', () => {
     await gameLobbyStore.init();
   });
 
+  // ChatGPT usage: Partial
   afterEach(() => {
     jest.clearAllMocks();
   });
 
   describe('init', () => {
+    // ChatGPT usage: Partial
     // Input: none
     // Expected behavior: Database connection is established and collection is set
     // Expected output: 'connect' and 'collection' methods are called
@@ -54,6 +58,7 @@ describe('GameLobbyStore', () => {
   });
 
   describe('insertLobby', () => {
+    // ChatGPT usage: Partial
     // Input: roomName, gameType, maxPlayer
     // Expected behavior: A new lobby is added to the database
     // Expected output: 'insertOne' method is called with correct lobby data
@@ -70,6 +75,7 @@ describe('GameLobbyStore', () => {
   });
 
   describe('updateLobby', () => {
+    // ChatGPT usage: Partial
     // Input: roomName, gameStarted
     // Expected behavior: Specified lobby is updated with new data
     // Expected output: 'updateOne' method is called with correct update data
@@ -84,6 +90,7 @@ describe('GameLobbyStore', () => {
   });
 
   describe('setPlayerReady', () => {
+    // ChatGPT usage: Partial
     // Input: roomName, userName
     // Expected behavior: Player 'user1' in 'room123' is marked as ready
     // Expected output: 'updateOne' method is called to set the player as ready
@@ -97,6 +104,7 @@ describe('GameLobbyStore', () => {
   });
 
   describe('getLobby', () => {
+    // ChatGPT usage: Partial
     // Input: roomName
     // Expected behavior: Lobby 'room123' is fetched from the database
     // Expected output: 'findOne' method is called with the correct room name
@@ -107,6 +115,7 @@ describe('GameLobbyStore', () => {
   });
 
   describe('getAllLobby', () => {
+    // ChatGPT usage: Partial
     // Input: none
     // Expected behavior: All lobbies are fetched from the database
     // Expected output: 'find' and 'toArray' methods are called
@@ -118,6 +127,7 @@ describe('GameLobbyStore', () => {
   });
 
   describe('deleteLobby', () => {
+    // ChatGPT usage: No
     // Input: roomName
     // Expected behavior: Lobby 'room123' is deleted from the database
     // Expected output: 'deleteOne' method is called with the correct room name
@@ -128,6 +138,7 @@ describe('GameLobbyStore', () => {
   });
 
   describe('setPlayerBet', () => {
+    // ChatGPT usage: No
     // Input: roomName, userName, bet
     // Expected behavior: Player 'user1's bet in lobby 'room123' is set to 100
     // Expected output: 'updateOne' method is called to set the player's bet
@@ -141,6 +152,7 @@ describe('GameLobbyStore', () => {
   });
 
   describe('getPlayerCount', () => {
+    // ChatGPT usage: No
     // Input: roomName
     // Expected behavior: Player count in lobby 'room123' is retrieved
     // Expected output: 'findOne' method is called and player count is returned
@@ -155,6 +167,7 @@ describe('GameLobbyStore', () => {
   });
 
   describe('close', () => {
+    // ChatGPT usage: No
     // Input: none
     // Expected behavior: Database connection is closed
     // Expected output: 'close' method is called

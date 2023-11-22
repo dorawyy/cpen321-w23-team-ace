@@ -2,6 +2,7 @@ const GameLobby = require('../GameLobby');
 const GameLobbyStore = require('../GameLobbyStore');
 const emitMock = jest.fn();
 
+// ChatGPT usage: Partial
 const ioMock = {
   to: jest.fn().mockImplementation(() => {
       return {
@@ -12,7 +13,7 @@ const ioMock = {
   })
 };
 
-// attempt to mock GameLobbyStore
+// ChatGPT usage: No
 jest.mock('../GameLobbyStore', () => {
   return jest.fn().mockImplementation(() => {
     return {
@@ -34,18 +35,21 @@ describe('GameLobby', () => {
   let gameLobbyStoreMock;
   let socketMock;
 
+  // ChatGPT usage: Partial
   beforeAll(() => {
     gameLobbyStoreMock = new GameLobbyStore();
     gameLobby = new GameLobby(null, gameLobbyStoreMock, ioMock);
     socketMock = { id: 'socket123', emit: jest.fn(), join: jest.fn(), leave: jest.fn() };
   });
 
+  // ChatGPT usage: Yes
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
   
   describe('init', () => {
+    // ChatGPT usage: Partial
     // Input: roomName, gameType, bet = 0, socket
     // Expected behavior: Lobby 'room123' is created
     // Expected output: Emit 'lobbyCreated'
@@ -60,6 +64,7 @@ describe('GameLobby', () => {
       expect(socketMock.emit).toHaveBeenCalledWith('lobbyCreated', expect.any(String));
     });
 
+    // ChatGPT usage: Partial
     // Input: roomName (already exist), gameType, bet = 0, socket
     // Expected behavior: No duplicate lobby creation
     // Expected output: Emit 'roomAlreadyExist'
@@ -80,6 +85,7 @@ describe('GameLobby', () => {
 
   // Interface socket event 'joinLobby'
   describe('addPlayer', () => {
+    // ChatGPT usage: Partial
     // Input: roomName, userName, bet, socket
     // Expected behavior: Player 'user1' is added to 'room123'
     // Expected output: Player added and lobby updated
@@ -94,6 +100,7 @@ describe('GameLobby', () => {
       expect(gameLobbyStoreMock.updateLobby).toHaveBeenCalledWith('room123', expect.any(Object));
     });
 
+    // ChatGPT usage: Partial
     // Input: roomName (that is full), userName, bet, socket
     // Expected behavior: Player 'user5' not added due to full lobby
     // Expected output: Emit 'PlayerExceedMax'
@@ -109,6 +116,7 @@ describe('GameLobby', () => {
         expect(socketMock.emit).toHaveBeenCalledWith('PlayerExceedMax', "PlayerExceedMax");
     });
 
+    // ChatGPT usage: Partial
     // Input: roomName (not exist), userName, bet, socket
     // Expected behavior: Cannot add player to non-existent lobby
     // Expected output: Emit 'roomDoesNot'
@@ -123,6 +131,7 @@ describe('GameLobby', () => {
 
   // Interface socket event 'leaveLobby'
   describe('removePlayer', () => {
+    // ChatGPT usage: Partial
     // Input: socket (with associated lobby)
     // Expected behavior: Player associated with socketMock is removed from the lobby
     // Expected output: Lobby is updated, and 'playerLeft' event is emitted
@@ -138,6 +147,7 @@ describe('GameLobby', () => {
       expect(gameLobbyStoreMock.updateLobby).toHaveBeenCalledWith('room123', expect.any(Object));
     });
 
+    // ChatGPT usage: No
     // Input: socket (with no associated lobby)
     // Expected behavior: No player is removed
     // Expected output: No lobby update or 'playerLeft' event
@@ -153,6 +163,7 @@ describe('GameLobby', () => {
         expect(socketMock.leave).not.toHaveBeenCalled();
     });
 
+    // ChatGPT usage: Partial
     // Input: socket (with no associated lobby)
     // Expected behavior: Clear the timer
     // Expected output: Timer is cancelled and removed from the timers array
@@ -175,6 +186,7 @@ describe('GameLobby', () => {
       jest.useRealTimers();
     });
 
+    // ChatGPT usage: Partial
     // Input: socket (with no associated lobby)
     // Expected behavior: No timer is cleared
     // Expected output: The timer is not in the timer array and should not be cleared
@@ -199,6 +211,7 @@ describe('GameLobby', () => {
 
   });
 
+  // ChatGPT usage: Partial
   // Interface socket event 'setReady'
   describe('setPlayerReady', () => {
     // Input: roomName, userName
@@ -253,6 +266,7 @@ describe('GameLobby', () => {
         expect(ioMock.to().emit).toHaveBeenCalledWith('playerCount', undefined);         
     });
 
+    // ChatGPT usage: Partial
     // Input: roomName, players, maxPlayers
     // Expected behavior: Set a timer when one player is ready
     // Expected output: A timer is set up and added to the timer array
@@ -275,6 +289,7 @@ describe('GameLobby', () => {
   });
   
   describe('startGame', () => {
+    // ChatGPT usage: Partial
     // Input: roomName
     // Expected behavior: Game starts in lobby 'room123'
     // Expected output: Emit 'gameStarted' and update lobby state
@@ -295,6 +310,7 @@ describe('GameLobby', () => {
       expect(gameLobbyStoreMock.updateLobby).toHaveBeenCalledWith('room123', expect.any(Object));
     });
 
+    // ChatGPT usage: Partial
     // Input: roomName
     // Expected behavior: Game does not start
     // Expected output: No 'gameStarted' event emitted
@@ -320,6 +336,7 @@ describe('GameLobby', () => {
 
   // Interface socket event 'setBet'
   describe('setPlayerBet', () => {
+    // ChatGPT usage: Partial
     // Input: roomName, userName, bet
     // Expected behavior: Player 'user1' bet is set to 100 in lobby 'room123'
     // Expected output: Lobby state updated, 'setBet' event emitted
@@ -333,6 +350,7 @@ describe('GameLobby', () => {
 
   // Interface socket event 'sendChatMessage'
   describe('sendChatMessage', () => {
+    // ChatGPT usage: Yes
     // Input: roomName, userName, message
     // Expected behavior: Message 'Hello World' from 'user1' is sent in lobby 'room123'
     // Expected output: 'receiveChatMessage' event emitted with the message
@@ -348,6 +366,7 @@ describe('GameLobby', () => {
   });
 
   describe('deleteLobby', () => {
+    // ChatGPT usage: Partial
     // Input: roomName
     // Expected behavior: Lobby 'room123' is deleted
     // Expected output: Lobby is removed from the store
@@ -359,6 +378,7 @@ describe('GameLobby', () => {
   });
 
   describe('getLobby', () => {
+    // ChatGPT usage: Partial
     // Input: roomName
     // Expected behavior: Details of lobby 'room123' are retrieved
     // Expected output: Lobby data is returned
@@ -380,6 +400,7 @@ describe('GameLobby', () => {
 
   // Interface socket event 'getAllLobby'
   describe('getAllLobby', () => {
+    // ChatGPT usage: Partial
     // Input: None
     // Expected behavior: All lobbies are retrieved
     // Expected output: Array of all lobbies is returned
@@ -410,6 +431,7 @@ describe('GameLobby', () => {
 
   // Interface socket event 'getPlayerCount'
   describe('getPlayerCount', () => {
+    // ChatGPT usage: Partial
     // Input: roomName
     // Expected behavior: Player count in lobby 'room123' is retrieved
     // Expected output: Player count is returned
