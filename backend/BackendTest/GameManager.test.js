@@ -78,6 +78,7 @@ describe('GameManager', () => {
   // Input: ioMock
   // Expected behavior: GameManager is initialized with the correct data structure
   // Expected output: GameManager object is created
+  // ChatGPT usage: No
   it('should initialize the data structure correctly', () => {
     expect(gameManager).toBeInstanceOf(GameManager);
     expect(gameManager.io).toBe(ioMock);
@@ -88,6 +89,7 @@ describe('GameManager', () => {
   // Input: none
   // Expected behavior: should be able to handle db connection errors
   // Expected output: GameManager object is created, yet db connection is not established
+  // ChatGPT usage: No
   it('should handle db failing errors', () => {
     const mongoError = new Error('Cannot connect to MongoDB');
     const mClient = require('mongodb').MongoClient();
@@ -102,6 +104,7 @@ describe('GameManager', () => {
   // Input: none
   // Expected behavior: Should be able to create a new game
   // Expected output: GameManager object is created and gameover called as type is roulette
+  // ChatGPT usage: No
   it('should create a new game correctly', async () => {
     let toParameters = [];
     let emitParameters = [];
@@ -127,6 +130,7 @@ describe('GameManager', () => {
   // Input: none
   // Expected behavior: can play Baccarat
   // Expected output: gameover called
+  // ChatGPT usage: No
   it('play baccarat', async () => {
     let toParameters = [];
     let emitParameters = [];
@@ -157,6 +161,7 @@ describe('GameManager', () => {
   // Input: none
   // Expected behavior: should be able to playturn the blackjack
   // Expected output: gameover called
+  // ChatGPT usage: No
   it('play BlackJack', async () => {
     let toParameters = [];
     let emitParameters = [];
@@ -198,6 +203,7 @@ describe('GameManager', () => {
   // Input: none
   // Expected behavior: should be able to playturn the roulette
   // Expected output: gameover called
+  // ChatGPT usage: No
   it('play roulette', async () => {
     let toParameters = [];
     let emitParameters = [];
@@ -229,6 +235,7 @@ describe('GameManager', () => {
   // Input: none
   // Expected behavior: should be able to playturn the gameover
   // Expected output: gameover called
+  // ChatGPT usage: No
   it('should be able to game over', async () => {
     let toParameters = [];
     let emitParameters = [];
@@ -258,6 +265,7 @@ describe('GameManager', () => {
   // Input: none
   // Expected behavior: should be able to playturn, but not with blackjack
   // Expected output: gameover called
+  // ChatGPT usage: No
   it('playturn, but not with blackjack', async () => {
     let toParameters = [];
     let emitParameters = [];
@@ -290,6 +298,7 @@ describe('GameManager', () => {
   // Input: none
   // Expected behavior: should not be able to calculate winning before gameover
   // Expected output: gameResult to be 0
+  // ChatGPT usage: No
   it('Cannot calculate winning before gameover', async () => {
     let gameData = {
       "currentPlayerIndex": 0
@@ -301,6 +310,7 @@ describe('GameManager', () => {
   // Input: none
   // Expected behavior: _resetTimer should clear old and start a new timer
   // Expected output: playturn tobe called
+  // ChatGPT usage: No
   it('_resetTimer should clear old and start a new timer', async () => {
     playTurnOrig = gameManager.playTurn;
     gameManager.playTurn = jest.fn();
@@ -322,6 +332,7 @@ describe('GameManager', () => {
   // Input: none
   // Expected behavior: playTurn should be called after 15 seconds
   // Expected output: playturn tobe called
+  // ChatGPT usage: No
   it('_resetTimer should call playTurn after 15 seconds', async () => {
     playTurnOrig = gameManager.playTurn;
     gameManager.playTurn = jest.fn();
@@ -342,6 +353,7 @@ describe('GameManager', () => {
   // Input: none
   // Expected behavior: get action result type undefined
   // Expected output: call from gameOver
+  // ChatGPT usage: No
   it('get action result type undefined', async () => {
     let toParameters = [];
     let emitParameters = [];
@@ -371,6 +383,7 @@ describe('GameManager', () => {
   // Input: none
   // Expected behavior: get calculation type undefined
   // Expected output: call from gameOver
+  // ChatGPT usage: No
   it('get calculation type undefined', async () => {
     let toParameters = [];
     let emitParameters = [];
@@ -398,39 +411,69 @@ describe('GameManager', () => {
   });
 
   // Test malicious gameData
+  // Input: none
+  // Expected behavior: bad input not used to db
+  // Expected output: 0
+  // ChatGPT usage: No
   it('should throw an error if malicious gameData is used', async () => {
     let gameStore = gameManager.gameStore;
     expect (await gameStore.newGame('$ne')).toBe(0); // Inserting a potential malicious object
   });
 
   // Test malicious lobbyName in getGame 
+  // Input: none
+  // Expected behavior: bad input not used to db
+  // Expected output: 0
+  // ChatGPT usage: No
   it('should throw an error if malicious lobbyName is used in getGame', async () => {
     let gameStore = gameManager.gameStore;
     expect (await gameStore.getGame({$ne: null})).toBe(0); 
   });
 
   // Test malicious gameData in updateGame 
+  // Input: none
+  // Expected behavior: bad input not used to db
+  // Expected output: 0
+  // ChatGPT usage: No
   it('should throw an error if malicious gameData is used in updateGame', async () => {
     let gameStore = gameManager.gameStore;
     expect (await gameStore.updateGame('$ne')).toBe(0); // Inserting a potential malicious object
   });
 
   // Test malicious lobbyName in deleteGame 
+  // Input: none
+  // Expected behavior: bad input not used to db
+  // Expected output: 0
+  // ChatGPT usage: No
   it('should throw an error if malicious lobbyName is used in deleteGame', async () => {
     let gameStore = gameManager.gameStore;
     expect (await gameStore.deleteGame({$ne: null})).toBe(0); 
   });
+
   // Test malicious lobbyName in deleteGame 
+  // Input: none
+  // Expected behavior: bad input not used to db
+  // Expected output: 0
+  // ChatGPT usage: No
   it('should throw an error if malicious lobbyName is used in deleteGame bad type', async () => {
     let gameStore = gameManager.gameStore;
     expect (await gameStore.deleteGame('$one')).toBe(0); 
   });
 
   // small mongo shield test
+  // Input: none
+  // Expected behavior: mongo db should success if input type is list
+  // Expected output: 0
+  // ChatGPT usage: No
   it('should return true if type test match', async () => {
     expect(mongoShield("hi", ['string'])).toBe(true);
   });
 
+   // small mongo shield test
+  // Input: none
+  // Expected behavior: mongo db should success if deafult types
+  // Expected output: 0
+  // ChatGPT usage: No
   it('should handle default param', async () => {
     expect(mongoShield("hi")).toBe(true);
   });
