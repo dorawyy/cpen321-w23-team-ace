@@ -40,10 +40,6 @@ jobs:
         cd ./backend/BackendTest
         npm run test
 
-    - name: Print npm debug log
-      if: failure() # Only run this step if previous step failed
-      run: cat /home/runner/.npm/_logs/*-debug.log
-
     # publish with  "action-junit-report" 
     - name: Publish Test Results
       if: always()
