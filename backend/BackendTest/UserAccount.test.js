@@ -396,11 +396,37 @@ describe('deposit', () => {
         expect(ioMock.emit).toHaveBeenCalledWith('balanceUpdate', null);
       });
 
+      // Input : userid in DB and the negative amount to add
+      // expected behavior : database unchanged
+      // expected output : return null
+      it('should handle deposit is negative number', async () =>{
+        const userId = '123';
+        const amount = -100;
+
+        await userAccount.deposit(ioMock, userId, amount);
+
+        expect(ioMock.emit).toHaveBeenCalledWith('balanceUpdate', null);
+      });
+
+      // Input : userid in DB and the null amount to add
+      // expected behavior : database unchanged
+      // expected output : return null
+      it('should handle deposit is negative number', async () =>{
+        const userId = '123';
+        const amount = null;
+
+        await userAccount.deposit(ioMock, userId, amount);
+
+        expect(ioMock.emit).toHaveBeenCalledWith('balanceUpdate', null);
+      });
+
+
+
 });
 
 // ChatGPT usage: No
-// Interface  socket event 'depositbyname'
-describe('depositbyname', () => {
+// Interface  socket event 'changebalancebyname'
+describe('changebalancebyname', () => {
           let userAccount;
     
           beforeEach(() => {
@@ -408,55 +434,70 @@ describe('depositbyname', () => {
             userAccount = new UserAccount(ioMock, userStoreMock);
           });
 
-      // Input : username and the amount to add
+      // Input : username and the amount to withdraw
       // expected behavior : user balance will be updated
       // expected output : return updated balance
 
-      it('should handle successful deposit by name', async () => {
+      it('should call withdraw for negative amount', async () => {
         const username = 'user1';
-        const amount = 100;
-        const mockUser = { userId: '123', username, balance: 50 };
-        const updatedBalance = mockUser.balance + amount;
+        const amount = -50;
+        const mockUser = { userId: '123', username, balance: 100 };
+    
         userStoreMock.getUserbyname.mockResolvedValueOnce(mockUser);
-        userStoreMock.updateUser.mockResolvedValueOnce({ ...mockUser, balance: updatedBalance });
-      
-        await userAccount.depositbyname(ioMock, username, amount);
-      
-        expect(userStoreMock.getUserbyname).toHaveBeenCalledWith(username);
-        expect(userStoreMock.updateUser).toHaveBeenCalledWith(mockUser.userId, { ...mockUser, balance: updatedBalance });
-        expect(ioMock.emit).toHaveBeenCalledWith('balanceUpdate', updatedBalance);
-      });
+        jest.spyOn(userAccount, 'withdraw');
+    
+        await userAccount.changebalancebyname(ioMock, username, amount);
+    
+        expect(userAccount.withdraw).toHaveBeenCalledWith(ioMock, mockUser.userId, -amount);
+    });
+    
+    // Input : username and the amount to deposit
+    // expected behavior : user balance will be updated
+    // expected output : return updated balance
+
+    it('should call deposit for positive amount', async () => {
+        const username = 'user1';
+        const amount = 50;
+        const mockUser = { userId: '123', username, balance: 100 };
+    
+        userStoreMock.getUserbyname.mockResolvedValueOnce(mockUser);
+        jest.spyOn(userAccount, 'deposit');
+    
+        await userAccount.changebalancebyname(ioMock, username, amount);
+    
+        expect(userAccount.deposit).toHaveBeenCalledWith(ioMock, mockUser.userId, amount);
+    });
 
       // Input : username not in DB and the amount to add
       // expected behavior : database unchanged
       // expected output : return null
       
-      it('should handle deposit by name with user not found', async () => {
+      it('should handle change balance by name with user not found', async () => {
         const username = 'user1';
         const amount = 100;
         userStoreMock.getUserbyname.mockResolvedValueOnce(null);
       
-        await userAccount.depositbyname(ioMock, username, amount);
+        await userAccount.changebalancebyname(ioMock, username, amount);
       
         expect(ioMock.emit).toHaveBeenCalledWith('balanceUpdate', null);
       });
 
-      // Input : username in DB and the amount to withdraw
-      // expected behavior : user balance updated
-      // expected output : return the updated balance
+      // Input : username in DB and the amount to withdraw more than user's balance
+      // expected behavior : database unchanged
+      // expected output : return null
       
       it('should not withdraw more than the current balance', async () => {
-        const username = '123';
+        const username = '123person';
         const amount = -150; // Attempting to withdraw more than the balance
-        const mockUser = { username, balance: 100 };
+        const mockUser = { username, userId: "123", balance: 100 };
         userStoreMock.getUserbyname.mockResolvedValueOnce(mockUser);
       
-        await userAccount.depositbyname(ioMock, username, amount);
-        
+        await userAccount.changebalancebyname(ioMock, username, amount);
+        jest.spyOn(userAccount, 'withdraw');
         expect(userStoreMock.updateUser).not.toHaveBeenCalled();
 
         // Check if an error message is emitted indicating withdrawal failure
-        expect(ioMock.emit).toHaveBeenCalledWith('balanceUpdate', "Amount withdrawed is more than the current balance, cannot process this withdrawal");
+        expect(userAccount.withdraw).not.toHaveBeenCalledWith(ioMock, mockUser.userId, -amount);      
       });
 
 
@@ -493,7 +534,7 @@ describe('withdraw', () => {
       
       // Input : userid not in DB and the amount to withdraw
       // expected behavior : database unchanged
-      // expected output : error message saying user not found
+      // expected output : return null
       it('should handle withdrawal with user not found', async () => {
         const userId = '123';
         const amount = 50;
@@ -501,7 +542,7 @@ describe('withdraw', () => {
       
         await userAccount.withdraw(ioMock, userId, amount);
       
-        expect(ioMock.emit).toHaveBeenCalledWith('userError', "User not found.");
+        expect(ioMock.emit).toHaveBeenCalledWith('balanceUpdate', null);
       });
       
       // Input : userid in DB and the amount that is larger than what the user has in account
@@ -519,7 +560,7 @@ describe('withdraw', () => {
         expect(userStoreMock.updateUser).not.toHaveBeenCalledWith(userId, expect.objectContaining({ balance: expect.any(Number) }));
       
         // Check if an error message is emitted indicating withdrawal failure
-        expect(ioMock.emit).toHaveBeenCalledWith('userError', "Insufficient funds");
+        expect(ioMock.emit).toHaveBeenCalledWith('balanceUpdate', "Amount withdrawed is more than the current balance, cannot process this withdrawal");
       });
 
 });
