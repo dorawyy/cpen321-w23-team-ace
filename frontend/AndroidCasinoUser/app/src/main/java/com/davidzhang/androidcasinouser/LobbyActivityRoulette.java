@@ -72,6 +72,8 @@ public class LobbyActivityRoulette extends ThemedActivity {
 
                 JSONObject bets = new JSONObject();
 
+                int totalBet = 0;
+
                 for (int i = 0; i < betTypes.length; i++) {
                     String betText = betInputs[i].getText().toString();
                     String betType = betTypes[i];
@@ -88,11 +90,17 @@ public class LobbyActivityRoulette extends ThemedActivity {
                             return;
                         } else {
                             bets.put(betType, bet);
+                            totalBet = totalBet + bet;
                         }
                     } catch (Exception e) {
                         Toast.makeText(getApplicationContext(), "Invalid " + betType + " bet. Please enter a valid integer", Toast.LENGTH_SHORT).show();
                         return;
                     }
+                }
+
+                if(currentPlayer.getBalance() < totalBet) {
+                    Toast.makeText(getApplicationContext(), "Total bet cannot be greater than balance", Toast.LENGTH_SHORT).show();
+                    return;
                 }
 
                 mSocket.emit("setBet", roomName, currentPlayer.getUsername(), bets);
