@@ -630,7 +630,7 @@ public class BlackJackActivity extends ThemedActivity {
         //Set up handler for animations
         Handler handler = new Handler(Looper.getMainLooper());
 
-        mSocket.emit("depositbyname", username, earnings);
+        mSocket.emit("changebalancebyname", username, earnings);
 
         //Finish dealing cards, allow the popup to run
         double finalEarnings = earnings;

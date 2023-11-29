@@ -124,7 +124,7 @@ io.on('connection', (socket) => {
     });
 
     // ChatGPT usage: No
-    socket.on('depositbyname', (username, amount) =>{
+    socket.on('changebalancebyname', (username, amount) =>{
         userAccount.changebalancebyname(socket, username, amount);
     })
 

@@ -84,13 +84,13 @@ describe('deposit', () => {
     }, 1);
 });
 
-describe('depositbyname', () => {
+describe('changebalancebyname', () => {
     // ChatGPT usage: No
     // Input: username, amount
-    // Expected behavior: Emit 'depositbyname' event
+    // Expected behavior: Emit 'changebalancebyname' event
     // Expected output: None
-    it('should trigger when client emits depositbyname event', (done) => {
-        clientSocket.emit('depositbyname', 'testUsername', 100);
+    it('should trigger when client emits changebalancebyname event', (done) => {
+        clientSocket.emit('changebalancebyname', 'testUsername', 100);
     }, 1);
 });
 
