@@ -7,6 +7,27 @@ const { mock } = require('node:test');
 const { app } = require('../server'); // assuming that your server file is named server.js
 let io, serverSocket, clientSocket;
 
+// this mock is needed for github
+// setting up memory DB do not work for github action due to memory limit
+// it is also not possible to install full db to github action
+// hence, we mock basic db functionality, one can remove this mock for local testing
+// it only applies to github and server testing
+jest.mock('mongodb', () => {
+    const mClient = {
+      connect: jest.fn().mockImplementation(() => Promise.resolve()), // Mock promise that resolves to undefined
+      db: jest.fn().mockReturnThis(),
+      collection: jest.fn().mockReturnThis(),
+      insertOne: jest.fn(),
+      findOne: jest.fn().mockReturnValue(
+        {
+            sample: 'sample',
+        }
+      ),
+      updateOne: jest.fn()
+    }
+    return { MongoClient: jest.fn(() => mClient) };
+});
+
 beforeAll((done) => {
     const httpServer = require('http').createServer(app);
     io = new Server(httpServer);
