@@ -507,6 +507,75 @@ describe('setReady', () => {
         });
         clientSocket.emit('setReady', 'testRoom', 'testUser');
     });
+
+    // ChatGPT usage: No
+    // Input: roomName, userName
+    // Expected behavior: Emit 'setReady' event
+    // Expected output: None
+    it('should play roulette', (done) => {
+        const fakeLobby = {
+            roomName: 'testRoom',
+            gameType: 'Roulette',
+            players: {"playera": {"red": 100, "black": 0, "odd": 0, "even": 0, "green": 0}},
+            gameStarted: false,
+            maxPlayers: 0
+        };
+        mockInstances.mockFindOne.mockResolvedValue(fakeLobby);
+        mockInstances.mockUpdateOne(fakeLobby)
+
+        clientSocket.on('setReadySuccessfully', (data) => {
+            console.log(data)
+            expect(data).toEqual('setReadySuccessfully');
+            done();
+        });
+        clientSocket.emit('setReady', 'testRoom', 'testUser');
+    });
+
+    // ChatGPT usage: No
+    // Input: roomName, userName
+    // Expected behavior: Emit 'setReady' event
+    // Expected output: None
+    it('should start baaractte', (done) => {
+        const fakeLobby = {
+            roomName: 'testRoom',
+            gameType: 'Baccarat',
+            players: {"playera": {"win":"PlayersWin", "amount": 100}},
+            gameStarted: false,
+            maxPlayers: 0
+        };
+        mockInstances.mockFindOne.mockResolvedValue(fakeLobby);
+        mockInstances.mockUpdateOne(fakeLobby)
+
+        clientSocket.on('setReadySuccessfully', (data) => {
+            console.log(data)
+            expect(data).toEqual('setReadySuccessfully');
+            done();
+        });
+        clientSocket.emit('setReady', 'testRoom', 'testUser');
+    });
+
+    // ChatGPT usage: No
+    // Input: roomName, userName
+    // Expected behavior: Emit 'setReady' event
+    // Expected output: None
+    it('should start Blackjack', (done) => {
+        const fakeLobby = {
+            roomName: 'testRoom',
+            gameType: 'Blackjack',
+            players: {"playera": 100},
+            gameStarted: false,
+            maxPlayers: 0
+        };
+        mockInstances.mockFindOne.mockResolvedValue(fakeLobby);
+        mockInstances.mockUpdateOne(fakeLobby)
+
+        clientSocket.on('setReadySuccessfully', (data) => {
+            console.log(data)
+            expect(data).toEqual('setReadySuccessfully');
+            done();
+        });
+        clientSocket.emit('setReady', 'testRoom', 'testUser');
+    });
 });
 
 describe('getPlayerCount', () => {
@@ -582,6 +651,22 @@ describe('playTurn', () => {
             done();
         });
 
-        clientSocket.emit('playTurn', 'testLobby', 'testUser', 'testAction');
+        gameData = {
+            lobbyId: 'abc123',
+            gameType: 'Blackjack',
+            playerList: ["playera"],
+            currentPlayerIndex: 0,
+            currentTurn: 0,
+            betsPlaced: {"playera": 100},
+            gameItems: {
+                globalItems: {}, 
+                playerItems: {}
+            },
+            actionHistory: []
+          }
+
+        mockInstances.mockFindOne.mockResolvedValue(gameData);
+
+        clientSocket.emit('playTurn', 'testLobby', 'testUser', 'hold');
     });
 });
