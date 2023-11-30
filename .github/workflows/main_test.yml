@@ -42,9 +42,9 @@ jobs:
 
     # publish with  "action-junit-report" 
     - name: Publish Test Results
-        if: always()
-        uses: mikepenz/action-junit-report@v3
-        with:
-          check_name: 'Test Report'
-          report_paths: 'junit.xml'
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+      if: always()
+      uses: mikepenz/action-junit-report@v3
+      with:
+        check_name: 'Test Report'
+        report_paths: 'junit.xml'
+        github_token: ${{ secrets.GITHUB_TOKEN }}
