@@ -476,9 +476,9 @@ describe('GameManager', () => {
   });
 
   // small mongo shield test for success
-  // Input: none
-  // Expected behavior: mongo db should success if input type is list
-  // Expected output: 0
+  // Input: valid input
+  // Expected behavior: good input = no problem
+  // Expected output: true
   // ChatGPT usage: No
   it('should return true if type test match', async () => {
     expect(mongoShield("hi", ['string'])).toBe(true);
@@ -486,9 +486,9 @@ describe('GameManager', () => {
 
   
   // Test Query selector in get game
-  // Input: none
-  // Expected behavior: bad input not used to db
-  // Expected output: 0
+  // Input: query selector attack
+  // Expected behavior: bad input cause shield to return false
+  // Expected output: false
   // ChatGPT usage: No
   it('error with query selector', async () => {
     let meanInput = {
@@ -501,10 +501,10 @@ describe('GameManager', () => {
     expect (await mongoShield(meanInput)).toBe(false); 
   });
 
-  // Test operator inject in get game
-  // Input: none
-  // Expected behavior: bad input not used to db
-  // Expected output: 0
+  // Test operator inject test
+  // Input: operator inject attack
+  // Expected behavior: bad input cause sheilf to return false
+  // Expected output: false
   // ChatGPT usage: No
   it('error with opertor', async () => {
     let meanInput = {
@@ -514,9 +514,9 @@ describe('GameManager', () => {
   });
 
   // Test double opertor
-  // Input: none
-  // Expected behavior: bad input not used to db
-  // Expected output: 0
+  // Input: nested operator inject attack
+  // Expected behavior: bad input cause sheilf to return false
+  // Expected output: false
   // ChatGPT usage: No
   it('error with double operator inject', async () => {
     let meanInput = {
@@ -530,7 +530,7 @@ describe('GameManager', () => {
   });
 
    // Test code running
-  // Input: none
+  // Input: js code injection attack
   // Expected behavior: bad input not used to db
   // Expected output: 0
   // ChatGPT usage: No
@@ -539,6 +539,39 @@ describe('GameManager', () => {
       $where: "function() { return true; }"
     };
     expect (await mongoShield(meanInput)).toBe(false); 
+  });
+
+   // Test code running, binary
+  // Input: js code injection attack
+  // Expected behavior: bad input not used to db
+  // Expected output: 0
+  // ChatGPT usage: No
+  it('error with binary injection', async () => {
+    let meanInput = {
+      $where: "101001010010100101101010101000100010001000001010100111100100101010100101000111\
+      100101010010111010101001011010100101010"
+    };
+    expect (await mongoShield(meanInput)).toBe(false); 
+  });
+
+  // Test NoSQL injection attack
+  // Input: NoSQL injection attack vector
+  // Expected behavior: bad input causes mongoShield to return false
+  // Expected output: false
+  // ChatGPT usage: No
+  it('should protect against NoSQL injection attacks', async () => {
+    let maliciousPayload = { $where: "function() { return true; }" };
+    expect(await mongoShield(maliciousPayload)).toBe(false);
+  });
+
+  // Test NoSQL injection attack with invalid command
+  // Input: NoSQL injection attack vector
+  // Expected behavior: bad input causes mongoShield to return false
+  // Expected output: false
+  // ChatGPT usage: No
+  it('should protect against NoSQL injection attacks invalid command', async () => {
+    let maliciousPayload = { $123: "functi32on() { return true; }" };
+    expect(await mongoShield(maliciousPayload)).toBe(false);
   });
 
    // small mongo shield test
