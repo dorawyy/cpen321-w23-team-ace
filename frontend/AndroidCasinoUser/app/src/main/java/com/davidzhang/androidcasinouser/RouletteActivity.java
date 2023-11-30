@@ -42,8 +42,12 @@ public class RouletteActivity extends ThemedActivity {
 
         mSocket = SocketHandler.getSocket();
 
-        wheelView = findViewById(R.id.wheelView);
+        Intent intent = getIntent();
+        String userName = intent.getStringExtra("userName");
+        String roomName = intent.getStringExtra("roomName");
+        Boolean isChatBanned = intent.getBooleanExtra("isChatBanned", false);
 
+        wheelView = findViewById(R.id.wheelView);
         // Create an instance of AnimationCallback
         CircularWheelView.AnimationCallback animationCallback = new CircularWheelView.AnimationCallback() {
             @Override
@@ -58,14 +62,9 @@ public class RouletteActivity extends ThemedActivity {
                 runNextFunction();
             }
         };
-
         // Set the callback on the CircularWheelView instance
         wheelView.setAnimationCallback(animationCallback);
 
-        Intent intent = getIntent();
-        String userName = intent.getStringExtra("userName");
-        String roomName = intent.getStringExtra("roomName");
-        Boolean isChatBanned = intent.getBooleanExtra("isChatBanned", false);
 
         TextView tvLobbyName = findViewById(R.id.lobbyNameLabel);
         tvLobbyName.setText("Lobby Name: " + roomName);

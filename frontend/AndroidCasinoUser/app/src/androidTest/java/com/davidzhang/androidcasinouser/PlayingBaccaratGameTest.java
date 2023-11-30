@@ -16,7 +16,6 @@ import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
 
 import android.os.IBinder;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -218,14 +217,14 @@ public class PlayingBaccaratGameTest {
         //Check lobby name
         ViewInteraction textView = onView(
                 allOf(withId(R.id.lobbyNameLabel), withText("Lobby Name: Test Lobby"),
-                        withParent(withParent(IsInstanceOf.<View>instanceOf(android.view.ViewGroup.class))),
+                        withParent(withParent(IsInstanceOf.<View>instanceOf(ViewGroup.class))),
                         isDisplayed()));
         textView.check(matches(withText("Lobby Name: Test Lobby")));
 
         //Check game type
         ViewInteraction textView2 = onView(
                 allOf(withId(R.id.gameTypeLabel), withText("Game Type: Baccarat"),
-                        withParent(withParent(IsInstanceOf.<View>instanceOf(android.view.ViewGroup.class))),
+                        withParent(withParent(IsInstanceOf.<View>instanceOf(ViewGroup.class))),
                         isDisplayed()));
         textView2.check(matches(withText("Game Type: Baccarat")));
 
@@ -333,7 +332,7 @@ public class PlayingBaccaratGameTest {
         ViewInteraction button = onView(
                 allOf(withId(R.id.okButton), withText("OK"),
                         withParent(allOf(withId(R.id.popupContainer),
-                                withParent(IsInstanceOf.<View>instanceOf(android.view.ViewGroup.class)))),
+                                withParent(IsInstanceOf.<View>instanceOf(ViewGroup.class)))),
                         isDisplayed()));
         button.check(matches(isDisplayed()));
 

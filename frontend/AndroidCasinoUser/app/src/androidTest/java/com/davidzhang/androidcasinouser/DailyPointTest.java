@@ -1,14 +1,12 @@
 package com.davidzhang.androidcasinouser;
 
 
-import static androidx.core.util.Predicate.not;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
-import static androidx.test.espresso.matcher.RootMatchers.withDecorView;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
@@ -24,10 +22,8 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.view.WindowManager;
 
-import androidx.test.core.app.ActivityScenario;
 import androidx.test.espresso.Root;
 import androidx.test.espresso.ViewInteraction;
-import androidx.test.espresso.idling.CountingIdlingResource;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
@@ -39,7 +35,6 @@ import androidx.test.uiautomator.UiSelector;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
-import org.hamcrest.Matchers;
 import org.hamcrest.TypeSafeMatcher;
 import org.hamcrest.core.IsInstanceOf;
 import org.junit.Before;
@@ -53,16 +48,14 @@ import org.junit.runner.RunWith;
 public class DailyPointTest {
 
     private UiDevice device;
-    private CountingIdlingResource idlingResource;
 
     @Rule
     public ActivityScenarioRule<MainActivity> mActivityScenarioRule =
             new ActivityScenarioRule<>(MainActivity.class);
 
     @Before
-    public void registerIdlingResource() {
+    public void registerDevice() {
         device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
-        idlingResource = new CountingIdlingResource("GoogleSignIn");
     }
 
     //This test will sign in and create a new user then proceed to test the daily points redemption use case.
@@ -75,7 +68,7 @@ public class DailyPointTest {
         ViewInteraction button = onView(
                 allOf(withText("Sign in"),
                         withParent(allOf(withId(R.id.sign_in_button),
-                                withParent(IsInstanceOf.<View>instanceOf(android.view.ViewGroup.class)))),
+                                withParent(IsInstanceOf.<View>instanceOf(ViewGroup.class)))),
                         isDisplayed()));
         button.check(matches(isDisplayed()));
 
