@@ -18,6 +18,7 @@ jest.mock('mongodb', () => {
     const mockInsertOne = jest.fn();
     const mockUpdateOne = jest.fn();
     const mockDeleteOne = jest.fn();
+    const mockDeleteMany = jest.fn();
   
     const mClient = {
       connect: jest.fn().mockResolvedValue(null),
@@ -27,6 +28,7 @@ jest.mock('mongodb', () => {
       findOne: mockFindOne,
       updateOne: mockUpdateOne,
       deleteOne: mockDeleteOne,
+      deleteMany: mockDeleteMany,
       close: jest.fn().mockResolvedValue(null),
     };
   
@@ -37,6 +39,7 @@ jest.mock('mongodb', () => {
         mockInsertOne,
         mockUpdateOne,
         mockDeleteOne,
+        mockDeleteMany
       }
     };
   });
@@ -57,17 +60,22 @@ afterAll(() => {
     io.close();
     clientSocket.close();
 });
+beforeEach(() => {
+    // Reset the mocks before each test
+    mockInstances.mockFindOne.mockReset();
+    mockInstances.mockInsertOne.mockReset();
+    mockInstances.mockUpdateOne.mockReset();
+    mockInstances.mockDeleteOne.mockReset();
+    mockInstances.mockDeleteMany.mockReset();
+    clientSocket.off();
+});
 
+describe('retrieveAccount', () => {
 
-describe('UserAccount interactions', () => {
-    beforeEach(() => {
-        // Reset the mocks before each test
-        mockInstances.mockFindOne.mockReset();
-        mockInstances.mockInsertOne.mockReset();
-        mockInstances.mockUpdateOne.mockReset();
-        mockInstances.mockDeleteOne.mockReset();
-    });
-
+    // ChatGPT usage: No
+    // Input: userId
+    // Expected behavior: Emit 'retrieveAccount' event
+    // Expected output: None
     it('should emit userAccountDetails when retrieveAccount event is received', (done) => {
         const fakeUser = { userId: 'testUserID', username: 'testUser', balance: 100 };
         mockInstances.mockFindOne.mockResolvedValue(fakeUser);
@@ -78,123 +86,240 @@ describe('UserAccount interactions', () => {
             done();
         });
 
-        clientSocket.emit('retrieveAccount', 'testUserID');
+        clientSocket.emit('retrieveAccount', fakeUser.userId);
     });
 
-    // ... other tests with their own mock implementations
+   
 });
 
-// describe('updateAccount', () => {
-//     // ChatGPT usage: No
-//     // Input: userInfo
-//     // Expected behavior: Emit 'updateAccount' event
-//     // Expected output: None
-//     it('should trigger when client emits updateAccount event', (done) => {
-//         clientSocket.on()
-//         clientSocket.emit('updateAccount', {userId: 123, username: "David"});
-//     });
-// });
+describe('updateAccount', () => {
+    // ChatGPT usage: No
+    // Input: userInfo
+    // Expected behavior: Emit 'updateAccount' event
+    // Expected output: None
+    it('should trigger when client emits updateAccount event', (done) => {
+        const fakeUser = { userId: 'testUserID', username: 'testUser', balance: 100 };
+        mockInstances.mockUpdateOne.mockResolvedValue(fakeUser);
+        mockInstances.mockFindOne.mockResolvedValue(fakeUser);
 
-// describe('createAccount', () => {
-//     // ChatGPT usage: No
-//     // Input: userInfo
-//     // Expected behavior: Emit 'createAccount' event
-//     // Expected output: None
-//     it('should trigger when client emits createAccount event', (done) => {
-//         clientSocket.emit('createAccount', {userId: 123, username: "David"});
-//     }, 1);
-// });
+        clientSocket.on('accountUpdated', (data) => {
+            console.log(fakeUser)
+            expect(data).toEqual(fakeUser);
+            done();
+        });
 
-// describe('updateName', () => {
-//     // ChatGPT usage: No
-//     // Input: userId, newName
-//     // Expected behavior: Emit 'updateName' event
-//     // Expected output: None
-//     it('should trigger when client emits updateName event', (done) => {
-//         clientSocket.emit('updateName', 'userIdExample', 'newNameExample');
-//     }, 1);
-// });
+        clientSocket.emit('updateAccount', fakeUser);
+    });
+});
 
-// describe('updateAdminStatus', () => {
-//     // ChatGPT usage: No
-//     // Input: username, adminStatus
-//     // Expected behavior: Emit 'updateAdminStatus' event
-//     // Expected output: None
-//     it('should trigger when client emits updateAdminStatus event', (done) => {
-//         clientSocket.emit('updateAdminStatus', 'usernameExample', true);
-//     }, 1);
-// });
+describe('createAccount', () => {
+    // ChatGPT usage: No
+    // Input: userInfo
+    // Expected behavior: Emit 'createAccount' event
+    // Expected output: None
+    it('should trigger when client emits createAccount event', (done) => {
 
-// describe('deposit', () => {
-//     // ChatGPT usage: No
-//     // Input: userId, amount
-//     // Expected behavior: Emit 'deposit' event
-//     // Expected output: None
-//     it('should trigger when client emits deposit event', (done) => {
-//         clientSocket.emit('deposit', 'testUserID', 100);
-//     }, 1);
-// });
+        const fakeUser = { userId: 'testUserID', username: 'testUser', balance: 100 };
+        mockInstances.mockInsertOne.mockResolvedValue(fakeUser);
+        mockInstances.mockFindOne
+        .mockImplementationOnce(() => Promise.resolve(null))
+        .mockImplementationOnce(() => Promise.resolve(fakeUser))
 
-// describe('changebalancebyname', () => {
-//     // ChatGPT usage: No
-//     // Input: username, amount
-//     // Expected behavior: Emit 'changebalancebyname' event
-//     // Expected output: None
-//     it('should trigger when client emits changebalancebyname event', (done) => {
-//         clientSocket.emit('changebalancebyname', 'testUsername', 100);
-//     }, 1);
-// });
+        clientSocket.on('accountCreated', (data) => {
+            console.log(fakeUser)
+            expect(data).toEqual(fakeUser);
+            done();
+        });
 
-// describe('withdraw', () => {
-//     // ChatGPT usage: No
-//     // Input: userId, amount
-//     // Expected behavior: Emit 'withdraw' event
-//     // Expected output: None
-//     it('should trigger when client emits withdraw event', (done) => {
-//         clientSocket.emit('withdraw', 'testUserID', 50);
-//     }, 1);
-// });
+        clientSocket.emit('createAccount', fakeUser);
+    });
+});
+
+describe('updateName', () => {
+    // ChatGPT usage: No
+    // Input: userId, newName
+    // Expected behavior: Emit 'updateName' event
+    // Expected output: None
+    it('should trigger when client emits updateName event', (done) => {
+        var fakeUser = { userId: 'testUserID', username: 'testUser', balance: 100 };
+
+        
+        mockInstances.mockUpdateOne.mockResolvedValue(fakeUser); 
+        
+        mockInstances.mockFindOne.mockResolvedValue({ userId: 'testUserID', username: 'David', balance: 100 }); 
+
+        clientSocket.on('accountUpdated', (data) => {
+            expect(data.username).toBe('David');
+            done();
+        });
+
+        clientSocket.emit('updateName', fakeUser.userId, "David");
+    });
+});
+
+describe('updateAdminStatus', () => {
+    // ChatGPT usage: No
+    // Input: username, adminStatus
+    // Expected behavior: Emit 'updateAdminStatus' event
+    // Expected output: None
+    it('should trigger when client emits updateAdminStatus event', (done) => {
+        var fakeUser = { userId: 'testUserID', username: 'testUser', isAdmin: false };
+        mockInstances.mockUpdateOne.mockResolvedValue(fakeUser);
+        fakeUser.isAdmin = true;
+        mockInstances.mockFindOne.mockResolvedValue(fakeUser);
+
+        clientSocket.on('accountUpdated', (data) => {
+            console.log(fakeUser)
+            expect(data).toEqual(fakeUser);
+            done();
+        });
+
+        clientSocket.emit('updateAdminStatus', fakeUser.username, true);
+    });
+});
+
+describe('deposit', () => {
+    // ChatGPT usage: No
+    // Input: userId, amount
+    // Expected behavior: Emit 'deposit' event
+    // Expected output: None
+    it('should trigger when client emits deposit event', (done) => {
+        const fakeUser = { userId: 'testUserID', username: 'testUser', balance: 100 };
+        fakeUser.balance += 100;
+        mockInstances.mockUpdateOne.mockResolvedValue(fakeUser);
+        mockInstances.mockFindOne.mockResolvedValue(fakeUser);
+
+        clientSocket.on('balanceUpdate', (data) => {
+            expect(data).toEqual(fakeUser.balance);
+            done();
+        });
+
+        clientSocket.emit('deposit', fakeUser.userId, 100);
+    });
+});
+
+describe('changebalancebyname', () => {
+    // ChatGPT usage: No
+    // Input: username, amount
+    // Expected behavior: Emit 'changebalancebyname' event
+    // Expected output: None
+    it('should trigger when client emits changebalancebyname event', (done) => {
+        const fakeUser = { userId: 'testUserID', username: 'testUser', balance: 100 };
+        fakeUser.balance += 100;
+        mockInstances.mockUpdateOne.mockResolvedValue(fakeUser);
+        mockInstances.mockFindOne.mockResolvedValue(fakeUser);
+
+        clientSocket.on('balanceUpdate', (data) => {
+            console.log(fakeUser)
+            expect(data).toEqual(fakeUser.balance);
+            done();
+        });
+
+        clientSocket.emit('changebalancebyname', fakeUser.username, 100);
+    });
+});
+
+describe('withdraw', () => {
+    // ChatGPT usage: No
+    // Input: userId, amount
+    // Expected behavior: Emit 'withdraw' event
+    // Expected output: None
+    it('should trigger when client emits withdraw event', (done) => {
+        const fakeUser = { userId: 'testUserID', username: 'testUser', balance: 100 };
+        mockInstances.mockUpdateOne.mockResolvedValue(fakeUser);
+        mockInstances.mockFindOne
+        .mockImplementationOnce(() => Promise.resolve({...fakeUser, balance: 100 }))
+        .mockImplementationOnce(() => Promise.resolve({...fakeUser, balance: 0 }))
+       
+
+        clientSocket.on('balanceUpdate', (data) => {
+            console.log(fakeUser)
+            fakeUser.balance -= 100;
+            expect(data).toEqual(fakeUser.balance);
+            done();
+        });
+
+        clientSocket.emit('withdraw', fakeUser.username, 100);
+    });
+});
 
 
-// describe('updateChatBanned', () => {
-//     // ChatGPT usage: No
-//     // Input: username, chatBannedStatus
-//     // Expected behavior: Emit 'updateChatBanned' event
-//     // Expected output: None
-//     it('should trigger when client emits updateChatBanned event', (done) => {
-//         clientSocket.emit('updateChatBanned', 'testUsername', true);
-//     }, 1);
-// });
+describe('updateChatBanned', () => {
+    // ChatGPT usage: No
+    // Input: username, chatBannedStatus
+    // Expected behavior: Emit 'updateChatBanned' event
+    // Expected output: None
+    it('should trigger when client emits updateChatBanned event', (done) => {
+        const fakeUser = { userId: 'testUserID', username: 'testUser', chatBannedstatus: false };
+        fakeUser.chatBannedstatus = true;
+        mockInstances.mockUpdateOne.mockResolvedValue(fakeUser);
+        mockInstances.mockFindOne.mockResolvedValue(fakeUser);
 
-// describe('updateLastRedemptionDate', () => {
-//     // ChatGPT usage: No
-//     // Input: userID, redemptionDate
-//     // Expected behavior: Emit 'updateLastRedemptionDate' event
-//     // Expected output: None
-//     it('should trigger when client emits updateLastRedemptionDate event', (done) => {
-//         clientSocket.emit('updateLastRedemptionDate', 'testUserID', new Date().toISOString());
-//     }, 1);
-// });
+        clientSocket.on('accountUpdated', (data) => {
+            console.log(fakeUser)
+            expect(data).toEqual(fakeUser);
+            done();
+        });
 
-// describe('deleteUser', () => {
-//     // ChatGPT usage: No
-//     // Input: userId
-//     // Expected behavior: Emit 'deleteUser' event
-//     // Expected output: None
-//     it('should trigger when client emits deleteUser event', (done) => {
-//         clientSocket.emit('deleteUser', 'testUserID');
-//     }, 1);
-// });
+        clientSocket.emit('updateChatBanned', fakeUser.username, true);
+    });
+});
 
-// describe('deleteAllUsers', () => {
-//     // ChatGPT usage: No
-//     // Input: None
-//     // Expected behavior: Emit 'deleteAllUsers' event
-//     // Expected output: None
-//     it('should trigger when client emits deleteAllUsers event', (done) => {
-//         clientSocket.emit('deleteAllUsers');
-//     }, 1);
-// });
+describe('updateLastRedemptionDate', () => {
+    // ChatGPT usage: No
+    // Input: userID, redemptionDate
+    // Expected behavior: Emit 'updateLastRedemptionDate' event
+    // Expected output: None
+    it('should trigger when client emits updateLastRedemptionDate event', (done) => {
+        const fakeUser = { userId: 'testUserID', username: 'testUser', rDate: new Date().toISOString() };
+        mockInstances.mockUpdateOne.mockResolvedValue(fakeUser);
+        fakeUser.rDate = new Date().toISOString();
+        mockInstances.mockFindOne.mockResolvedValue(fakeUser);
+
+        clientSocket.on('accountUpdated', (data) => {
+            console.log(fakeUser)
+            expect(data).toEqual(fakeUser);
+            done();
+        });
+
+        clientSocket.emit('updateLastRedemptionDate', fakeUser.username, new Date().toISOString());
+    });
+});
+
+describe('deleteUser', () => {
+    // ChatGPT usage: No
+    // Input: userId
+    // Expected behavior: Emit 'deleteUser' event
+    // Expected output: None
+    it('should trigger when client emits deleteUser event', (done) => {
+        
+        mockInstances.mockDeleteOne.mockResolvedValue(true);
+
+        clientSocket.on('userDeleted', (data) => {
+            expect(data).toEqual("User with ID 123 deleted successfully.");
+            done();
+        });
+
+        clientSocket.emit('deleteUser', "123");
+    });
+});
+
+describe('deleteAllUsers', () => {
+    // ChatGPT usage: No
+    // Input: None
+    // Expected behavior: Emit 'deleteAllUsers' event
+    // Expected output: None
+    it('should trigger when client emits deleteAllUsers event', (done) => {
+        mockInstances.mockDeleteMany.mockResolvedValue(true);
+
+        clientSocket.on('allUsersDeleted', (data) => {
+            expect(data).toEqual();
+            done();
+        });
+
+        clientSocket.emit('deleteAllUsers');
+    });
+});
 
 // describe('createLobby', () => {
 //     // ChatGPT usage: No
