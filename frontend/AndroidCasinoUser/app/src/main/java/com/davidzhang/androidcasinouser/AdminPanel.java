@@ -97,7 +97,7 @@ public class AdminPanel extends ThemedActivity {
                 try {
                     intValue = Integer.parseInt(value);
                     Log.d(TAG, "Entered user Name: " + editUserNameEditText.getText().toString());
-                    mSocket.emit("depositbyname", editUserNameEditText.getText().toString(), intValue);
+                    mSocket.emit("changebalancebyname", editUserNameEditText.getText().toString(), intValue);
                 } catch (NumberFormatException e) {
                 }
 
@@ -112,7 +112,7 @@ public class AdminPanel extends ThemedActivity {
                 try {
                     intValue = -1*(Integer.parseInt(value));
                     Log.d(TAG, "Entered user Name: " + editUserNameEditText.getText().toString());
-                    mSocket.emit("depositbyname", editUserNameEditText.getText().toString(), intValue);
+                    mSocket.emit("changebalancebyname", editUserNameEditText.getText().toString(), intValue);
                 } catch (NumberFormatException e) {
                 }
 

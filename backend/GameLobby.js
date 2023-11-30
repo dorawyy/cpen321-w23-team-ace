@@ -7,7 +7,6 @@ class GameLobby {
         this.gameManager = gameManager;  
         this.gameLobbyStore = gameLobbyStore;
         this.io = io;
-        this.timers = {};
         // this.gameStarted = false;
         // this.players = {};
         // this.counter = 0;  
@@ -87,13 +86,6 @@ class GameLobby {
                 if (lobby.players[userName].socketId === socket.id) {
                     this.io.to(lobby.roomName).emit('playerLeft', userName, lobby.roomName);
 
-                    if(lobby.players[userName].ready) {
-                        if (this.timers[lobby.roomName]) {
-                            clearTimeout(this.timers[lobby.roomName]);
-                            delete this.timers[lobby.roomName];
-                        }
-                    }
-
                     delete lobby.players[userName];
                     socket.leave(lobby.roomName)
                     await this.gameLobbyStore.updateLobby(lobby.roomName, { players: lobby.players });
@@ -132,15 +124,6 @@ class GameLobby {
         this.io.to(roomName).emit('playerCount', result);
 
         const lobby = await this.gameLobbyStore.getLobby(roomName);
-
-        if (!this.timers[roomName]) {
-            this.startCountdownLog(roomName);
-
-            this.timers[roomName] = setTimeout(() => {
-            clearInterval(this.countdownInterval);
-            this.startGame(roomName)
-            }, 60000); // 60 seconds
-        }
 
         if (Object.values(lobby.players).every(player => player.ready)) {
             this.startGame(roomName);
@@ -183,12 +166,6 @@ class GameLobby {
     async startGame(roomName) {
         const lobby = await this.gameLobbyStore.getLobby(roomName);
         if (this.gameManager) {
-            if (this.timers[lobby.roomName]) {
-                console.log("Timer canceled")
-                clearInterval(this.countdownInterval);
-                clearTimeout(this.timers[lobby.roomName]);
-                delete this.timers[lobby.roomName];
-            }
             
             lobby.gameStarted = true;
     
@@ -271,15 +248,6 @@ class GameLobby {
     // ChatGPT usage: No
     async _delay(duration) {
         return new Promise(resolve => setTimeout(resolve, duration));
-    }
-
-    // ChatGPT usage: No
-    startCountdownLog(roomName) {
-        let elapsed = 1;
-        this.countdownInterval = setInterval(() => {
-            console.log(`Elapsed time for room ${roomName}: ${elapsed} seconds`);
-            elapsed++;
-        }, 1000);
     }
 }
 

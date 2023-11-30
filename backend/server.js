@@ -4,21 +4,36 @@ const https = require('https')
 const socketIo = require('socket.io');
 const fs = require('fs');
 const cors = require('cors');
+const path = require('path');
 
 // server configuration
 const app = express();
 app.use(express.static(__dirname));
-const options = {
-    key: fs.readFileSync('data/private.key'),
-    cert: fs.readFileSync('data/certificate.crt'),
-    ca: fs.readFileSync('data/ca_bundle.crt')
-};
+const keysPath = path.join(__dirname, 'data', 'private.key');
+let options;
+
+// if (fs.existsSync(keysPath)) {
+//   // If the file exists, require the JSON file.
+//   options = {
+//     key: fs.readFileSync('data/private.key'),
+//     cert: fs.readFileSync('data/certificate.crt'),
+//     ca: fs.readFileSync('data/ca_bundle.crt')
+// };
+// } else {
+//   // If the file does not exist, set keys to 0.
+//   options = {
+//     key: "",
+//     cert: "",
+//     ca: ""
+// };
+// }
+
 
 // server types
 const server = http.createServer(app);
-const https_server = https.createServer(options, app);
+// const https_server = https.createServer(options, app);
 const SERVER_TYPE = 'http';
-const SERVER_PORT = 443;
+const SERVER_PORT = 8081;
 
 // io and access management based on https or http
 var io;
@@ -109,8 +124,8 @@ io.on('connection', (socket) => {
     });
 
     // ChatGPT usage: No
-    socket.on('depositbyname', (username, amount) =>{
-        userAccount.depositbyname(socket, username, amount);
+    socket.on('changebalancebyname', (username, amount) =>{
+        userAccount.changebalancebyname(socket, username, amount);
     })
 
     // ChatGPT usage: No

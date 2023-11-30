@@ -66,12 +66,18 @@ describe('Blackjack', () => {
   });
 
   /* ensure that the game is initialized properly */
+  //input: gameData
+  //expected behavior: game is initialized properly
+  // expected output: all items required for the game is prepared
   //chatGPT usage: No
   it('newGame', async () => {
     expect(gameData.gameItems.globalItems.pokar).toStrictEqual(GameAssets.getPokar());
   });
 
   /* return a random card */
+  // input: gameData
+  // expected behavior: a random card is returned
+  // expected output: a string that contains a card
   //chatGPT usage: No
   it('random card', async () => {
     callCount = 0;
@@ -83,6 +89,9 @@ describe('Blackjack', () => {
   });
 
   /*make sure one round of the game is played properly */
+  // input: gameData
+  // expected behavior: a round of the game is played properly
+  // expected output: gameData is updated properly
   //chatGPT usage: No
   it('one round', async () => {
     callCount = 0;
@@ -95,6 +104,9 @@ describe('Blackjack', () => {
   });
 
   /*make sure >=21 of the game is played properly */
+  // input: gameData
+  // expected behavior: a round of the game is played properly
+  // expected output: gameData is updated properly
   //chatGPT usage: No
   it('Repeat hit until blow', async () => {
     callCount = 0;
@@ -112,6 +124,9 @@ describe('Blackjack', () => {
   });
 
   /*make sure stand of the game is handled properly */
+  // input: gameData
+  // expected behavior: game can be win by stand
+  // expected output: gameData is updated properly
   //chatGPT usage: No
   it('stand win', async () => {
     callCount = 0;
@@ -123,11 +138,14 @@ describe('Blackjack', () => {
     expect(gameDataLocal.currentPlayerIndex).toBe(-1);
     expect(gameDataLocal.gameItems.playerItems.playera.playerHand[0]).toContain("A");
     let gameResult = await Blackjack.calculateWinning(gameDataLocal)
-    expect(gameResult != 0).toBe(true);    
+    expect(gameResult !== 0).toBe(true);    
     expect(gameResult.playera).toBe(100);
   });
 
   /*make sure stand of the game is handled properly */
+  // input: gameData
+  // expected behavior: game can be tied by stand
+  // expected output: gameData is updated properly
   //chatGPT usage: No
   it('stand tie', async () => {
     callCount = 0;
@@ -139,11 +157,14 @@ describe('Blackjack', () => {
     expect(gameDataLocal.currentPlayerIndex).toBe(-1);
     expect(gameDataLocal.gameItems.playerItems.playera.playerHand[0]).toContain("A");
     let gameResult = await Blackjack.calculateWinning(gameDataLocal)
-    expect(gameResult != 0).toBe(true);    
+    expect(gameResult !== 0).toBe(true);    
     expect(gameResult.playera).toBe(0);
   });
 
   /*make sure hit then stand of the game is handled properly */
+  // input: gameData
+  // expected behavior: a full game can be played and result calcuated without error
+  // expected output: gameData is updated properly
   //chatGPT usage: No
   it('hit stand lose', async () => {
     callCount = 0;
@@ -156,11 +177,15 @@ describe('Blackjack', () => {
     expect(gameDataLocal.currentPlayerIndex).toBe(-1);
     expect(gameDataLocal.gameItems.playerItems.playera.playerHand[0]).toContain("9");
     let gameResult = await Blackjack.calculateWinning(gameDataLocal)
-    expect(gameResult != 0).toBe(true);    
+    expect(gameResult !== 0).toBe(true);    
     expect(gameResult.playera).toBe(-100);
   });
 
   /*make sure hit then stand of the game is handled properly */
+  // input: gameData
+  // expected behavior: a full game can be played and result calcuated without error
+  // expected output: gameData is updated properly
+  //chatGPT usage: No
   it('hit stand lose to blow', async () => {
     callCount = 0;
     returnVal = [10*4, 10*4, 10*4, 10*4, 10*4, 10*4, 10*4, 10*4, 10*4];
@@ -172,11 +197,15 @@ describe('Blackjack', () => {
     expect(gameDataLocal.currentPlayerIndex).toBe(-1);
     expect(gameDataLocal.gameItems.playerItems.playera.playerHand[0]).toContain("10");
     let gameResult = await Blackjack.calculateWinning(gameDataLocal)
-    expect(gameResult != 0).toBe(true);    
+    expect(gameResult !== 0).toBe(true);    
     expect(gameResult.playera).toBe(-100);
   });
 
   /*make sure hit then stand of the game is handled properly */
+// input: gameData
+  // expected behavior: a full game can be played and result calcuated without error
+  // expected output: gameData is updated properly
+  //chatGPT usage: No
   it('hit stand bj win', async () => {
     callCount = 0;
     returnVal = [10*4, 10*4, 1*4, 1*4, 9*4, 9*4, 10*4, 10*4, 10*4];
@@ -188,11 +217,14 @@ describe('Blackjack', () => {
     expect(gameDataLocal.currentPlayerIndex).toBe(-1);
     expect(gameDataLocal.gameItems.playerItems.playera.playerHand[0]).toContain("10");
     let gameResult = await Blackjack.calculateWinning(gameDataLocal)
-    expect(gameResult != 0).toBe(true);    
+    expect(gameResult !== 0).toBe(true);    
     expect(gameResult.playera).toBe(150);
   });
 
   /*make sure one cannot calculate winning before gameover*/
+  // input: gameData
+  // expected behavior: one cannot calculate winning before gameover
+  // expected output: calc fails return 0
   //chatGPT usage: No
   it('Calculate winning before gameover', async () => {
     
@@ -204,6 +236,9 @@ describe('Blackjack', () => {
   });
 
   /*cannot have undefined actions*/
+  //input: gameData
+  //expected behavior: undefined action is not allowed
+  //expected output: no change
   //chatGPT usage: No
   it('undefined action', async () => {
     

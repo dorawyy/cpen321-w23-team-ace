@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -67,27 +68,30 @@ public class LobbyAdapter extends RecyclerView.Adapter<LobbyAdapter.LobbyViewHol
                     if (position != RecyclerView.NO_POSITION) {
                         Lobby clickedLobby = lobbyList.get(position);
 
-                        mSocket = SocketHandler.getSocket();
-                        mSocket.emit("joinLobby", clickedLobby.getName(), clickedLobby.getCurrentUser().getUsername());
-                        Intent intent = new Intent(context, LobbyActivityBlackJack.class);
-                        if(clickedLobby.getGameType().equals("BlackJack")) {
-                            intent = new Intent(context, LobbyActivityBlackJack.class);
-                        }
-                        else if(clickedLobby.getGameType().equals("Roulette")) {
-                            intent = new Intent(context, LobbyActivityRoulette.class);
-                        }
-                        else if(clickedLobby.getGameType().equals("Baccarat")) {
-                            intent = new Intent(context, LobbyActivityBaccarat.class);
-                        }
+                        if(clickedLobby.getPlayNumber() < Integer.parseInt(clickedLobby.getMaxPlayer())) {
+                            mSocket = SocketHandler.getSocket();
+                            mSocket.emit("joinLobby", clickedLobby.getName(), clickedLobby.getCurrentUser().getUsername());
+                            Intent intent = new Intent(context, LobbyActivityBlackJack.class);
+                            if (clickedLobby.getGameType().equals("BlackJack")) {
+                                intent = new Intent(context, LobbyActivityBlackJack.class);
+                            } else if (clickedLobby.getGameType().equals("Roulette")) {
+                                intent = new Intent(context, LobbyActivityRoulette.class);
+                            } else if (clickedLobby.getGameType().equals("Baccarat")) {
+                                intent = new Intent(context, LobbyActivityBaccarat.class);
+                            }
 
-                        intent.putExtra("roomName", clickedLobby.getName());
-                        intent.putExtra("gameType", clickedLobby.getGameType());
-                        intent.putExtra("gameStarted", clickedLobby.getGameStarted());
-                        intent.putExtra("maxPlayer", clickedLobby.getMaxPlayer());
-                        intent.putExtra("playNumber", clickedLobby.getPlayNumber() + 1);
-                        intent.putExtra("currentUser", clickedLobby.getCurrentUser());
+                            intent.putExtra("roomName", clickedLobby.getName());
+                            intent.putExtra("gameType", clickedLobby.getGameType());
+                            intent.putExtra("gameStarted", clickedLobby.getGameStarted());
+                            intent.putExtra("maxPlayer", clickedLobby.getMaxPlayer());
+                            intent.putExtra("playNumber", clickedLobby.getPlayNumber() + 1);
+                            intent.putExtra("currentUser", clickedLobby.getCurrentUser());
 
-                        context.startActivity(intent);
+                            context.startActivity(intent);
+                        }
+                        else {
+                            Toast.makeText(context, "Room is full!", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 }
             });

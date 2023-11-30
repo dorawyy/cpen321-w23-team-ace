@@ -147,7 +147,7 @@ public class RouletteActivity extends ThemedActivity {
                             }
 
                             earnings = Math.round(earnings * 100.0) / 100.0;
-                            mSocket.emit("depositbyname", userName, earnings);
+                            mSocket.emit("changebalancebyname", userName, earnings);
 
                             //Send User to Results Popup
                             double finalEarnings = earnings;

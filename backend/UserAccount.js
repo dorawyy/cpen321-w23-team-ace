@@ -109,6 +109,11 @@ class UserAccount {
     // ChatGPT usage: No
     async deposit(socket, userId, amount) {
         const user = await this.userStore.getUser(userId);
+
+        if (amount < 0|| amount == null){
+            socket.emit('balanceUpdate', null);
+            return;
+        }
         if (!user) {
             socket.emit('balanceUpdate', null);
             return;
@@ -127,39 +132,44 @@ class UserAccount {
     }
 
     // ChatGPT usage: No
-    async depositbyname(socket, username, amount){
+    async changebalancebyname(socket, username, amount){
         const user = await this.userStore.getUserbyname(username);
         if (!user) {
             socket.emit('balanceUpdate', null);
             return;
         }
-        if (amount < 0 && -amount > user.balance){
-            socket.emit('balanceUpdate', "Amount withdrawed is more than the current balance, cannot process this withdrawal");
-            return
+        if (amount < 0 ){
+            this.withdraw(socket, user.userId, -amount);
+        }else{
+            this.deposit(socket, user.userId, amount);
         }
-        user.balance += amount;
-        const updatedUser = await this.userStore.updateUser(user.userId, user);
+        // if (amount < 0 && -amount > user.balance){
+        //     socket.emit('balanceUpdate', "Amount withdrawed is more than the current balance, cannot process this withdrawal");
+        //     return;
+        // }
+        // user.balance += amount;
+        // const updatedUser = await this.userStore.updateUser(user.userId, user);
         
         // if (!updatedUser) {
         //     socket.emit('balanceUpdate', null);
         //     return;
         // }
 
-        let balanceAsInteger = Math.round(updatedUser.balance);
+        // let balanceAsInteger = Math.round(updatedUser.balance);
         
-        socket.emit('balanceUpdate', balanceAsInteger);
+        // socket.emit('balanceUpdate', balanceAsInteger);
     }
 
     // ChatGPT usage: No
     async withdraw(socket, userId, amount) {
         const user = await this.userStore.getUser(userId);
         if (!user) {
-            socket.emit('userError', "User not found.");
+            socket.emit('balanceUpdate', null);
             return;
         }
         
         if (user.balance < amount){
-            socket.emit('userError', "Insufficient funds");
+            socket.emit('balanceUpdate', "Amount withdrawed is more than the current balance, cannot process this withdrawal");
             return;
         }
         user.balance -= amount;
