@@ -28,8 +28,6 @@ class GameLobby {
     // ChatGPT usage: Partial
     async addPlayer(roomName, userName, bet, socket) {
         console.log("User joined");
-        // console.log(this.counter);
-        // console.log(this.maxPlayers);
         const lobby = await this.gameLobbyStore.getLobby(roomName);
         if(lobby) {
             if (Object.keys(lobby.players).length < lobby.maxPlayers) {
