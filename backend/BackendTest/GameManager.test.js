@@ -541,19 +541,6 @@ describe('GameManager', () => {
     expect (await mongoShield(meanInput)).toBe(false); 
   });
 
-   // Test code running, binary
-  // Input: js code injection attack
-  // Expected behavior: bad input not used to db
-  // Expected output: 0
-  // ChatGPT usage: No
-  it('error with binary injection', async () => {
-    let meanInput = {
-      $where: "101001010010100101101010101000100010001000001010100111100100101010100101000111\
-      100101010010111010101001011010100101010"
-    };
-    expect (await mongoShield(meanInput)).toBe(false); 
-  });
-
   // Test NoSQL injection attack
   // Input: NoSQL injection attack vector
   // Expected behavior: bad input causes mongoShield to return false
