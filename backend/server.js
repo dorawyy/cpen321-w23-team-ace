@@ -185,6 +185,7 @@ io.on('connection', (socket) => {
 
         // io.to(roomName).emit('receiveChatMessage', chatMessage);
         await gameLobby.sendChatMessage(roomName, userName, message);
+        socket.emit('sendMessageSuccessfully', "sendMessageSuccessfully");
     })
 
     // ChatGPT usage: No
@@ -192,12 +193,14 @@ io.on('connection', (socket) => {
         // var myLobbies = await gameLobbyStore.getAllLobby();
         // socket.emit('AllLobby', myLobbies);
         await gameLobby.getAllLobby(socket);
+        socket.emit('getAllLobbySuccessfully', "getAllLobbySuccessfully");
     });
 
     // ChatGPT usage: No
     socket.on('setBet', async(roomName, userName, bet) => {
         // await gameLobbies[roomName].setPlayerBet(roomName, userName, bet);
         await gameLobby.setPlayerBet(roomName, userName, bet);
+        socket.emit('setBetSuccessfully', "setBetSuccessfully");
     })
 
     // ChatGPT usage: No
@@ -205,6 +208,7 @@ io.on('connection', (socket) => {
         // console.log("User ready");
         // await gameLobbies[roomName].setPlayerReady(userName);
         await gameLobby.setPlayerReady(roomName, userName);
+        socket.emit('setReadySuccessfully', "setReadySuccessfully");
     })
 
 
@@ -213,6 +217,7 @@ io.on('connection', (socket) => {
         // var result = await gameLobbies[roomName].getPlayerCount(roomName);
         // io.to(roomName).emit('playerCount', result);
         await gameLobby.getPlayerCount(roomName);
+        socket.emit('getCountSuccessfully', "getCountSuccessfully");
     })
 
     // socket.on('playerLeft', async(userName, roomName) => {
@@ -232,11 +237,13 @@ io.on('connection', (socket) => {
         //     }
         // }
         await gameLobby.removePlayer(socket);
+        socket.emit('leaveSuccessfully', "leaveSuccessfully");
     });
 
     // ChatGPT usage: partial
     socket.on('playTurn', (lobbyName, username, action) => {
         gameManager.playTurn(lobbyName, username, action);
+        socket.emit('turnSuccessfully', "turnSuccessfully");
     })
 
     // ChatGPT usage: Partial

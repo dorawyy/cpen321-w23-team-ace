@@ -2,6 +2,7 @@ const { Server } = require("socket.io");
 const { MongoClient } = require('mongodb');
 const GameLobbyStore = require('../GameLobbyStore');
 const UserStore = require('../UserStore');
+const GameLobby = require('../GameLobby');
 const Client = require("socket.io-client");
 const { mockInstances } = require('mongodb');
 const { mock } = require('node:test');
@@ -15,6 +16,8 @@ let io, serverSocket, clientSocket;
 // it only applies to github and server testing
 jest.mock('mongodb', () => {
     const mockFindOne = jest.fn();
+    const mockFind = jest.fn().mockReturnThis();
+    const mocktoArray = jest.fn();
     const mockInsertOne = jest.fn();
     const mockUpdateOne = jest.fn();
     const mockDeleteOne = jest.fn();
@@ -25,6 +28,8 @@ jest.mock('mongodb', () => {
       db: jest.fn().mockReturnThis(),
       collection: jest.fn().mockReturnThis(),
       insertOne: mockInsertOne,
+      find: mockFind,
+      toArray: mocktoArray,
       findOne: mockFindOne,
       updateOne: mockUpdateOne,
       deleteOne: mockDeleteOne,
@@ -36,6 +41,7 @@ jest.mock('mongodb', () => {
       MongoClient: jest.fn(() => mClient),
       mockInstances: {
         mockFindOne,
+        mocktoArray,
         mockInsertOne,
         mockUpdateOne,
         mockDeleteOne,
@@ -63,6 +69,7 @@ afterAll(() => {
 beforeEach(() => {
     // Reset the mocks before each test
     mockInstances.mockFindOne.mockReset();
+    mockInstances.mocktoArray.mockReset();
     mockInstances.mockInsertOne.mockReset();
     mockInstances.mockUpdateOne.mockReset();
     mockInstances.mockDeleteOne.mockReset();
@@ -321,92 +328,260 @@ describe('deleteAllUsers', () => {
     });
 });
 
-// describe('createLobby', () => {
-//     // ChatGPT usage: No
-//     // Input: roomName, gameType, maxPlayers, userName
-//     // Expected behavior: Emit 'createLobby' event
-//     // Expected output: None
-//     it('should trigger when client emits createLobby event', (done) => {
-//         clientSocket.emit('createLobby', 'testRoom', 'testGameType', 4, 'testUser');
-//     }, 1);
-// });
+describe('createLobby', () => {
+    // ChatGPT usage: No
+    // Input: roomName, gameType, maxPlayers, userName
+    // Expected behavior: Emit 'createLobby' event
+    // Expected output: None
+    it('should trigger when client emits createLobby event and lobby already exists', (done) => {
+        const fakeLobby = { roomName: 'testRoom', gameType: 'testGameType', maxPlayers: 4 };
+        mockInstances.mockFindOne.mockResolvedValue(fakeLobby);
 
-// describe('joinLobby', () => {
-//     // ChatGPT usage: No
-//     // Input: roomName, userName
-//     // Expected behavior: Emit 'joinLobby' event
-//     // Expected output: None
-//     it('should trigger when client emits joinLobby event', (done) => {
-//         clientSocket.emit('joinLobby', 'testRoom', 'testUser');
-//     }, 1);
-// });
+        clientSocket.on('roomAlreadyExist', (data) => {
+            console.log(fakeLobby)
+            expect(data).toEqual("Room already exist");
+            done();
+        });
 
-// describe('sendChatMessage', () => {
-//     // ChatGPT usage: No
-//     // Input: roomName, userName, message
-//     // Expected behavior: Emit 'sendChatMessage' event
-//     // Expected output: None
-//     it('should trigger when client emits sendChatMessage event', (done) => {
-//         clientSocket.emit('sendChatMessage', 'testRoom', 'testUser', 'Hello!');
-//     }, 1);
-// });
+        clientSocket.emit('createLobby', 'testRoom', 'testGameType', 4, 'testUser');
+    });
 
-// describe('getAllLobby', () => {
-//     // ChatGPT usage: No
-//     // Input: None
-//     // Expected behavior: Emit 'getAllLobby' event
-//     // Expected output: None
-//     it('should trigger when client emits getAllLobby event', (done) => {
-//         clientSocket.emit('getAllLobby');
-//     }, 1);
-// });
+    // ChatGPT usage: No
+    // Input: roomName, gameType, maxPlayers, userName
+    // Expected behavior: Emit 'createLobby' event
+    // Expected output: None
+    it('should trigger when client emits createLobby event and lobby create successfully', (done) => {
+        const fakeLobby = null;
+        mockInstances.mockFindOne.mockResolvedValue(null);
 
-// describe('setBet', () => {
-//     // ChatGPT usage: No
-//     // Input: roomName, userName, bet
-//     // Expected behavior: Emit 'setBet' event
-//     // Expected output: None
-//     it('should trigger when client emits setBet event', (done) => {
-//         clientSocket.emit('setBet', 'testRoom', 'testUser', 100);
-//     }, 1);
-// });
+        clientSocket.on('lobbyCreated', (data) => {
+            console.log(fakeLobby)
+            expect(data).toEqual("Lobby Successfully Created");
+            done();
+        });
 
-// describe('setReady', () => {
-//     // ChatGPT usage: No
-//     // Input: roomName, userName
-//     // Expected behavior: Emit 'setReady' event
-//     // Expected output: None
-//     it('should trigger when client emits setReady event', (done) => {
-//         clientSocket.emit('setReady', 'testRoom', 'testUser');
-//     }, 1);
-// });
+        clientSocket.emit('createLobby', 'testRoom', 'testGameType', 4, 'testUser');
+    });
+});
 
-// describe('getPlayerCount', () => {
-//     // ChatGPT usage: No
-//     // Input: roomName
-//     // Expected behavior: Emit 'getPlayerCount' event
-//     // Expected output: None
-//     it('should trigger when client emits getPlayerCount event', (done) => {
-//         clientSocket.emit('getPlayerCount', 'testRoom');
-//     }, 1);
-// });
+describe('joinLobby', () => {
+    // ChatGPT usage: No
+    // Input: roomName, userName
+    // Expected behavior: Emit 'joinLobby' event
+    // Expected output: None
+    it('should trigger when client emits joinLobby event and joins successfully', (done) => {
+        const fakeLobby = {
+            roomName: 'testRoom',
+            gameType: 'testGameType',
+            players: {'testUser': {bet: 100, ready: false, socketId: 'socket123'}},
+            gameStarted: false,
+            maxPlayers: 4
+          };
+        mockInstances.mockFindOne.mockResolvedValue(fakeLobby);
 
-// describe('leaveLobby', () => {
-//     // ChatGPT usage: No
-//     // Input: None
-//     // Expected behavior: Emit 'leaveLobby' event
-//     // Expected output: None
-//     it('should trigger when client emits leaveLobby event', (done) => {
-//         clientSocket.emit('leaveLobby');
-//     }, 1);
-// });
+        clientSocket.on('newPlayerJoin', (data) => {
+            console.log(data)
+            expect(data).toEqual();
+            done();
+        });
 
-// describe('playTurn', () => {
-//     // ChatGPT usage: No
-//     // Input: lobbyName, userName, action
-//     // Expected behavior: Emit 'playTurn' event
-//     // Expected output: None
-//     it('should trigger when client emits playTurn event', (done) => {
-//         clientSocket.emit('playTurn', 'testLobby', 'testUser', 'testAction');
-//     }, 1);
-// });
+        clientSocket.emit('joinLobby', 'testRoom', 'testUser');
+    });
+
+    it('should trigger when client emits joinLobby event and lobby is full', (done) => {
+        const fakeLobby = {
+            roomName: 'testRoom',
+            gameType: 'testGameType',
+            players: {'testUser': {bet: 100, ready: false, socketId: 'socket123'}},
+            gameStarted: false,
+            maxPlayers: 0
+          };
+        mockInstances.mockFindOne.mockResolvedValue(fakeLobby);
+
+        clientSocket.on('PlayerExceedMax', (data) => {
+            console.log(data)
+            expect(data).toEqual('PlayerExceedMax');
+            done();
+        });
+
+        clientSocket.emit('joinLobby', 'testRoom', 'testUser');
+    });
+
+    it('should trigger when client emits joinLobby event and lobby does not exist', (done) => {
+        const fakeLobby = null
+        mockInstances.mockFindOne.mockResolvedValue(fakeLobby);
+
+        clientSocket.on('roomDoesNot', (data) => {
+            console.log(data)
+            expect(data).toEqual('Room does not exist');
+            done();
+        });
+
+        clientSocket.emit('joinLobby', 'testRoom', 'testUser');
+    });
+
+});
+
+describe('sendChatMessage', () => {
+    // ChatGPT usage: No
+    // Input: roomName, userName, message
+    // Expected behavior: Emit 'sendChatMessage' event
+    // Expected output: None
+    it('should trigger when client emits sendChatMessage event', (done) => {
+        const fakemessage = {user: 'testUser', text: 'Hello!'};
+        mockInstances.mockInsertOne(fakemessage)
+        clientSocket.on('sendMessageSuccessfully', (data) => {
+            console.log(data)
+            expect(data).toEqual('sendMessageSuccessfully');
+            done();
+        });
+
+        clientSocket.emit('sendChatMessage', 'testRoom', 'testUser', 'Hello!');
+    });
+});
+
+describe('getAllLobby', () => {
+    // ChatGPT usage: No
+    // Input: None
+    // Expected behavior: Emit 'getAllLobby' event
+    // Expected output: None
+    it('should trigger when client emits getAllLobby event', (done) => {
+        const fakeLobby = {
+            roomName: 'testRoom',
+            gameType: 'testGameType',
+            players: {'testUser': {bet: 100, ready: false, socketId: 'socket123'}},
+            gameStarted: false,
+            maxPlayers: 0
+        };
+
+        mockInstances.mocktoArray(fakeLobby);
+        clientSocket.on('getAllLobbySuccessfully', (data) => {
+            console.log(data)
+            expect(data).toEqual('getAllLobbySuccessfully');
+            done();
+        });
+
+        clientSocket.emit('getAllLobby');
+    });
+});
+
+describe('setBet', () => {
+    // ChatGPT usage: No
+    // Input: roomName, userName, bet
+    // Expected behavior: Emit 'setBet' event
+    // Expected output: None
+    it('should trigger when client emits setBet event', (done) => {
+        const fakeBet = {bet: 100};
+        mockInstances.mockUpdateOne(fakeBet)
+
+        clientSocket.on('setBetSuccessfully', (data) => {
+            console.log(data)
+            expect(data).toEqual('setBetSuccessfully');
+            done();
+        });
+
+        clientSocket.emit('setBet', 'testRoom', 'testUser', 100);
+    });
+});
+
+describe('setReady', () => {
+    // ChatGPT usage: No
+    // Input: roomName, userName
+    // Expected behavior: Emit 'setReady' event
+    // Expected output: None
+    it('should trigger when client emits setReady event', (done) => {
+        const fakeLobby = {
+            roomName: 'testRoom',
+            gameType: 'testGameType',
+            players: {'testUser': {bet: 100, ready: true, socketId: 'socket123'}},
+            gameStarted: false,
+            maxPlayers: 0
+        };
+        mockInstances.mockFindOne.mockResolvedValue(fakeLobby);
+        mockInstances.mockUpdateOne(fakeLobby)
+
+        clientSocket.on('setReadySuccessfully', (data) => {
+            console.log(data)
+            expect(data).toEqual('setReadySuccessfully');
+            done();
+        });
+        clientSocket.emit('setReady', 'testRoom', 'testUser');
+    });
+});
+
+describe('getPlayerCount', () => {
+    // ChatGPT usage: No
+    // Input: roomName
+    // Expected behavior: Emit 'getPlayerCount' event
+    // Expected output: None
+    it('should trigger when client emits getPlayerCount event', (done) => {
+        const fakeLobby = {
+            roomName: 'testRoom',
+            gameType: 'testGameType',
+            players: {'testUser': {bet: 100, ready: true, socketId: 'socket123'}},
+            gameStarted: false,
+            maxPlayers: 0
+        };
+        mockInstances.mockFindOne.mockResolvedValue(fakeLobby);
+        mockInstances.mockUpdateOne(fakeLobby)
+        
+        clientSocket.on('getCountSuccessfully', (data) => {
+            console.log(data)
+            expect(data).toEqual('getCountSuccessfully');
+            done();
+        });
+
+        clientSocket.emit('getPlayerCount', 'testRoom');
+    });
+});
+
+describe('leaveLobby', () => {
+    // ChatGPT usage: No
+    // Input: None
+    // Expected behavior: Emit 'leaveLobby' event
+    // Expected output: None
+    it('should trigger when client emits leaveLobby event', (done) => {
+        const fakeLobbies = [
+            {
+              roomName: 'room123',
+              gameType: 'BlackJack',
+              players: {'user1': {bet: 100, ready: false, socketId: 'socket123'}},
+              maxPlayers: 4
+            },
+            {
+              roomName: 'room124',
+              gameType: 'Baccarat',
+              players: {'user2': {bet: {win: "PlayersWin", amount: 3}, ready: true, socketId: 'socket124'}},
+              maxPlayers: 6
+            }
+          ];
+
+        mockInstances.mocktoArray.mockResolvedValue(fakeLobbies);
+        mockInstances.mockFindOne.mockResolvedValue(fakeLobbies);
+        mockInstances.mockUpdateOne(fakeLobbies)
+
+        clientSocket.on('leaveSuccessfully', (data) => {
+            console.log(data)
+            expect(data).toEqual('leaveSuccessfully');
+            done();
+        });
+
+        clientSocket.emit('leaveLobby');
+    });
+});
+
+describe('playTurn', () => {
+    // ChatGPT usage: No
+    // Input: lobbyName, userName, action
+    // Expected behavior: Emit 'playTurn' event
+    // Expected output: None
+    it('should trigger when client emits playTurn event', (done) => {
+        clientSocket.on('turnSuccessfully', (data) => {
+            console.log(data)
+            expect(data).toEqual('turnSuccessfully');
+            done();
+        });
+
+        clientSocket.emit('playTurn', 'testLobby', 'testUser', 'testAction');
+    });
+});
