@@ -284,7 +284,7 @@ class GameStore {
     /* connect to the database*/
     // ChatGPT usage: No
     async connect() {
-        db_name = 'casinoApp';
+        let db_name = 'casinoApp';
         try {
             // Connect to the MongoDB cluster
             await this.client.connect()

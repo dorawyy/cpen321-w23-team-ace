@@ -111,12 +111,14 @@ describe('GameManager', () => {
     gameManager.io = {
       to: jest.fn((...args) => {
         toParameters.push(args);
-        return {
+        let emit = {
+          // mock incomming emit, track calling parameters
           emit: jest.fn((...args) => {
             emitParameters.push(args);
             return 0;
           }),
         };
+        return emit
       }),
     };
   
@@ -171,12 +173,14 @@ describe('GameManager', () => {
     gameManager.io = {
       to: jest.fn((...args) => {
         toParameters.push(args);
-        return {
+        let emit = {
+          // mock incomming emit, track calling parameters
           emit: jest.fn((...args) => {
             emitParameters.push(args);
             return 0;
           }),
         };
+        return emit
       }),
     };
     
@@ -212,12 +216,14 @@ describe('GameManager', () => {
     gameManager.io = {
       to: jest.fn((...args) => {
         toParameters.push(args);
-        return {
+        let emit = {
+          // mock incomming emit, track calling parameters
           emit: jest.fn((...args) => {
             emitParameters.push(args);
             return 0;
           }),
         };
+        return emit
       }),
     };
     
@@ -244,12 +250,14 @@ describe('GameManager', () => {
     gameManager.io = {
       to: jest.fn((...args) => {
         toParameters.push(args);
-        return {
+        let emit = {
+          // mock incomming emit, track calling parameters
           emit: jest.fn((...args) => {
             emitParameters.push(args);
             return 0;
           }),
         };
+        return emit
       }),
     };
     await gameManager.startGame('abc123', 'Roulette', ["playera", "playerb"], {
@@ -274,12 +282,14 @@ describe('GameManager', () => {
     gameManager.io = {
       to: jest.fn((...args) => {
         toParameters.push(args);
-        return {
+        let emit = {
+          // mock incomming emit, track calling parameters
           emit: jest.fn((...args) => {
             emitParameters.push(args);
             return 0;
           }),
         };
+        return emit
       }),
     };
     await gameManager.startGame('abc123', 'Roulette', ["playera", "playerb"], {
@@ -361,12 +371,14 @@ describe('GameManager', () => {
     gameManager.io = {
       to: jest.fn((...args) => {
         toParameters.push(args);
-        return {
+        let emit = {
+          // mock incomming emit, track calling parameters
           emit: jest.fn((...args) => {
             emitParameters.push(args);
             return 0;
           }),
         };
+        return emit
       }),
     };
   
@@ -391,12 +403,14 @@ describe('GameManager', () => {
     gameManager.io = {
       to: jest.fn((...args) => {
         toParameters.push(args);
-        return {
+        let emit = {
+          // mock incomming emit, track calling parameters
           emit: jest.fn((...args) => {
             emitParameters.push(args);
             return 0;
           }),
         };
+        return emit
       }),
     };
   
