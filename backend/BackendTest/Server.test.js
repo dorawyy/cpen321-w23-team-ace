@@ -1,13 +1,8 @@
 const { Server } = require("socket.io");
-const { MongoClient } = require('mongodb');
-const GameLobbyStore = require('../GameLobbyStore');
-const UserStore = require('../UserStore');
-const GameLobby = require('../GameLobby');
 const Client = require("socket.io-client");
 const { mockInstances } = require('mongodb');
-const { mock } = require('node:test');
 const { app } = require('../server'); // assuming that your server file is named server.js
-let io, serverSocket, clientSocket;
+let io, clientSocket;
 
 // this mock is needed for github
 // setting up memory DB do not work for github action due to memory limit
