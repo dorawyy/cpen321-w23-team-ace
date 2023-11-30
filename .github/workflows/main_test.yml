@@ -4,6 +4,10 @@ name: Run Jest Tests
 # push or PR
 on: [push, pull_request]
 
+permissions:
+    contents: read
+    checks: write
+
 jobs:
   build:
     # This GitHub workflow runs on the latest version of Ubuntu (same as azure)
