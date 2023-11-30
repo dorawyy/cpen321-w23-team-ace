@@ -33,7 +33,7 @@ let options;
 const server = http.createServer(app);
 // const https_server = https.createServer(options, app);
 const SERVER_TYPE = 'http';
-const SERVER_PORT = 443;
+const SERVER_PORT = 8081;
 
 // io and access management based on https or http
 var io;
