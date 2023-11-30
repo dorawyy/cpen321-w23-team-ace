@@ -11,7 +11,7 @@ beforeAll((done) => {
     const httpServer = require('http').createServer(app);
     io = new Server(httpServer);
     httpServer.listen(() => {
-        clientSocket = new Client(`http://localhost:443`);
+        clientSocket = new Client(`http://localhost:8081`);
         io.on("connection", socket => {
             serverSocket = socket;
         });
@@ -30,8 +30,15 @@ describe('retrieveAccount', () => {
     // Expected behavior: Emit 'retrieveAccount' event
     // Expected output: None
     it('should trigger when client emits retrieveAccount event', (done) => {
+        clientSocket.on('userAccountDetails', (data) => {
+            console.log(data);
+            //expect(data).toBe('testUserID');
+            done();
+        });
         clientSocket.emit('retrieveAccount', 'testUserID');
-    }, 1);
+        //print 1
+        //clientSocket.de
+    }, 2000);
 });
 
 describe('updateAccount', () => {

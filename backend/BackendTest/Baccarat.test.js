@@ -1,4 +1,3 @@
-const { mock } = require('node:test');
 const Baccarat = require('../GameManager/Baccarat');
 const GameAssets = require('../GameManager/GameAssets');
 jest.mock('mongodb', () => {
@@ -92,7 +91,7 @@ describe('Baccarat', () => {
   it('random card', async () => {
     callCount = 0;
     returnVal = [1*4];
-    card = await Baccarat._getRandomCard(gameData);
+    let card = await Baccarat._getRandomCard(gameData);
     expect(typeof card).toBe("string");
     expect(card).toContain("A");
 

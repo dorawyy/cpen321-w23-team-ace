@@ -138,7 +138,7 @@ describe('Blackjack', () => {
     expect(gameDataLocal.currentPlayerIndex).toBe(-1);
     expect(gameDataLocal.gameItems.playerItems.playera.playerHand[0]).toContain("A");
     let gameResult = await Blackjack.calculateWinning(gameDataLocal)
-    expect(gameResult != 0).toBe(true);    
+    expect(gameResult !== 0).toBe(true);    
     expect(gameResult.playera).toBe(100);
   });
 
@@ -157,7 +157,7 @@ describe('Blackjack', () => {
     expect(gameDataLocal.currentPlayerIndex).toBe(-1);
     expect(gameDataLocal.gameItems.playerItems.playera.playerHand[0]).toContain("A");
     let gameResult = await Blackjack.calculateWinning(gameDataLocal)
-    expect(gameResult != 0).toBe(true);    
+    expect(gameResult !== 0).toBe(true);    
     expect(gameResult.playera).toBe(0);
   });
 
@@ -177,7 +177,7 @@ describe('Blackjack', () => {
     expect(gameDataLocal.currentPlayerIndex).toBe(-1);
     expect(gameDataLocal.gameItems.playerItems.playera.playerHand[0]).toContain("9");
     let gameResult = await Blackjack.calculateWinning(gameDataLocal)
-    expect(gameResult != 0).toBe(true);    
+    expect(gameResult !== 0).toBe(true);    
     expect(gameResult.playera).toBe(-100);
   });
 
@@ -197,7 +197,7 @@ describe('Blackjack', () => {
     expect(gameDataLocal.currentPlayerIndex).toBe(-1);
     expect(gameDataLocal.gameItems.playerItems.playera.playerHand[0]).toContain("10");
     let gameResult = await Blackjack.calculateWinning(gameDataLocal)
-    expect(gameResult != 0).toBe(true);    
+    expect(gameResult !== 0).toBe(true);    
     expect(gameResult.playera).toBe(-100);
   });
 
@@ -217,7 +217,7 @@ describe('Blackjack', () => {
     expect(gameDataLocal.currentPlayerIndex).toBe(-1);
     expect(gameDataLocal.gameItems.playerItems.playera.playerHand[0]).toContain("10");
     let gameResult = await Blackjack.calculateWinning(gameDataLocal)
-    expect(gameResult != 0).toBe(true);    
+    expect(gameResult !== 0).toBe(true);    
     expect(gameResult.playera).toBe(150);
   });
 
