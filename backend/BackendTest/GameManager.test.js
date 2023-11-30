@@ -1,6 +1,4 @@
-const { assert } = require('console');
 const GameManager = require('../GameManager/GameManager');
-const exp = require('constants');
 const mongoShield = require('../mongoShield');
 
 jest.useFakeTimers()
@@ -39,7 +37,9 @@ jest.mock('mongodb', () => {
     db: jest.fn().mockReturnValue(mDb),
   };
 
-  return { MongoClient: jest.fn(() => mClient) };
+  let return_client = {MongoClient: jest.fn(() => mClient)}
+
+  return return_client;
 });
 
 //mock random.org
@@ -94,7 +94,7 @@ describe('GameManager', () => {
     const mongoError = new Error('Cannot connect to MongoDB');
     const mClient = require('mongodb').MongoClient();
     mClient.connect.mockImplementationOnce(() => Promise.reject(mongoError));
-    gameManagerBad = new GameManager(ioMock);
+    let gameManagerBad = new GameManager(ioMock);
     gameManagerBad.connect();
     expect(gameManagerBad).toBeInstanceOf(GameManager);
     expect(gameManagerBad.io).toBe(ioMock);
@@ -138,6 +138,7 @@ describe('GameManager', () => {
       to: jest.fn((...args) => {
         toParameters.push(args);
         return {
+          // mock incomming emit, track calling parameters
           emit: jest.fn((...args) => {
             emitParameters.push(args);
             return 0;
@@ -180,14 +181,13 @@ describe('GameManager', () => {
     
     await gameManager.startGame('abc123', 'BlackJack', ["playera", "playerb"], {"playera": 100, "playerb": 100});
     
-    let localMockData = mockGameData;
     expect(toParameters.length).toBe(1);
     expect(toParameters[0][0]).toEqual(expect.stringContaining('abc123'));
     expect(emitParameters[0][0]).toEqual(expect.stringContaining('playerTurn'));
     expect(JSON.stringify(emitParameters[0][1])).toEqual(expect.stringContaining('abc123'));
     //stand
     await gameManager.playTurn('abc123', "playera", "stand");
-    localMockData = mockGameData;
+
     expect(toParameters.length).toBe(2);
     expect(toParameters[1][0]).toEqual(expect.stringContaining('abc123'));
     expect(emitParameters[1][0]).toEqual(expect.stringContaining('playerTurn'));
@@ -303,7 +303,7 @@ describe('GameManager', () => {
     let gameData = {
       "currentPlayerIndex": 0
     }
-    gameResult = gameManager._calculateWinning(gameData);
+    let gameResult = gameManager._calculateWinning(gameData);
     expect(gameResult).toBe(0);
   });
 
@@ -312,7 +312,6 @@ describe('GameManager', () => {
   // Expected output: playturn tobe called
   // ChatGPT usage: No
   it('_resetTimer should clear old and start a new timer', async () => {
-    playTurnOrig = gameManager.playTurn;
     gameManager.playTurn = jest.fn();
     let gameData = {
       "currentPlayerIndex": 0,
@@ -374,7 +373,7 @@ describe('GameManager', () => {
       "playerb": {"red": 0, "black": 100, "odd": 0, "even": 0, "green": 0}
     });
     // make local copy
-    gameDataTemp = JSON.parse(JSON.stringify(mockGameData)); 
+    let gameDataTemp = JSON.parse(JSON.stringify(mockGameData)); 
     gameDataTemp.gameType = "unknown";
     gameManager._getActionResult(gameDataTemp, "?", "Cry");
     expect(toParameters.length).toBe(0);
@@ -460,13 +459,74 @@ describe('GameManager', () => {
     expect (await gameStore.deleteGame('$one')).toBe(0); 
   });
 
-  // small mongo shield test
+  // small mongo shield test for success
   // Input: none
   // Expected behavior: mongo db should success if input type is list
   // Expected output: 0
   // ChatGPT usage: No
   it('should return true if type test match', async () => {
     expect(mongoShield("hi", ['string'])).toBe(true);
+  });
+
+  
+  // Test Query selector in get game
+  // Input: none
+  // Expected behavior: bad input not used to db
+  // Expected output: 0
+  // ChatGPT usage: No
+  it('error with query selector', async () => {
+    let gameStore = gameManager.gameStore;
+    let meanInput = {
+      "user.profile": {
+        $elemMatch: {
+          role: { $eq: "admin" }
+        }
+      }
+    }
+    expect (await mongoShield(meanInput)).toBe(false); 
+  });
+
+  // Test operator inject in get game
+  // Input: none
+  // Expected behavior: bad input not used to db
+  // Expected output: 0
+  // ChatGPT usage: No
+  it('error with opertor', async () => {
+    let gameStore = gameManager.gameStore;
+    let meanInput = {
+      $where: "this.username === 'admin' && this.password.length > 0"
+    };
+    expect (await mongoShield(meanInput)).toBe(false); 
+  });
+
+  // Test double opertor
+  // Input: none
+  // Expected behavior: bad input not used to db
+  // Expected output: 0
+  // ChatGPT usage: No
+  it('error with double operator inject', async () => {
+    let gameStore = gameManager.gameStore;
+    let meanInput = {
+      "user.profile": {
+        $elemMatch: {
+          role: { $eq: "admin" }
+        }
+      }
+    };
+    expect (await mongoShield(meanInput)).toBe(false); 
+  });
+
+   // Test code running
+  // Input: none
+  // Expected behavior: bad input not used to db
+  // Expected output: 0
+  // ChatGPT usage: No
+  it('error with code injection', async () => {
+    let gameStore = gameManager.gameStore;
+    let meanInput = {
+      $where: "function() { return true; }"
+    };
+    expect (await mongoShield(meanInput)).toBe(false); 
   });
 
    // small mongo shield test

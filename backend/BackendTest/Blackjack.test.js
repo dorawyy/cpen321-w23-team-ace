@@ -1,4 +1,3 @@
-const { mock } = require('node:test');
 const Blackjack = require('../GameManager/Blackjack');
 const GameAssets = require('../GameManager/GameAssets');
 
@@ -82,7 +81,7 @@ describe('Blackjack', () => {
   it('random card', async () => {
     callCount = 0;
     returnVal = [1*4];
-    card = await Blackjack._getRandomCard(gameData);
+    let card = await Blackjack._getRandomCard(gameData);
     expect(typeof card).toBe("string");
     expect(card).toContain("A");
 
