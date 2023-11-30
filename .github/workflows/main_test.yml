@@ -11,7 +11,7 @@ permissions:
 jobs:
   build:
     # This GitHub workflow runs on the latest version of Ubuntu (same as azure)
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     
     steps:
     - name: Checkout
