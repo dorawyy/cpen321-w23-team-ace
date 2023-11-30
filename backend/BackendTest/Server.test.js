@@ -51,7 +51,6 @@ beforeAll((done) => {
     httpServer.listen(() => {
         clientSocket = new Client(`http://localhost:8081`);
         io.on("connection", socket => {
-            serverSocket = socket;
         });
         clientSocket.on("connect", done);
     });
@@ -646,7 +645,7 @@ describe('playTurn', () => {
             done();
         });
 
-        gameData = {
+        let gameData = {
             lobbyId: 'abc123',
             gameType: 'Blackjack',
             playerList: ["playera"],

@@ -1,16 +1,16 @@
 const express = require('express');
 const http = require('http');
-const https = require('https')
+// const https = require('https')
 const socketIo = require('socket.io');
-const fs = require('fs');
+// const fs = require('fs');
 const cors = require('cors');
 const path = require('path');
 
 // server configuration
 const app = express();
 app.use(express.static(__dirname));
-const keysPath = path.join(__dirname, 'data', 'private.key');
-let options;
+// const keysPath = path.join(__dirname, 'data', 'private.key');
+// let options;
 
 // if (fs.existsSync(keysPath)) {
 //   // If the file exists, require the JSON file.
@@ -32,7 +32,7 @@ let options;
 // server types
 const server = http.createServer(app);
 // const https_server = https.createServer(options, app);
-const SERVER_TYPE = 'http';
+// const SERVER_TYPE = 'http';
 const SERVER_PORT = 8081;
 
 // io and access management based on https or http
