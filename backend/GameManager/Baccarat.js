@@ -162,14 +162,14 @@ class Baccarat {
             gameDataLocal.gameItems.globalItems.bankerHand.push(await this._getRandomCard(gameDataLocal));
         }
         // banker draw if current score is 5 and player 4-7
-        else if (gameOver == 0 
+        else if (gameOver === 0 
             && handValue.bankerScore === 5 
             && (handValue.playerScore <= 7 && handValue.playerScore >= 4)
             ) {
             gameDataLocal.gameItems.globalItems.bankerHand.push(await this._getRandomCard(gameDataLocal));
         }
         // banker draw if current score is 6 and player 6-7
-        else if (gameOver == 0 
+        else if (gameOver === 0 
             && handValue.bankerScore === 6 
             && (handValue.playerScore <= 7 && handValue.playerScore >= 6)
             ) {

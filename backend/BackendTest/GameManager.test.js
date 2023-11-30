@@ -137,13 +137,15 @@ describe('GameManager', () => {
     gameManager.io = {
       to: jest.fn((...args) => {
         toParameters.push(args);
-        return {
+        // codacy resolve blocking
+        let emit = {
           // mock incomming emit, track calling parameters
           emit: jest.fn((...args) => {
             emitParameters.push(args);
             return 0;
           }),
         };
+        return emit
       }),
     };
   
@@ -333,7 +335,7 @@ describe('GameManager', () => {
   // Expected output: playturn tobe called
   // ChatGPT usage: No
   it('_resetTimer should call playTurn after 15 seconds', async () => {
-    playTurnOrig = gameManager.playTurn;
+    let playTurnOrig = gameManager.playTurn;
     gameManager.playTurn = jest.fn();
     let gameData = {
       "currentPlayerIndex": 0,
@@ -403,7 +405,7 @@ describe('GameManager', () => {
       "playerb": {"red": 0, "black": 100, "odd": 0, "even": 0, "green": 0}
     });
     // make local copy
-    gameDataTemp = JSON.parse(JSON.stringify(mockGameData)); 
+    let gameDataTemp = JSON.parse(JSON.stringify(mockGameData)); 
     gameDataTemp.gameType = "unknown";
     gameManager._calculateWinning(gameDataTemp);
     expect(toParameters.length).toBe(1); // call from gameOver
@@ -475,7 +477,6 @@ describe('GameManager', () => {
   // Expected output: 0
   // ChatGPT usage: No
   it('error with query selector', async () => {
-    let gameStore = gameManager.gameStore;
     let meanInput = {
       "user.profile": {
         $elemMatch: {
@@ -492,7 +493,6 @@ describe('GameManager', () => {
   // Expected output: 0
   // ChatGPT usage: No
   it('error with opertor', async () => {
-    let gameStore = gameManager.gameStore;
     let meanInput = {
       $where: "this.username === 'admin' && this.password.length > 0"
     };
@@ -505,7 +505,6 @@ describe('GameManager', () => {
   // Expected output: 0
   // ChatGPT usage: No
   it('error with double operator inject', async () => {
-    let gameStore = gameManager.gameStore;
     let meanInput = {
       "user.profile": {
         $elemMatch: {
@@ -522,7 +521,6 @@ describe('GameManager', () => {
   // Expected output: 0
   // ChatGPT usage: No
   it('error with code injection', async () => {
-    let gameStore = gameManager.gameStore;
     let meanInput = {
       $where: "function() { return true; }"
     };

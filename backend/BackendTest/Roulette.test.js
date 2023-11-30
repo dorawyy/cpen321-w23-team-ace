@@ -116,7 +116,7 @@ describe('Roulette', () => {
     expect(typeof gameDataLocal).toBe("object");
     expect(gameDataLocal.currentPlayerIndex).toBe(-1);
     let gameResult = await Roulette.calculateWinning(gameDataLocal)
-    expect(gameResult != 0).toBe(true);    
+    expect(gameResult !== 0).toBe(true);    
     expect(gameResult.playera).toBe(200);
   });
 
