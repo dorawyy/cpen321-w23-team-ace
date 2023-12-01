@@ -16,7 +16,6 @@ import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
 
 import android.os.IBinder;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
