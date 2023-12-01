@@ -98,12 +98,10 @@ public class DailyPointTest {
         Thread.sleep(3000);
 
         //Assert New Account Name Line Exists
-        Log.d("TEST", "STARTING FIRST ASSERT");
         onView(withId(R.id.accountNameEditText)).check(matches(isDisplayed()));
 
 
         //Assert New Account Button Exists
-        Log.d("TEST", "STARTING SECOND ASSERT");
         onView(withId(R.id.createAccountButton)).check(matches(isDisplayed()));
 
         //Enter New Account Name - Test User
