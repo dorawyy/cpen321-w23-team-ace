@@ -1,6 +1,4 @@
-const { assert } = require('console');
 const GameManager = require('../GameManager/GameManager');
-const exp = require('constants');
 const mongoShield = require('../mongoShield');
 
 jest.useFakeTimers()
@@ -39,7 +37,9 @@ jest.mock('mongodb', () => {
     db: jest.fn().mockReturnValue(mDb),
   };
 
-  return { MongoClient: jest.fn(() => mClient) };
+  let return_client = {MongoClient: jest.fn(() => mClient)}
+
+  return return_client;
 });
 
 //mock random.org
@@ -94,7 +94,7 @@ describe('GameManager', () => {
     const mongoError = new Error('Cannot connect to MongoDB');
     const mClient = require('mongodb').MongoClient();
     mClient.connect.mockImplementationOnce(() => Promise.reject(mongoError));
-    gameManagerBad = new GameManager(ioMock);
+    let gameManagerBad = new GameManager(ioMock);
     gameManagerBad.connect();
     expect(gameManagerBad).toBeInstanceOf(GameManager);
     expect(gameManagerBad.io).toBe(ioMock);
@@ -111,12 +111,14 @@ describe('GameManager', () => {
     gameManager.io = {
       to: jest.fn((...args) => {
         toParameters.push(args);
-        return {
+        let emit = {
+          // mock incomming emit, track calling parameters
           emit: jest.fn((...args) => {
             emitParameters.push(args);
             return 0;
           }),
         };
+        return emit
       }),
     };
   
@@ -137,12 +139,15 @@ describe('GameManager', () => {
     gameManager.io = {
       to: jest.fn((...args) => {
         toParameters.push(args);
-        return {
+        // codacy resolve blocking
+        let emit = {
+          // mock incomming emit, track calling parameters
           emit: jest.fn((...args) => {
             emitParameters.push(args);
             return 0;
           }),
         };
+        return emit
       }),
     };
   
@@ -168,26 +173,27 @@ describe('GameManager', () => {
     gameManager.io = {
       to: jest.fn((...args) => {
         toParameters.push(args);
-        return {
+        let emit = {
+          // mock incomming emit, track calling parameters
           emit: jest.fn((...args) => {
             emitParameters.push(args);
             return 0;
           }),
         };
+        return emit
       }),
     };
     
     
     await gameManager.startGame('abc123', 'BlackJack', ["playera", "playerb"], {"playera": 100, "playerb": 100});
     
-    let localMockData = mockGameData;
     expect(toParameters.length).toBe(1);
     expect(toParameters[0][0]).toEqual(expect.stringContaining('abc123'));
     expect(emitParameters[0][0]).toEqual(expect.stringContaining('playerTurn'));
     expect(JSON.stringify(emitParameters[0][1])).toEqual(expect.stringContaining('abc123'));
     //stand
     await gameManager.playTurn('abc123', "playera", "stand");
-    localMockData = mockGameData;
+
     expect(toParameters.length).toBe(2);
     expect(toParameters[1][0]).toEqual(expect.stringContaining('abc123'));
     expect(emitParameters[1][0]).toEqual(expect.stringContaining('playerTurn'));
@@ -210,12 +216,14 @@ describe('GameManager', () => {
     gameManager.io = {
       to: jest.fn((...args) => {
         toParameters.push(args);
-        return {
+        let emit = {
+          // mock incomming emit, track calling parameters
           emit: jest.fn((...args) => {
             emitParameters.push(args);
             return 0;
           }),
         };
+        return emit
       }),
     };
     
@@ -242,12 +250,14 @@ describe('GameManager', () => {
     gameManager.io = {
       to: jest.fn((...args) => {
         toParameters.push(args);
-        return {
+        let emit = {
+          // mock incomming emit, track calling parameters
           emit: jest.fn((...args) => {
             emitParameters.push(args);
             return 0;
           }),
         };
+        return emit
       }),
     };
     await gameManager.startGame('abc123', 'Roulette', ["playera", "playerb"], {
@@ -272,12 +282,14 @@ describe('GameManager', () => {
     gameManager.io = {
       to: jest.fn((...args) => {
         toParameters.push(args);
-        return {
+        let emit = {
+          // mock incomming emit, track calling parameters
           emit: jest.fn((...args) => {
             emitParameters.push(args);
             return 0;
           }),
         };
+        return emit
       }),
     };
     await gameManager.startGame('abc123', 'Roulette', ["playera", "playerb"], {
@@ -303,7 +315,7 @@ describe('GameManager', () => {
     let gameData = {
       "currentPlayerIndex": 0
     }
-    gameResult = gameManager._calculateWinning(gameData);
+    let gameResult = gameManager._calculateWinning(gameData);
     expect(gameResult).toBe(0);
   });
 
@@ -312,7 +324,6 @@ describe('GameManager', () => {
   // Expected output: playturn tobe called
   // ChatGPT usage: No
   it('_resetTimer should clear old and start a new timer', async () => {
-    playTurnOrig = gameManager.playTurn;
     gameManager.playTurn = jest.fn();
     let gameData = {
       "currentPlayerIndex": 0,
@@ -334,7 +345,7 @@ describe('GameManager', () => {
   // Expected output: playturn tobe called
   // ChatGPT usage: No
   it('_resetTimer should call playTurn after 15 seconds', async () => {
-    playTurnOrig = gameManager.playTurn;
+    let playTurnOrig = gameManager.playTurn;
     gameManager.playTurn = jest.fn();
     let gameData = {
       "currentPlayerIndex": 0,
@@ -360,12 +371,14 @@ describe('GameManager', () => {
     gameManager.io = {
       to: jest.fn((...args) => {
         toParameters.push(args);
-        return {
+        let emit = {
+          // mock incomming emit, track calling parameters
           emit: jest.fn((...args) => {
             emitParameters.push(args);
             return 0;
           }),
         };
+        return emit
       }),
     };
   
@@ -374,7 +387,7 @@ describe('GameManager', () => {
       "playerb": {"red": 0, "black": 100, "odd": 0, "even": 0, "green": 0}
     });
     // make local copy
-    gameDataTemp = JSON.parse(JSON.stringify(mockGameData)); 
+    let gameDataTemp = JSON.parse(JSON.stringify(mockGameData)); 
     gameDataTemp.gameType = "unknown";
     gameManager._getActionResult(gameDataTemp, "?", "Cry");
     expect(toParameters.length).toBe(0);
@@ -390,12 +403,14 @@ describe('GameManager', () => {
     gameManager.io = {
       to: jest.fn((...args) => {
         toParameters.push(args);
-        return {
+        let emit = {
+          // mock incomming emit, track calling parameters
           emit: jest.fn((...args) => {
             emitParameters.push(args);
             return 0;
           }),
         };
+        return emit
       }),
     };
   
@@ -404,7 +419,7 @@ describe('GameManager', () => {
       "playerb": {"red": 0, "black": 100, "odd": 0, "even": 0, "green": 0}
     });
     // make local copy
-    gameDataTemp = JSON.parse(JSON.stringify(mockGameData)); 
+    let gameDataTemp = JSON.parse(JSON.stringify(mockGameData)); 
     gameDataTemp.gameType = "unknown";
     gameManager._calculateWinning(gameDataTemp);
     expect(toParameters.length).toBe(1); // call from gameOver
@@ -460,13 +475,90 @@ describe('GameManager', () => {
     expect (await gameStore.deleteGame('$one')).toBe(0); 
   });
 
-  // small mongo shield test
-  // Input: none
-  // Expected behavior: mongo db should success if input type is list
-  // Expected output: 0
+  // small mongo shield test for success
+  // Input: valid input
+  // Expected behavior: good input = no problem
+  // Expected output: true
   // ChatGPT usage: No
   it('should return true if type test match', async () => {
     expect(mongoShield("hi", ['string'])).toBe(true);
+  });
+
+  
+  // Test Query selector in get game
+  // Input: query selector attack
+  // Expected behavior: bad input cause shield to return false
+  // Expected output: false
+  // ChatGPT usage: No
+  it('error with query selector', async () => {
+    let meanInput = {
+      "user.profile": {
+        $elemMatch: {
+          role: { $eq: "admin" }
+        }
+      }
+    }
+    expect (await mongoShield(meanInput)).toBe(false); 
+  });
+
+  // Test operator inject test
+  // Input: operator inject attack
+  // Expected behavior: bad input cause sheilf to return false
+  // Expected output: false
+  // ChatGPT usage: No
+  it('error with opertor', async () => {
+    let meanInput = {
+      $where: "this.username === 'admin' && this.password.length > 0"
+    };
+    expect (await mongoShield(meanInput)).toBe(false); 
+  });
+
+  // Test double opertor
+  // Input: nested operator inject attack
+  // Expected behavior: bad input cause sheilf to return false
+  // Expected output: false
+  // ChatGPT usage: No
+  it('error with double operator inject', async () => {
+    let meanInput = {
+      "user.profile": {
+        $elemMatch: {
+          role: { $eq: "admin" }
+        }
+      }
+    };
+    expect (await mongoShield(meanInput)).toBe(false); 
+  });
+
+   // Test code running
+  // Input: js code injection attack
+  // Expected behavior: bad input not used to db
+  // Expected output: 0
+  // ChatGPT usage: No
+  it('error with code injection', async () => {
+    let meanInput = {
+      $where: "function() { return true; }"
+    };
+    expect (await mongoShield(meanInput)).toBe(false); 
+  });
+
+  // Test NoSQL injection attack
+  // Input: NoSQL injection attack vector
+  // Expected behavior: bad input causes mongoShield to return false
+  // Expected output: false
+  // ChatGPT usage: No
+  it('should protect against NoSQL injection attacks', async () => {
+    let maliciousPayload = { $where: "function() { return true; }" };
+    expect(await mongoShield(maliciousPayload)).toBe(false);
+  });
+
+  // Test NoSQL injection attack with invalid command
+  // Input: NoSQL injection attack vector
+  // Expected behavior: bad input causes mongoShield to return false
+  // Expected output: false
+  // ChatGPT usage: No
+  it('should protect against NoSQL injection attacks invalid command', async () => {
+    let maliciousPayload = { $123: "functi32on() { return true; }" };
+    expect(await mongoShield(maliciousPayload)).toBe(false);
   });
 
    // small mongo shield test

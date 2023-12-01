@@ -8,7 +8,7 @@
     collectCoverage: true,
     reporters: [
         "default",
-        ["jest-junit", { "outputDirectory": "./backend/BackendTest", "outputName": "junit.xml" }]
+        ["jest-junit", { "outputDirectory": "./testResult", "outputName": "junit.xml" }]
       ]
   };
   

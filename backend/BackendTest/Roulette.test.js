@@ -1,4 +1,3 @@
-const { mock } = require('node:test');
 const Roulette = require('../GameManager/Roulette');
 const GameAssets = require('../GameManager/GameAssets');
 jest.mock('mongodb', () => {
@@ -94,13 +93,13 @@ describe('Roulette', () => {
   it('calculate correct double lose', async () => {
     callCount = 0;
     returnVal = [1];
-    betTypes = {"red": 0, "black": 100, "odd": 0, "even": 0, "green": 100}
+    let betTypes = {"red": 0, "black": 100, "odd": 0, "even": 0, "green": 100}
     gameData.betsPlaced.playera = betTypes;
     let gameDataLocal = await Roulette.playTurn(gameData);
     expect(typeof gameDataLocal).toBe("object");
     expect(gameDataLocal.currentPlayerIndex).toBe(-1);
     let gameResult = await Roulette.calculateWinning(gameDataLocal)
-    expect(gameResult != 0).toBe(true);    
+    expect(gameResult !== 0).toBe(true);    
     expect(gameResult.playera).toBe(-200);
   });
 
@@ -111,13 +110,13 @@ describe('Roulette', () => {
   it('calculate correct double win', async () => {
     callCount = 0;
     returnVal = [1];
-    betTypes = {"red": 100, "black": 0, "odd": 100, "even": 0, "green": 0}
+    let betTypes = {"red": 100, "black": 0, "odd": 100, "even": 0, "green": 0}
     gameData.betsPlaced.playera = betTypes;
     let gameDataLocal = await Roulette.playTurn(gameData);
     expect(typeof gameDataLocal).toBe("object");
     expect(gameDataLocal.currentPlayerIndex).toBe(-1);
     let gameResult = await Roulette.calculateWinning(gameDataLocal)
-    expect(gameResult != 0).toBe(true);    
+    expect(gameResult !== 0).toBe(true);    
     expect(gameResult.playera).toBe(200);
   });
 
@@ -132,7 +131,7 @@ describe('Roulette', () => {
     for(let i = 0; i <= 36; i++){
       // interate through bet type: red, black, odd, even, low, high, firstDozen, secondDozen, thirdDozen, 
       //firstColumn, secondColumn, thirdColumn, {single numbers like 0, 1, 2...}
-      betTypes = ["red", "black", "odd", "even", "green"]
+      let betTypes = ["red", "black", "odd", "even", "green"]
       callCount = 0;
       returnVal = [i];
       
@@ -145,7 +144,7 @@ describe('Roulette', () => {
         expect(typeof gameDataLocal).toBe("object");
         expect(gameDataLocal.currentPlayerIndex).toBe(-1);
         let gameResult = await Roulette.calculateWinning(gameDataLocal)
-        expect(gameResult != 0).toBe(true);    
+        expect(gameResult !== 0).toBe(true);    
         expect(typeof gameResult.playera).toBe("number");
       }
     }

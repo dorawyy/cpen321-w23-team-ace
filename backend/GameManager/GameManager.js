@@ -1,4 +1,3 @@
-const e = require('express');
 const Baccarat = require('./Baccarat'); 
 const Blackjack = require('./Blackjack');
 const Roulette = require('./Roulette');
@@ -285,9 +284,12 @@ class GameStore {
     /* connect to the database*/
     // ChatGPT usage: No
     async connect() {
+        let db_name = 'casinoApp';
         try {
+            // Connect to the MongoDB cluster
             await this.client.connect()
-            this.db = this.client.db('casinoApp');
+            this.db = this.client.db(db_name);
+
             this.games = this.db.collection('games');
             console.log("Connected to gameStore database");
         } catch(err) {

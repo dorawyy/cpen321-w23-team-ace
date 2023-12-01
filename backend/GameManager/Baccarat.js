@@ -139,37 +139,37 @@ class Baccarat {
             gameOver = 1;
         }
         // player draw if <=5
-        if (gameOver == 0 && handValue.playerScore <= 5) {
+        if (gameOver === 0 && handValue.playerScore <= 5) {
             thirdPlayerCard = await this._getRandomCard(gameDataLocal);
             gameDataLocal.gameItems.globalItems.playerHand.push(thirdPlayerCard);
         }
         // banker draw if <=2
-        if (gameOver == 0 && handValue.bankerScore <= 2) {
+        if (gameOver === 0 && handValue.bankerScore <= 2) {
             gameDataLocal.gameItems.globalItems.bankerHand.push(await this._getRandomCard(gameDataLocal));
         }
         // banker draw if current score is 3 and player 0-7
-        else if (gameOver == 0 
+        else if (gameOver === 0 
             && handValue.bankerScore === 3 
             && (handValue.playerScore <= 7)
             ) {
             gameDataLocal.gameItems.globalItems.bankerHand.push(await this._getRandomCard(gameDataLocal));
         }
         // banker draw if current score is 4 and player 2-7
-        else if (gameOver == 0 
+        else if (gameOver === 0 
             && handValue.bankerScore === 4 
             && (handValue.playerScore <= 7 && handValue.playerScore >= 2)
             ) {
             gameDataLocal.gameItems.globalItems.bankerHand.push(await this._getRandomCard(gameDataLocal));
         }
         // banker draw if current score is 5 and player 4-7
-        else if (gameOver == 0 
+        else if (gameOver === 0 
             && handValue.bankerScore === 5 
             && (handValue.playerScore <= 7 && handValue.playerScore >= 4)
             ) {
             gameDataLocal.gameItems.globalItems.bankerHand.push(await this._getRandomCard(gameDataLocal));
         }
         // banker draw if current score is 6 and player 6-7
-        else if (gameOver == 0 
+        else if (gameOver === 0 
             && handValue.bankerScore === 6 
             && (handValue.playerScore <= 7 && handValue.playerScore >= 6)
             ) {

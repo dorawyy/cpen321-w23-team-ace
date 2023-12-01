@@ -4,24 +4,28 @@ name: Run Jest Tests
 # push or PR
 on: [push, pull_request]
 
+permissions:
+    contents: read
+    checks: write
+
 jobs:
   build:
     # This GitHub workflow runs on the latest version of Ubuntu (same as azure)
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Setup Node.js
       # configures a Node.js environment
-      uses: actions/setup-node@v2
+      uses: actions/setup-node@v3
       with:
-        node-version: 21
+        node-version: '21'
 
     # Node Modules caching
     - name: Cache Dependencies
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: ~/.npm
         key: ${{ runner.os }}-node-${{ hashFiles('**/backend/package-lock.json') }}-v1
@@ -43,9 +47,8 @@ jobs:
     # publish with  "action-junit-report" 
     - name: Publish Test Results
       if: always()
-      uses: mikepenz/action-junit-report@v2
+      uses: mikepenz/action-junit-report@v3
       with:
         check_name: 'Test Report'
-        report_paths: 'junit.xml'
-        # Mikepenz's action-junit-report action requires github token
-        gh_token: ${{ secrets.GITHUB_TOKEN }}
+        report_paths: 'backend/testResult/junit.xml'
+        github_token: ${{ secrets.GITHUB_TOKEN }}

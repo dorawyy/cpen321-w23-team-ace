@@ -1,7 +1,6 @@
 package com.davidzhang.androidcasinouser;
 
 import javax.crypto.Cipher;
-import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 

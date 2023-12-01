@@ -28,8 +28,6 @@ class GameLobby {
     // ChatGPT usage: Partial
     async addPlayer(roomName, userName, bet, socket) {
         console.log("User joined");
-        // console.log(this.counter);
-        // console.log(this.maxPlayers);
         const lobby = await this.gameLobbyStore.getLobby(roomName);
         if(lobby) {
             if (Object.keys(lobby.players).length < lobby.maxPlayers) {
@@ -40,6 +38,7 @@ class GameLobby {
                     socketId: socket.id
                 };
                 this.io.to(roomName).emit('newPlayer', userName);
+                socket.emit('newPlayerJoin');
                 socket.join(roomName);
                 await this.gameLobbyStore.updateLobby(roomName, { players: lobby.players });
 
@@ -147,7 +146,6 @@ class GameLobby {
     // ChatGPT usage: No
     async setPlayerBet(roomName, userName, bet) {
         this.io.to(roomName).emit('setBet', userName);
-        
         await this.gameLobbyStore.setPlayerBet(roomName, userName, bet);
     }
 
@@ -158,7 +156,6 @@ class GameLobby {
                 user: userName,
                 text: message,
             };
-
         this.io.to(roomName).emit('receiveChatMessage', chatMessage);
     }
 

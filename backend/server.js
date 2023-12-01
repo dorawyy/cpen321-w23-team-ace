@@ -1,16 +1,16 @@
 const express = require('express');
 const http = require('http');
-const https = require('https')
+// const https = require('https')
 const socketIo = require('socket.io');
-const fs = require('fs');
+// const fs = require('fs');
 const cors = require('cors');
-const path = require('path');
+// const path = require('path');
 
 // server configuration
 const app = express();
 app.use(express.static(__dirname));
-const keysPath = path.join(__dirname, 'data', 'private.key');
-let options;
+// const keysPath = path.join(__dirname, 'data', 'private.key');
+// let options;
 
 // if (fs.existsSync(keysPath)) {
 //   // If the file exists, require the JSON file.
@@ -32,7 +32,7 @@ let options;
 // server types
 const server = http.createServer(app);
 // const https_server = https.createServer(options, app);
-const SERVER_TYPE = 'http';
+// const SERVER_TYPE = 'http';
 const SERVER_PORT = 8081;
 
 // io and access management based on https or http
@@ -133,10 +133,6 @@ io.on('connection', (socket) => {
         userAccount.withdraw(socket, userId, amount);
     });
 
-    // socket.on('disconnect', () => {
-    //     console.log('User disconnected:', socket.id);
-    // });
-
     // ChatGPT usage: Yes
     socket.on('deleteUser', async (userId) => {
        userAccount.deleteUser(socket, userId);
@@ -149,94 +145,55 @@ io.on('connection', (socket) => {
 
     // ChatGPT usage: Partial
     socket.on('createLobby', async (roomName, gameType, maxPlayers, userName) => {
-        // console.log("Lobby created");
-        // if(!gameLobbies[roomName]) {
-        //     const lobby = new GameLobby(roomName, gameType, maxPlayers, gameManager, gameLobbyStore, io);
-        //     await lobby.init(roomName, gameType, maxPlayers);
-        //     gameLobbies[roomName] = lobby;
-        //     socket.emit('lobbyCreated', "Lobby Successfully Created");
-        // }
-        // else {
-        //     socket.emit('roomAlreadyExist', "Room already exist");
-        // }
         await gameLobby.init(roomName, gameType, maxPlayers, socket);
     });
 
     // ChatGPT usage: Partial
     socket.on('joinLobby', async (roomName, userName) => {
-        // console.log("User joined");
-        // if(gameLobbies[roomName]) {
-        //     // Set bet = 0 initially
-        //     await gameLobbies[roomName].addPlayer(userName, 0, socket);
-        // }
-        // else {
-        //     socket.emit('roomDoesNot', "Room does not exist");
-        // }
         await gameLobby.addPlayer(roomName, userName, 0, socket);
     });
 
     // ChatGPT usage: Partial
     socket.on('sendChatMessage', async (roomName, userName, message) =>{
-        // console.log("Send chat Live");
-        //     const chatMessage = {
-        //         user: userName,
-        //         text: message,
-        //     };
-
-        // io.to(roomName).emit('receiveChatMessage', chatMessage);
         await gameLobby.sendChatMessage(roomName, userName, message);
+        socket.emit('sendMessageSuccessfully', "sendMessageSuccessfully");
     })
 
     // ChatGPT usage: No
     socket.on('getAllLobby', async () => {
-        // var myLobbies = await gameLobbyStore.getAllLobby();
-        // socket.emit('AllLobby', myLobbies);
         await gameLobby.getAllLobby(socket);
+        socket.emit('getAllLobbySuccessfully', "getAllLobbySuccessfully");
     });
 
     // ChatGPT usage: No
     socket.on('setBet', async(roomName, userName, bet) => {
-        // await gameLobbies[roomName].setPlayerBet(roomName, userName, bet);
         await gameLobby.setPlayerBet(roomName, userName, bet);
+        socket.emit('setBetSuccessfully', "setBetSuccessfully");
     })
 
     // ChatGPT usage: No
     socket.on('setReady', async(roomName, userName) => {
-        // console.log("User ready");
-        // await gameLobbies[roomName].setPlayerReady(userName);
         await gameLobby.setPlayerReady(roomName, userName);
+        socket.emit('setReadySuccessfully', "setReadySuccessfully");
     })
 
 
     // ChatGPT usage: No
     socket.on('getPlayerCount', async(roomName) => {
-        // var result = await gameLobbies[roomName].getPlayerCount(roomName);
-        // io.to(roomName).emit('playerCount', result);
         await gameLobby.getPlayerCount(roomName);
+        socket.emit('getCountSuccessfully', "getCountSuccessfully");
     })
-
-    // socket.on('playerLeft', async(userName, roomName) => {
-    //     var playerCount = await gameLobbies[roomName].getPlayerCount(roomName);
-    //     io.to(roomName).emit('playerCount', playerCount);
-    // })
 
     // ChatGPT usage: Partial
     socket.on('leaveLobby', async () => {
-        // console.log("User left lobby");
-        // for(let roomName in gameLobbies) {
-        //     for(let userName in gameLobbies[roomName].players) {
-        //         if(gameLobbies[roomName].players[userName].socketId === socket.id) {
-        //             gameLobbies[roomName].removePlayer(userName, socket);
-        //             break;
-        //         }
-        //     }
-        // }
         await gameLobby.removePlayer(socket);
+        socket.emit('leaveSuccessfully', "leaveSuccessfully");
     });
 
     // ChatGPT usage: partial
     socket.on('playTurn', (lobbyName, username, action) => {
         gameManager.playTurn(lobbyName, username, action);
+        socket.emit('turnSuccessfully', "turnSuccessfully");
     })
 
     // ChatGPT usage: Partial

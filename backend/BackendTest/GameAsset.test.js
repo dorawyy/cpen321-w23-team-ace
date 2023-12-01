@@ -1,6 +1,4 @@
-const { mock } = require('node:test');
 const Baccarat = require('../GameManager/Baccarat');
-const GameAssets = require('../GameManager/GameAssets');
 const gameAssets = require('../GameManager/GameAssets');
 jest.mock('mongodb', () => {
   const mClient = {
@@ -85,7 +83,7 @@ describe('GameAsset', () => {
     let pokar = gameAssets.getPokar(true);
     expect(pokar[52]).toContain("bigJoker");
     expect(pokar[53]).toContain("smallJoker");
-    value = gameAssets.getPokarFaceValue(pokar[52]);
+    let value = gameAssets.getPokarFaceValue(pokar[52]);
     expect(value).toBe(101);
     value = gameAssets.getPokarFaceValue(pokar[53]);
     expect(value).toBe(100);
